@@ -57,7 +57,7 @@ $futureDate = $date->format('m/Y');
                     <i class="card-visa fs-2 fw-bold d-flex justify-content-end"> VISA</i>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 ">
                 <button class="btn btn-success" data-toggle="modal" data-target="#carteActive">Activer ma carte</button>
                 <button class="btn btn-danger" data-toggle="modal" data-target="#carteBloque">Bloquer ma carte</button>
             </div>

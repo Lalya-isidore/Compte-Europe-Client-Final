@@ -27,10 +27,10 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
 ?>
 
 <style>
-    .image {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
+    .image55 {
+        width: 110px;
+        height: 105px;
+        /* border-radius: 1%; */
         object-fit: cover;
 
     }
@@ -38,11 +38,11 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
 
 <div class="container">
     <div class="d-flex " style="align-items: center; justify-content:center; flex-wrap: wrap; ">
-        <img class="image text-center mx-4 " src="/WhatsApp Image 2024-05-21 à 15.46.55_5e711271.jpg" alt="">
-        <h2 class="mt-4 text-center text-success fs-1 ">ZENITH BANK - TRANSAFRICASH SERVICE </h2>
+        <img class="image55 text-center mx-4 " src="/WhatsApp Image 2024-07-01 à 16.19.54_d0746549.jpg" alt="">
+        <h3 class="mt-1 text-center text-primary fw-bold fs-1 ">TRANSFERCASH SERVICE </h3>
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-2">
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <?php
@@ -79,7 +79,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                         <a href="#" class="page-link-label">Forgot Password?</a>
                     </p> -->
 
-                    <button type="submit" class="form-btn">Connexion</button>
+                    <button type="submit" class=" btn btn-primary ">Connexion</button>
                 </form>
 
                 <!-- <div class="buttons-container">

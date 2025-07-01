@@ -28,7 +28,7 @@ $formatted_balance = number_format($account_balance, 2, ',', ' ');
 
     <div class="dashboard">
         <nav class="pt-2">
-            <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERT</strong></div>
+            <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFER</strong></div>
             <a href="{{route('info')}}" class="icon-circle">
                 <i class="fas fa-user"></i>
             </a>
@@ -36,22 +36,15 @@ $formatted_balance = number_format($account_balance, 2, ',', ' ');
         </nav>
         <hr>
 
-        <!-- <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <p>{{ session('success') }}</p>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+        <div class="alert alert-success">
+            A transfer of <strong class="fw-bold">
+                <?= number_format($_SESSION['utilisateur_connecter']['account_balance2'], 2, ',', ' ') . ' '
+                    . $_SESSION['utilisateur_connecter']['devise'] ?></strong>
+           received and credited to your account. You can add your <strong>IBAN</strong>
+            in order to make an external transfer to your <strong>Bank</strong>.
         </div>
 
-
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ session('error') }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div> -->
-
-        <div class=" my-5">
+        <div class=" my-2">
 
             <p> Hello <?= $_SESSION['utilisateur_connecter']['nom'] . " " . $_SESSION['utilisateur_connecter']['prenom']; ?></p>
             <div class="account-balance">
@@ -60,159 +53,297 @@ $formatted_balance = number_format($account_balance, 2, ',', ' ');
                 </div>
                 <h2 class="fw-bold mx-3 fs-4 mb-4 balance"><?= $formatted_balance . " " . $_SESSION['utilisateur_connecter']['devise']; ?></h2>
                 <div class='d-flex flex-nowrap align-items-center '>
-                    <a href="index.php?page=transfert" class="btn btn-warning virement btnaccc ">Effectuer un Transfert <i class=" fas fa-arrow-right"></i></a>
-                    <a href="index.php?page=carte" class="btn btn-success carte btnaccc ">Ma carte <i class=" fas fa-arrow-right"></i></a>
+                    <a href="index.php?page=transfert" class="btn btn-warning virement btnaccc ">Make a Transfer <i class=" fas fa-arrow-right"></i></a>
+                    <a href="index.php?page=carte" class="btn btn-success carte btnaccc mx-3 ">My card <i class=" fas fa-arrow-right"></i></a>
                 </div>
             </div>
+
             <style>
-                @media (max-width: 500px) {
+                .list-group-item{
+                    white-space: nowrap;
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                /* Include your custom CSS here */
+                .transaction-history {
+                    margin-top: 20px;
+                }
 
+                .list-group-item {
+                    padding: 15px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
 
-                    .iconHist {
-                        padding: .7rem;
-                        background-color: #ccebf5;
-                        border-radius: 50%;
-                        font-size: 1rem;
-                        object-fit: cover;
+                .icon-container {
+                    font-size: 2vw;
+                    /* Adjusts icon size based on viewport width */
+                }
+
+                .transaction-details {
+                    width: 100%;
+                }
+
+                .transaction-details .d-flex {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .transaction-details strong,
+                .transaction-details small {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .transaction-details small {
+                    max-width: 50%;
+                }
+
+                .transaction-details strong {
+                    font-size: 1.5vw;
+                }
+
+                .transaction-details small {
+                    font-size: 1.2vw;
+                }
+
+                .icon-container+.transaction-details {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                @media (max-width: 1200px) {
+                     .list-group-item{
+                   
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                    .transaction-details .d-flex {
+                   
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                    
+                    .icon-container {
+                        font-size: 3vw;
                     }
 
-                    .iconHist2 {
-                        padding: .7rem;
-                        background-color: red;
-                        border-radius: 50%;
-                        font-size: 1rem;
-                        color: #f0f0f0;
-                        object-fit: cover;
+                    .transaction-details strong {
+                        font-size: 2vw;
                     }
 
-                    .iconHist3 {
-                        padding: .7rem;
-                        background-color: green;
-                        border-radius: 50%;
-                        font-size: 1rem;
-                        color: white;
-                        object-fit: cover;
-                    }
-
-                    .dashboard {
-                        position: relative;
-                        background-color: white;
-                        max-width: 900px;
-                        min-height: 100vh;
-                        box-shadow: 0 0 12px 0 rgba(0, 0, 0, .2);
-                        overflow: auto;
-                        padding: 10px 30px 150px 30px;
-                        transition: all 200ms linear;
-                    }
-
-                    .transftype {
-                        font-size: .7rem;
-                    }
-
-                    .transftyped {
-                        font-size: .5rem;
-                    }
-
-                    .btnacc {
-                        margin: .3rem;
-                    }
-
-                    .btnaccc {
-                        font-size: .6rem;
-                        margin: .1rem;
+                    .transaction-details small {
+                        font-size: 1.6vw;
                     }
                 }
+
+                @media (max-width: 992px) {
+                     .list-group-item{
+                   
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                    .icon-container {
+                        font-size: 4vw;
+                    }
+
+                    .transaction-details strong {
+                        font-size: 2.5vw;
+                    }
+
+                    .transaction-details small {
+                        font-size: 2vw;
+                    }
+                    .transaction-details .d-flex {
+                   
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+                }
+
+                @media (max-width: 768px) {
+                     .list-group-item{
+                    
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                    .icon-container {
+                        font-size: 5vw;
+                    }
+
+                    .transaction-details strong {
+                        font-size: 3vw;
+                    }
+
+                    .transaction-details small {
+                        font-size: 2.5vw;
+                    }
+                    .transaction-details .d-flex {
+                  
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    }
+                }
+
+                @media (max-width: 576px) {
+                     .list-group-item{
+                   
+                    flex-wrap: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    }
+                    .icon-container {
+                        font-size: 6vw;
+                    }
+
+                    .transaction-details strong {
+                        font-size: 3.5vw;
+                    }
+
+                    .transaction-details small {
+                        font-size: 3vw;
+                    }
+                    .transaction-details .d-flex {
+                   
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    }
+                     .icon-container {
+                    margin-right: 0px; /* Marge à droite réduite */
+                    margin-left: -12px; /* Marge à gauche réduite */
+                    }
+}
+                }
+
+                .transaction-details .d-flex {
+                    justify-content: space-between;
+                }  
+.iconHist {
+    padding: 1rem;
+    background-color: #ccebf5;
+    border-radius: 50%;
+    font-size: 1.7rem;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+.iconHist2 {
+    padding: 1rem;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 1.7rem;
+    margin-right: 5px;
+    color: #f0f0f0;
+    object-fit: cover;
+}
+
+.iconHist3 {
+    padding: 1rem;
+    background-color: green;
+    border-radius: 50%;
+    font-size: 1.7rem;
+    margin-right: 5px;
+    color: white;
+    object-fit: cover;
+}
+                
+                
             </style>
+            </head>
 
+            <body>
 
-            <div class="transaction-history">
-                <h4>Historique des transactions</h4>
-                <ul class="list-group">
+                <div class="transaction-history">
+                    <h4>Transaction history</h4>
                     <ul class="list-group">
-
-                        <?php if (!empty($historique_transactions)) :
-
-                        ?>
+                        <?php if (!empty($historique_transactions)) : ?>
                             <?php foreach ($historique_transactions as $transaction) :
                                 $amount = $transaction['amount'];
                                 $formatted_trans = number_format($amount, 2, ',', ' ');
                             ?>
-                                <ul class="list-group">
-                                    <li class="list-group-item d-flex flex-nowrap align-items-center mb-1">
-                                        <div class="col-auto">
-                                            <?php if ($transaction['transaction_type'] == 'transfer received') { ?>
-                                                <i class="fas fa-university text-success transf"></i>
-                                            <?php } ?>
-                                            <?php if ($transaction['transaction_type'] == 'Transfer sent') { ?>
-                                                <i class="fas fa-arrow-up iconHist2 transf"></i>
-                                            <?php } ?>
-                                            <?php if ($transaction['transaction_type'] == 'Refund received') { ?>
-                                                <i class="fas fa-sync-alt iconHist transf"></i>
-                                            <?php } ?>
+                                <li class="list-group-item">
+                                    <!-- Icône de transaction -->
+                                    <div class="icon-container col-md-1">
+                                        <?php if ($transaction['transaction_type'] == 'transfer received') { ?>
+                                            <i class="fas fa-university text-success transf"></i>
+                                        <?php } ?>
+                                        <?php if ($transaction['transaction_type'] == 'Transfer sent') { ?>
+                                            <i class="fas fa-arrow-up iconHist2 transf"></i>
+                                        <?php } ?>
+                                        <?php if ($transaction['transaction_type'] == 'Refund received') { ?>
+                                            <i class="fas fa-sync-alt iconHist transf"></i>
+                                        <?php } ?>
+                                        <?php if ($transaction['transaction_type'] == 'Funds deducted') { ?>
+                                            <i class="fas fa-arrow-left iconHist2 transf"></i>
+                                        <?php } ?>
+                                        <?php if ($transaction['transaction_type'] == 'Funds added') { ?>
+                                            <i class="fas fa-university iconHist3 transf"></i>
+                                        <?php } ?>
+                                    </div>
+
+                                    <!-- Détails de la transaction -->
+                                    <div class="transaction-details ">
+                                        <div class="d-flex justify-content-between align-items-center flex-nowrap">
+                                            <strong><?= $transaction['transaction_type'] ?></strong>
+                                            <strong class="<?= $transaction['transaction_type'] == 'Transfer sent' || $transaction['transaction_type'] == 'Funds deducted' ? 'text-danger' : 'text-success' ?>">
+                                                <?= ($transaction['transaction_type'] == 'Transfer sent' || $transaction['transaction_type'] == 'Funds deducted') ? '-' : '+' ?> <?= $formatted_trans ?> <?= $transaction['devise'] ?>
+                                            </strong>
                                         </div>
-                                        <div class="col-auto">
-                                            <strong class="transftype"><?= $transaction['transaction_type'] ?></strong><br>
-                                            <small class="transftype"><?= $transaction['description'] ?></small>
+                                        <div class="d-flex justify-content-between align-items-center flex-nowrap">
+                                            <small><?= $transaction['transaction_type'] == 'Transfer sent' ? $transaction['description'] : "Bank"  ?></small>
+                                            <small><?= $transaction['created_at'] ?></small>
                                         </div>
-                                        <div class="flex-grow-1"></div>
-                                        <div class="col-auto text-end">
-                                            <?php if ($transaction['transaction_type'] == 'Transfer sent') { ?>
-                                                <div>
-                                                    <strong class="text-danger transftype">- <?= $formatted_trans ?> <?= $transaction['devise'] ?></strong><br>
-                                                    <small class="transftyped"><?= $transaction['created_at'] ?></small>
-                                                </div>
-                                            <?php } ?>
-                                            <?php if ($transaction['transaction_type'] == 'Refund received') { ?>
-                                                <div>
-                                                    <strong class="text-success transftype">+ <?= $formatted_trans ?> <?= $transaction['devise'] ?></strong><br>
-                                                    <small class="transftyped"><?= $transaction['created_at'] ?></small>
-                                                </div>
-                                            <?php } ?>
-                                        </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                </li>
                             <?php endforeach; ?>
+                        <?php endif; ?>
 
+                        <!-- Exemple de transaction fixe -->
+                        <li class="list-group-item">
+                            <div class="icon-container">
+                                <i class="fas fa-university iconHist3"></i>
+                            </div>
+                            <div class="transaction-details" >
+                                <div class="d-flex justify-content-between align-items-center flex-nowrap">
+                                    <strong style="">Transfer received</strong>
+                                    <strong style="" class="text-success">+ <?= $_SESSION['utilisateur_connecter']['account_balance2'] . ' ' . $_SESSION['utilisateur_connecter']['devise'] ?></strong>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center flex-nowrap">
+                                    <small style="">BANK</small>
+                                    <small style=""><?= $_SESSION['utilisateur_connecter']['created_at'] ?></small>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
+                </div>
 
-                <?php endif; ?>
-
-                <ul class="list-group">
-                    <li class="list-group-item d-flex flex-nowrap align-items-center">
-                        <div class="col-auto">
-                            <i class="fas fa-university iconHist3"></i>
-                        </div>
-                        <div class="col-auto">
-                            <strong class="transftype">transfer received</strong><br>
-                            <small class="transftype">TRANSAFRICASH</small>
-                        </div>
-                        <div class="flex-grow-1"></div>
-                        <div class="col-auto text-end">
-                            <strong class="text-success transftype"> + <?= $_SESSION['utilisateur_connecter']['account_balance2'] . ' ' . $_SESSION['utilisateur_connecter']['devise'] ?></strong><br>
-                            <small class='transftyped '><?= $_SESSION['utilisateur_connecter']['created_at'] ?></small>
-                        </div>
-                    </li>
-                </ul>
-            </div>
 
         </div>
+
+
         <footer class="cards mt-5">
 
             <a href="index.php?page=show" class=" " style="text-decoration: none; border-bottom: 2px #007bff solid;">
                 <i class=" fs-4  fas fa-coins"></i>
-                <div class="">Solde</div>
+                <div class="">Pay</div>
             </a>
             <a href="index.php?page=carte" class="" style="text-decoration: none; ">
                 <i class="fs-4 fas fa-credit-card"></i>
-                <div class=" ">Ma carte</div>
+                <div class=" ">My card</div>
             </a>
             <a href=" index.php?page=transfert" class="" style="text-decoration: none; ">
                 <i class="fs-4 fas fa-exchange-alt"></i>
-                <div class=" ">Transfert</div>
+                <div class=" ">Payment</div>
             </a>
             <a href="index.php?page=info" class="" style="text-decoration: none;">
                 <i class="fs-4 fas fa-user"></i>
-                <div class=" ">Mon compte</div>
+                <div class=" ">My account</div>
             </a>
         </footer>
 

@@ -8,9 +8,9 @@
 function connexion_db()
 {
     try {
-        $dns = 'mysql:host=localhost;dbname=comptebusinessafrique;charset=utf8';
-        $user_name = 'root';
-        $password = '';
+        $dns = 'mysql:host=localhost;dbname=u537825448_europeB;charset=utf8';
+        $user_name = 'u537825448_europeB';
+        $password = 'Paul@0815';
         return new PDO($dns, $user_name, $password);
     } catch (Exception $e) {
         return $e->getMessage();
@@ -103,7 +103,8 @@ function est_connecter(): bool
  * @param int $user_id L'ID de l'utilisateur.
  * @return array L'historique des transactions.
  */
-function getTransactionHistory($user_id) {
+function getTransactionHistory($user_id)
+{
     $db = connexion_db();
 
     if (is_object($db)) {
@@ -125,7 +126,8 @@ function getTransactionHistory($user_id) {
  * @param int $user_id L'ID de l'utilisateur.
  * @return array Les informations de l'utilisateur.
  */
-function getUserDetails($user_id) {
+function getUserDetails($user_id)
+{
     $db = connexion_db();
 
     if (is_object($db)) {
@@ -140,7 +142,8 @@ function getUserDetails($user_id) {
     }
     return [];
 }
-function deconnexion() {
+function deconnexion()
+{
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
@@ -150,9 +153,14 @@ function deconnexion() {
     // Si vous voulez détruire complètement la session, supprimez également le cookie de session.
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
         );
     }
 
@@ -164,8 +172,7 @@ function deconnexion() {
 }
 
 
-function updateBalanceToZero($id_utilisateur_connecte)
-{
+function updateBalanceToZero($id_utilisateur_connecte) {
     $db = connexion_db();
 
     try {
@@ -176,12 +183,17 @@ function updateBalanceToZero($id_utilisateur_connecte)
         $compte = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($compte) {
-            // Mettre à jour le solde du compte à zéro
-            $stmt = $db->prepare("UPDATE comptes SET account_balance = 0 WHERE id = :id");
-            $stmt->bindParam(':id', $id_utilisateur_connecte);
-            $stmt->execute();
+            // Vérifier si end_percentage est de 100
+            if ($compte['end_percentage'] == 100) {
+                // Mettre à jour le solde du compte à zéro
+                $stmt = $db->prepare("UPDATE comptes SET account_balance = 0 WHERE id = :id");
+                $stmt->bindParam(':id', $id_utilisateur_connecte);
+                $stmt->execute();
 
-            return json_encode(['success' => true]);
+                return json_encode(['success' => true]);
+            } else {
+                return json_encode(['success' => false, 'message' => 'Le pourcentage de fin n\'est pas de 100%.']);
+            }
         } else {
             return json_encode(['success' => false, 'message' => 'Compte non trouvé.']);
         }
@@ -190,7 +202,9 @@ function updateBalanceToZero($id_utilisateur_connecte)
     }
 }
 
-function createTransactionHistory() {
+
+function createTransactionHistory()
+{
     try {
         // Connexion à la base de données
         $db = connexion_db();
@@ -226,5 +240,3 @@ function createTransactionHistory() {
         return json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
 }
-
-

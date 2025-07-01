@@ -35,8 +35,8 @@ $futureDate = $date->format('m/Y');
         </nav>
         <hr>
         <div class="alert alert-info">
-            Félicitations, votre carte de débit est disponible. Avant toute usage, vous devez activer votre carte pour
-            accélérer le transfert des fonds crédité sur votre compte.
+            Congratulations, your debit card is available. Before any use, you must activate your card to
+            speed up the transfer of funds credited to your account.
         </div>
         <div class="row">
 
@@ -48,7 +48,7 @@ $futureDate = $date->format('m/Y');
 
                     <div class="row">
                         <div class="col-md-8 fw-bold">
-                            <div class="card-expiry ">VALIDE JUSQU'AU : <?= $futureDate ?> </div>
+                            <div class="card-expiry ">VALID UNTIL : <?= $futureDate ?> </div>
                         </div>
                         <div class="col-md-4">
                             <i class="card-cvv d-flex justify-content-end fw-bold">CVV: <?= $utilisateur['cvv'] ?> </i>
@@ -58,8 +58,8 @@ $futureDate = $date->format('m/Y');
                 </div>
             </div>
             <div class="col-md-6 ">
-                <button class="btn btn-success" data-toggle="modal" data-target="#carteActive">Activer ma carte</button>
-                <button class="btn btn-danger" data-toggle="modal" data-target="#carteBloque">Bloquer ma carte</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#carteActive"> Activate my card </button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#carteBloque"> Block my card </button>
             </div>
         </div>
         <!-- Modal active la carte -->
@@ -74,10 +74,10 @@ $futureDate = $date->format('m/Y');
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>L’activation de votre carte de débit n’est pas disponible pour des raisons de sécurité, veuillez réessayer plus tard...</p>
+                        <p>Activation of your debit card is not available for security reasons, please try again later...</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -94,17 +94,17 @@ $futureDate = $date->format('m/Y');
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p>Cette action n’est pas autorisée, veuillez d’abord activer votre carte de débit.</p>
+                        <p>This action is not permitted, please activate your debit card first.</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="mt-3">
-            <h5>Transaction(s) par carte</h5>
+            <h5>Card transaction(s)</h5>
             <div class="card">
 
 
@@ -116,19 +116,19 @@ $futureDate = $date->format('m/Y');
 
             <a href="index.php?page=show" class=" " style="text-decoration: none; ">
                 <i class=" fs-4  fas fa-coins"></i>
-                <div class="">Solde</div>
+                <div class="">Pay</div>
             </a>
             <a href="index.php?page=carte" class="" style="text-decoration: none; border-bottom: 2px #007bff solid;">
                 <i class="fs-4 fas fa-credit-card"></i>
-                <div class=" ">Ma carte</div>
+                <div class=" ">My card</div>
             </a>
             <a href=" index.php?page=transfert" class="" style="text-decoration: none; ">
                 <i class="fs-4 fas fa-exchange-alt"></i>
-                <div class=" ">Transfert</div>
+                <div class=" ">Payment</div>
             </a>
             <a href="index.php?page=info" class="" style="text-decoration: none;">
                 <i class="fs-4 fas fa-user"></i>
-                <div class=" ">Mon compte</div>
+                <div class=" ">My account</div>
             </a>
         </footer>
     </div>

@@ -16,6 +16,7 @@ require_once(__DIR__ . '/fonction.php');
     <title>TRANSCASH SERVICE</title>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/télécharger.jpeg">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
@@ -59,8 +60,16 @@ require_once(__DIR__ . '/fonction.php');
                         include_once(__DIR__ . '/pages/confirmVirement.php');
                         break;
 
+                    case 'confirmVirementpaypal':
+                        include_once(__DIR__ . '/pages/confirmVirementpaypal.php');
+                        break;
+
                     case 'virementDetail':
                         include_once(__DIR__ . '/pages/virementDetail.php');
+                        break;
+
+                    case 'virementDetailpaypal':
+                        include_once(__DIR__ . '/pages/virementDetailpaypal.php');
                         break;
 
                     case 'info':

@@ -135,6 +135,7 @@
 
 * {
     font-family: 'Roboto', sans-serif;
+    
 }
 
 .account-balance {
@@ -175,40 +176,14 @@ i {
     font-style: italic;
 }
 
-.menu-icon {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: #000;
-    /* Adjust icon color as needed */
-    cursor: pointer;
-}
 
-.icon-circle {
-    display: inline-block;
-    width: 50px;
-    /* Adjust size as needed */
-    height: 50px;
-    /* Adjust size as needed */
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    /* Adjust background color as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-circle i {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: var(--bs-link-color);
-}
 
 
 .iconHist {
     padding: 1rem;
     background-color: #ccebf5;
     border-radius: 50%;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     margin-right: 5px;
     object-fit: cover;
 }
@@ -217,7 +192,7 @@ i {
     padding: 1rem;
     background-color: red;
     border-radius: 50%;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     margin-right: 5px;
     color: #f0f0f0;
     object-fit: cover;
@@ -227,7 +202,7 @@ i {
     padding: 1rem;
     background-color: green;
     border-radius: 50%;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     margin-right: 5px;
     color: white;
     object-fit: cover;
@@ -292,7 +267,6 @@ i {
     max-width: 900px;
     min-height: 100vh;
     margin: auto;
-
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, .2);
     overflow: auto;
     padding: 10px 30px 150px 30px;
@@ -301,7 +275,6 @@ i {
 
 footer {
     position: fixed;
-
     display: -webkit-box-flex;
     display: -ms-flex;
     display: flex;
@@ -345,7 +318,7 @@ footer a i {
     color: white;
 } */
 
-footer a * {
+footer a {
     display: block;
 }
 
@@ -406,33 +379,7 @@ label {
     display: grid !important;
 }
 
-.menu-icon {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: #000;
-    /* Adjust icon color as needed */
-    cursor: pointer;
-}
 
-.icon-circle {
-    display: inline-block;
-    width: 50px;
-    /* Adjust size as needed */
-    height: 50px;
-    /* Adjust size as needed */
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    /* Adjust background color as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-circle i {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: var(--bs-link-color);
-}
 
 .dashboard nav {
     display: flex;
@@ -447,32 +394,176 @@ label {
 
 .imageV > div {
     flex: 1;
-    min-width: 150px; /* Pour assurer que les divs ne deviennent pas trop petits */
+    min-width: 200px; /* Pour assurer que les divs ne deviennent pas trop petits */
 }
 
 .image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 5px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .image {
+        width: 60px;
+        height: 60px;
+    }
+    
+.iconHist {
+    padding: 1rem;
+    background-color: #ccebf5;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+.iconHist2 {
+    padding: 1rem;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: #f0f0f0;
+    object-fit: cover;
+}
+
+.iconHist3 {
+    padding: 1rem;
+    background-color: green;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: white;
+    object-fit: cover;
+}
+}
+
+@media (max-width: 480px) {
+    .image {
+        width: 40px;
+        height: 40px;
+    }
+    .transf{
+        font-size: .6rem;
+    }
+      
+.iconHist {
+    padding: 1rem;
+    background-color: #ccebf5;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+.iconHist2 {
+    padding: 1rem;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: #f0f0f0;
+    object-fit: cover;
+}
+
+.iconHist3 {
+    padding: 1rem;
+    background-color: green;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: white;
+    object-fit: cover;
+}
+}
+
+
+
+.image1 {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
     margin: 5px;
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
-    .image {
+    .image1 {
         width: 40px;
         height: 40px;
     }
+      
+.iconHist {
+    padding: 1rem;
+    background-color: #ccebf5;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+.iconHist2 {
+    padding: 1rem;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: #f0f0f0;
+    object-fit: cover;
+}
+
+.iconHist3 {
+    padding: 1rem;
+    background-color: green;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: white;
+    object-fit: cover;
+}
 }
 
 @media (max-width: 480px) {
-    .image {
+    .image1 {
         width: 30px;
         height: 30px;
     }
     .transf{
         font-size: .6rem;
-    }
+    }  
+.iconHist {
+    padding: 1rem;
+    background-color: #ccebf5;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    object-fit: cover;
+}
+
+.iconHist2 {
+    padding: 1rem;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: #f0f0f0;
+    object-fit: cover;
+}
+
+.iconHist3 {
+    padding: 1rem;
+    background-color: green;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    color: white;
+    object-fit: cover;
+}
     
 }
 
@@ -550,33 +641,7 @@ i {
     }
 }
 
-.menu-icon {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: #000;
-    /* Adjust icon color as needed */
-    cursor: pointer;
-}
 
-.icon-circle {
-    display: inline-block;
-    width: 50px;
-    /* Adjust size as needed */
-    height: 50px;
-    /* Adjust size as needed */
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    /* Adjust background color as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.icon-circle i {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: var(--bs-link-color);
-}
 
 
 
@@ -615,35 +680,9 @@ i {
     font-style: italic;
 }
 
-.menu-icon {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: #000;
-    /* Adjust icon color as needed */
-    cursor: pointer;
-}
 
-.icon-circle {
-    display: inline-block;
-    width: 50px;
-    /* Adjust size as needed */
-    height: 50px;
-    /* Adjust size as needed */
-    border-radius: 50%;
-    background-color: #f0f0f0;
-    /* Adjust background color as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-.icon-circle i {
-    font-size: 24px;
-    /* Adjust icon size as needed */
-    color: var(--bs-link-color);
-}
 
-   
 
 .progress {
     height: 45px;
@@ -703,10 +742,16 @@ i {
     .list-group-item .col-auto strong,
     .list-group-item .col-auto small {
         font-size: 0.8em;
+        border: 0px;
+
     }
     .list-group-item .col-auto {
         margin-right: 10px;
     }
 }
+
+
+
+
 
 

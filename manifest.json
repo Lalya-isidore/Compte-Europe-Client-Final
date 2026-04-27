@@ -1,0 +1,23 @@
+{
+  "name": "Compte Europe",
+  "short_name": "CompteEurope",
+  "description": "Accédez à votre compte Compte Europe en toute sécurité.",
+  "start_url": "index.php",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4b59d9",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

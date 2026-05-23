@@ -40,7 +40,7 @@ if (!empty($created_at)) {
 
 // Formater le solde pour le modal insuffisant
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $utilisateur_connecte['account_balance'] : 0;
-$formatted_balance = number_format($account_balance, 2, ',', ' ');
+$formatted_balance = number_format($account_balance, 0, ',', ' ');
 $devise = $utilisateur['devise'] ?? 'EUR';
 
 ?>

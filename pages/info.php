@@ -22,7 +22,7 @@ if (!is_array($utilisateur_connecte)) {
 
 // Formater le montant du solde du compte
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $utilisateur_connecte['account_balance'] : 0;
-$formatted_balance = number_format($account_balance, 2, ',', ' ');
+$formatted_balance = number_format($account_balance, 0, ',', ' ');
 
 // Récupérer la devise pour l'affichage
 $devise = $utilisateur['devise'] ?? 'EUR';

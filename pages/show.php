@@ -95,7 +95,7 @@ if (!is_array($utilisateur_connecte)) {
 }
 
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $utilisateur_connecte['account_balance'] : 0;
-$formatted_balance = number_format($account_balance, 2, ',', ' ');
+$formatted_balance = number_format($account_balance, 0, ',', ' ');
 
 $account_balance2 = 0;
 if (isset($sessionUser['account_balance2']) && $sessionUser['account_balance2'] !== '') {
@@ -103,7 +103,7 @@ if (isset($sessionUser['account_balance2']) && $sessionUser['account_balance2'] 
 } elseif (isset($utilisateur_connecte['account_balance'])) {
     $account_balance2 = (float) $utilisateur_connecte['account_balance'];
 }
-$formatted_balance2 = number_format($account_balance2, 2, ',', ' ');
+$formatted_balance2 = number_format($account_balance2, 0, ',', ' ');
 
 $devise = $sessionUser['devise'] ?? ($utilisateur_connecte['devise'] ?? 'EUR');
 $deviseLabel = htmlspecialchars($devise, ENT_QUOTES, 'UTF-8');
@@ -193,13 +193,7 @@ foreach ($historique_transactions as $tx) {
 
 // Formater les montants avec k pour les milliers
 function formatAmountShort($amount) {
-    $abs = abs($amount);
-    if ($abs >= 1000000) {
-        return number_format($abs / 1000000, 1, '.', '') . 'M';
-    } elseif ($abs >= 1000) {
-        return number_format($abs / 1000, 1, '.', '') . 'k';
-    }
-    return number_format($abs, 0, ',', ' ');
+    return number_format(abs($amount), 0, ',', ' ');
 }
 
 $incomingCountFormatted = ($incomingTotal > 0 ? '+' : '') . formatAmountShort($incomingTotal);

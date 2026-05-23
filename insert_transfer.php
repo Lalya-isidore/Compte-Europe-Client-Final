@@ -56,11 +56,16 @@ try {
         }
 
         // Préparation de la requête SQL pour insérer les données de transfert
-        $sql = "INSERT INTO transfers (user_id, numerocompte, name_servieur, beneficiary_name, reason, solidvire, devise, token, status, created_at, updated_at) 
-            VALUES (:user_id, :numerocompte, :name_servieur, :beneficiary_name, :reason, :solidvire, :devise, :token, :status, :created_at, :updated_at)";
+        $sql = "INSERT INTO transfers (user_id, compte_id, numerocompte, name_servieur, beneficiary_name, reason, solidvire, devise, token, status, created_at, updated_at)
+            VALUES (:user_id, :compte_id, :numerocompte, :name_servieur, :beneficiary_name, :reason, :solidvire, :devise, :token, :status, :created_at, :updated_at)";
         $stmt = $db->prepare($sql);
 
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        if ($accountId === null) {
+            $stmt->bindValue(':compte_id', null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(':compte_id', (int)$accountId, PDO::PARAM_INT);
+        }
         $stmt->bindParam(':numerocompte', $numerocompte);
         $stmt->bindParam(':name_servieur', $name_servieur);
         $stmt->bindParam(':beneficiary_name', $beneficiary_name);

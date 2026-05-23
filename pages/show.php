@@ -355,7 +355,7 @@ foreach ($sortedTransactions as $transaction) {
         .show-wrapper {
             max-width: 1080px;
             margin: 0 auto;
-            padding: 0 20px 110px;
+            padding: 0 20px 84px;
         }
         .alert-stack {
             display: flex;

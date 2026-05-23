@@ -334,13 +334,19 @@ foreach ($sortedTransactions as $transaction) {
             --ui-font: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             --alert-font: 'Space Grotesk', var(--ui-font);
         }
-        body {
+        body, html {
             margin: 0;
+            min-height: 0 !important;
+            height: auto !important;
             font-family: var(--ui-font);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             color: #111827;
             background: #f5f7fb;
+        }
+        .container, .row {
+            min-height: 0 !important;
+            height: auto !important;
         }
         .dashboard nav {
             display: flex;

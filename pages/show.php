@@ -748,7 +748,7 @@ foreach ($sortedTransactions as $transaction) {
         .timeline-title {
             font-weight: 900;
             color: #111827; /* darker, but softer than pure black to match target */
-            font-size: 0.90rem;
+            font-size: calc(0.90rem - 5px);
             flex: 1;
             min-width: 0;
             overflow: hidden;
@@ -756,7 +756,7 @@ foreach ($sortedTransactions as $transaction) {
             white-space: nowrap;
         }
         .timeline-amount {
-            font-size: 1rem;
+            font-size: calc(1rem - 5px);
             font-weight: 900;
             white-space: nowrap;
             flex-shrink: 0;
@@ -767,7 +767,7 @@ foreach ($sortedTransactions as $transaction) {
         .timeline-amount.variant-refund { color: #16a34a; }
         .timeline-amount.variant-neutral { color: #374151; }
         .timeline-datetime {
-            font-size: 0.8rem;
+            font-size: calc(0.8rem - 5px);
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
@@ -788,7 +788,7 @@ foreach ($sortedTransactions as $transaction) {
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 0.82rem;
+            font-size: calc(0.82rem - 5px);
             color: #6b7280; /* lighter gray to match target */
         }
         /* allow bank/iban text to truncate with ellipsis when space is limited */
@@ -1146,18 +1146,18 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-title {
-                font-size: 0.85rem;
+                font-size: calc(0.85rem - 5px);
                 font-weight: 900 !important;
                 flex: 1;
             }
-            
+
             .timeline-amount {
-                font-size: 0.9rem;
+                font-size: calc(0.9rem - 5px);
                 font-weight: 900 !important;
             }
-            
+
             .timeline-datetime {
-                font-size: 0.75rem;
+                font-size: calc(0.75rem - 5px);
                 color: #9ca3af;
                 font-weight: 600 !important;
                 display: flex !important;
@@ -1285,7 +1285,7 @@ foreach ($sortedTransactions as $transaction) {
             
             /* Larger, more readable titles on small screens */
             .timeline-title {
-                font-size: 0.92rem;
+                font-size: calc(0.92rem - 5px);
                 line-height: 1.2;
                 font-weight: 900 !important;
                 color: #111827 !important;
@@ -1293,14 +1293,14 @@ foreach ($sortedTransactions as $transaction) {
             }
 
             .timeline-amount {
-                font-size: 1rem;
+                font-size: calc(1rem - 5px);
                 font-weight: 900 !important;
                 line-height: 1.1;
                 font-family: var(--ui-font);
             }
-            
+
             .timeline-datetime {
-                font-size: 0.82rem;
+                font-size: calc(0.82rem - 5px);
                 color: #9ca3af;
                 font-weight: 600 !important;
             }

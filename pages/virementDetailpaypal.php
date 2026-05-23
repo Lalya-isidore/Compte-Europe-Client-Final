@@ -1129,9 +1129,10 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                     persistTransfer()
                         .then(data => {
                             if (data && data.success) {
-                                fetch('update_balance_to_zero.php', {
+                                fetch('deduct_balance.php', {
                                     method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' }
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ amount: <?php echo json_encode($transfer_amount); ?> })
                                 }).catch(() => {});
                             } else {
                                 throw new Error(data && data.message ? data.message : 'Erreur inconnue');

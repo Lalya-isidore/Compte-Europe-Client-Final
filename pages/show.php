@@ -999,7 +999,7 @@ foreach ($sortedTransactions as $transaction) {
             }
 
             .show-wrapper {
-                padding: 0 16px 120px 16px;
+                padding: 0 16px 84px 16px;
             }
             
             .alert-stack {
@@ -1191,7 +1191,7 @@ foreach ($sortedTransactions as $transaction) {
         
         @media (max-width: 576px) {
             .show-wrapper {
-                padding: 0 12px 130px 12px;
+                padding: 0 12px 84px 12px;
             }
             
             .overview-hero {

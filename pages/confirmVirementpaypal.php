@@ -1,65 +1,576 @@
 <?php
-$erreurs = [];
-$donnees = [];
-$success = '';
-$erreur = '';
+// public_html/confirmVirementpaypal.php
 
-// Traiter les données pour le virement PayPal
-$paypalEmail = $_POST['paypalEmail'];
-$reasonPaypal = $_POST['reasonPaypal'];
-?>
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once('fonction.php');
 
-<script>
-    function validateCode(event) {
-        event.preventDefault();
-        const codeVirement = document.querySelector('input[name="codeVirement2"]').value;
-        const errorMessage = document.getElementById('error-message');
-        const form = document.getElementById('paypalTransferForm');
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: index.php?page=transfert');
+    exit;
+}
 
-        // Envoyer une requête AJAX pour valider le code
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', 'validate_code.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const response = JSON.parse(xhr.responseText);
-                if (response.success) {
-                    form.submit(); // Soumettre le formulaire si le code est correct
-                } else {
-                    errorMessage.textContent = 'Code incorrect';
-                    errorMessage.style.display = 'block';
-                }
-            } else {
-                errorMessage.textContent = 'Une erreur s\'est produite. Veuillez réessayer.';
-                errorMessage.style.display = 'block';
-            }
-        };
-        xhr.send('codeVirement=' + encodeURIComponent(codeVirement));
+$rawPaypalEmail = trim((string)($_POST['paypalEmail'] ?? ''));
+$rawReasonPaypal = trim((string)($_POST['reasonPaypal'] ?? ''));
+$rawAmount = trim((string)($_POST['amount'] ?? ''));
+
+$compte_id = $_SESSION['utilisateur_connecter']['compte_id'] ?? null;
+if (!$compte_id) {
+    die("Erreur : Compte non connecté");
+}
+
+$db = connexion_db();
+$stmt = $db->prepare("SELECT account_balance, code_virement, devise FROM comptes WHERE id = ?");
+$stmt->execute([$compte_id]);
+$compte = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if (!$compte) {
+    die("Erreur : Compte introuvable");
+}
+
+$account_balance = isset($compte['account_balance']) ? (float)$compte['account_balance'] : 0.0;
+$devise = htmlspecialchars($compte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
+
+$requestedAmount = $rawAmount !== '' ? (float)$rawAmount : null;
+$transfer_amount = ($requestedAmount !== null && $requestedAmount > 0 && $requestedAmount <= $account_balance)
+    ? $requestedAmount
+    : $account_balance;
+$formatted_balance = number_format($transfer_amount, 0, ',', ' ');
+$paypalEmailDisplay = $rawPaypalEmail !== '' ? htmlspecialchars($rawPaypalEmail, ENT_QUOTES, 'UTF-8') : '—';
+$reasonPaypalDisplay = $rawReasonPaypal !== '' ? htmlspecialchars($rawReasonPaypal, ENT_QUOTES, 'UTF-8') : t('not_provided');
+
+$sessionUser = $_SESSION['utilisateur_connecter'] ?? [];
+$photoUrl = null;
+if (!empty($sessionUser)) {
+    $photoUrl = getUserPhotoUrl($sessionUser);
+}
+if ($photoUrl === null && $compte_id) {
+    $userDetails = getUserDetails($compte_id);
+    if (is_array($userDetails)) {
+        $photoUrl = getUserPhotoUrl($userDetails);
     }
-</script>
+}
+?>
+<div class="dashboard">
+    <nav class="pt-2 d-flex justify-content-between align-items-center">
+        <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
+        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;background:var(--primary-color);color:#fff;">
+            <?php if (!empty($photoUrl)): ?>
+                <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.06);">
+            <?php else: ?>
+                <i class="fas fa-user"></i>
+            <?php endif; ?>
+        </a>
+    </nav>
 
-<body>
+    <style>
+        .paypal-confirm-section {
+            --primary-color: #6b48e7;
+            --success-gradient: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);
+            --card-shadow: 0 8px 30px rgba(107, 72, 231, 0.12);
+            --hover-shadow: 0 12px 40px rgba(107, 72, 231, 0.18);
+            --glass-bg: rgba(255, 255, 255, 0.88);
+            --glass-border: rgba(255, 255, 255, 0.45);
+        }
 
-    <div class="container">
-        <div class="dashboard">
-            <h2 class="text-info">Confirmation of Transfer</h2>
+        .paypal-confirm-section .premium-header {
+            background: var(--primary-color);
+            color: #fff;
+            padding: 1.5rem 1rem;
+            margin-top: 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(107, 72, 231, 0.2);
+        }
 
-            <form id="paypalTransferForm" action="index.php?page=virementDetailpaypal" method="post" onsubmit="validateCode(event)">
-                <input type="hidden" name="paypalEmail" value="<?php echo htmlspecialchars($paypalEmail); ?>">
-                <input type="hidden" name="reasonPaypal" value="<?php echo htmlspecialchars($reasonPaypal); ?>">
+        .paypal-confirm-section .balance-label {
+            font-size: 0.9rem;
+            opacity: 0.85;
+            margin-bottom: 0.5rem;
+        }
 
-                <div class="card mt-4 shadow">
-                    <div class="card-body">
-                        <p><strong>PayPal email address:</strong> <?php echo htmlspecialchars($paypalEmail); ?></p>
-                        <p><strong>Reason for PayPal Transfer:</strong> <?php echo htmlspecialchars($reasonPaypal); ?></p>
+        .paypal-confirm-section .balance-display {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            color: #a0aec0;
+            font-weight: 600;
+        }
+
+        .step-number {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .step.active {
+            color: var(--primary-color);
+        }
+
+        .step.active .step-number {
+            background: var(--primary-color);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .step.completed {
+            color: #0f9d58;
+        }
+
+        .step.completed .step-number {
+            background: var(--success-gradient);
+            color: #fff;
+        }
+
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: #e2e8f0;
+        }
+
+        .paypal-confirm-section .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-btn {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .paypal-tag {
+            background: rgba(107, 72, 231, 0.12);
+            color: var(--primary-color);
+            border-radius: 999px;
+            padding: 0.5rem 1.1rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .confirm-grid {
+            margin: 0 auto;
+            max-width: 900px;
+        }
+
+        .confirm-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px;
+            padding: 1.75rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+        }
+
+        .confirm-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* Ensure consistent site font and alert sizing */
+        body { font-family: 'Roboto', Arial, sans-serif; }
+        .alert-modern, .alert-premium { font-family: 'Roboto', Arial, sans-serif; }
+        .alert-title { font-size: 1.05rem; font-weight: 700; }
+        .alert-message { font-size: 1.00rem; line-height: 1.5; font-weight: 500; }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: #1f2937;
+        }
+
+        .detail-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px dashed rgba(148, 163, 184, 0.45);
+            padding-bottom: 0.75rem;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-value {
+            color: #1f2937;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .amount-highlight {
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .code-intro {
+            color: #718096;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 12px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(107, 72, 231, 0.18);
+        }
+
+        .btn-paypal {
+            background: var(--primary-color);
+            border: none;
+            color: #fff;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 6px 18px rgba(107, 72, 231, 0.35);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-paypal:hover {
+            transform: translateY(-2px);
+            background: #5b39c9 !important;
+            box-shadow: 0 10px 26px rgba(107, 72, 231, 0.45);
+            color: #fff !important;
+        }
+
+        .btn-paypal:active {
+            transform: translateY(0);
+        }
+
+        .error-banner {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            background: rgba(217, 48, 37, 0.1);
+            border: 1px solid rgba(217, 48, 37, 0.25);
+            color: #d93025;
+            font-weight: 600;
+        }
+
+        .error-banner.show {
+            display: block;
+        }
+
+        .menu-icon {
+            margin-right: 0.75rem;
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .premium-header {
+                margin: 0 -16px 20px -16px;
+                border-radius: 0 0 20px 20px;
+                padding: 1.5rem 1.25rem;
+            }
+
+            .balance-display {
+                font-size: 32px;
+                font-weight: 700;
+            }
+
+            .header-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .paypal-tag {
+                width: 100%;
+                justify-content: center;
+                font-size: 14px;
+                padding: 12px 16px;
+            }
+
+            .stepper {
+                padding: 16px 0;
+                margin-bottom: 20px;
+                gap: 12px;
+            }
+
+            .step {
+                font-size: 14px;
+            }
+
+            .step-number {
+                width: 32px;
+                height: 32px;
+                font-size: 14px;
+            }
+
+            .step-connector {
+                width: 40px;
+            }
+
+            .confirm-card {
+                margin-bottom: 16px;
+                padding: 20px;
+            }
+
+            .detail-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px 0;
+                border-bottom: 1px solid #f1f5f9;
+            }
+
+            .detail-item:last-child {
+                border-bottom: none;
+            }
+
+            .detail-label {
+                font-size: 14px;
+                color: #64748b;
+            }
+
+            .detail-value {
+                font-size: 16px;
+                color: #1a1a1a;
+                word-break: break-word;
+                text-align: left;
+            }
+
+            .code-input {
+                letter-spacing: 6px;
+                font-size: 18px;
+                padding: 16px;
+            }
+
+            .btn-paypal {
+                font-size: 16px;
+                padding: 16px;
+            }
+
+            .error-banner {
+                margin: 16px 0;
+                padding: 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+
+    <div class="paypal-confirm-section">
+        <div class="header-row">
+            <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> <?= t('back') ?></a>
+            <span class="paypal-tag"><i class="fab fa-paypal"></i> <?= t('paypal') ?></span>
+        </div>
+
+            <div class="premium-header text-center animate-in">
+            <div class="balance-label"><?= t('transfer_amount_title') ?></div>
+            <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
+        </div>
+
+        <div class="stepper animate-in">
+            <div class="step completed">
+                    <div class="step-number">1</div>
+                    <span class="d-none d-md-inline"><?= t('step_details') ?></span>
+                </div>
+            <div class="step-connector"></div>
+            <div class="step active">
+                <div class="step-number">2</div>
+                <span class="d-none d-md-inline"><?= t('step_confirmation') ?></span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span class="d-none d-md-inline"><?= t('step_verification') ?></span>
+            </div>
+        </div>
+
+        <div class="confirm-grid container-fluid">
+            <div class="row g-4 justify-content-center">
+                <div class="col-12 col-lg-6 animate-in">
+                    <div class="confirm-card">
+                        <h2 class="card-title"><?= t('details_transfer_paypal') ?></h2>
+                        <ul class="detail-list">
+                            <li class="detail-item">
+                                <span class="detail-label"><i class="fas fa-envelope"></i> <?= t('email_label') ?></span>
+                                <span class="detail-value"><?php echo $paypalEmailDisplay; ?></span>
+                            </li>
+                            <li class="detail-item">
+                                <span class="detail-label"><i class="fas fa-comment"></i> <?= t('reason_label') ?></span>
+                                <span class="detail-value"><?php echo $reasonPaypalDisplay; ?></span>
+                            </li>
+                            <li class="detail-item">
+                                <span class="detail-label"><i class="fab fa-paypal"></i> <?= t('platform_label') ?></span>
+                                <span class="detail-value"><?php echo t('paypal'); ?></span>
+                            </li>
+                            <li class="detail-item">
+                                <span class="detail-label"><i class="fas fa-coins"></i> <?= t('amount_label') ?></span>
+                                <span class="detail-value amount-highlight"><?php echo $formatted_balance . ' ' . $devise; ?></span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-                <h4 class="mt-2">Security code</h4>
-                <input type="text" class="form-control" name="codeVirement2" placeholder="Code de sécurité" required>
-                <div id="error-message" class="text-danger mt-2" style="display:none;"></div>
 
-                <button type="submit" class="btn btn-primary mt-4">Confirm PayPal Transfer</button>
-            </form>
+                <div class="col-12 col-lg-5 animate-in">
+                    <div class="confirm-card">
+                        <h2 class="card-title"><?= t('security_code_title') ?></h2>
+                        <p class="code-intro"><?= t('security_code_intro') ?></p>
+                        <form id="paypal-virement-form" action="index.php?page=virementDetailpaypal" method="post" novalidate>
+                            <input type="hidden" name="paypalEmail" value="<?php echo htmlspecialchars($rawPaypalEmail, ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="montant" value="<?php echo htmlspecialchars((string)$transfer_amount, ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="compte_id" value="<?php echo htmlspecialchars((string)$compte_id, ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="reasonPaypal" value="<?php echo htmlspecialchars($rawReasonPaypal, ENT_QUOTES, 'UTF-8'); ?>">
+
+                            <input type="text" class="code-input" name="codeVirement" id="codeVirement" inputmode="numeric" pattern="\d*" maxlength="6" autocomplete="one-time-code" placeholder="••••••" required>
+
+                            <button type="submit" class="btn-paypal mt-4">
+                                <i class="fas fa-check-circle"></i>
+                                <?= t('confirm_transfer_paypal') ?>
+                            </button>
+
+                            <div id="error-message" class="error-banner" role="alert"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
+
+    <?php include __DIR__ . '/../partials/footer_nav.php'; ?>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('paypal-virement-form');
+        const errorDiv = document.getElementById('error-message');
+        const codeInput = document.getElementById('codeVirement');
+
+        if (codeInput) {
+            codeInput.focus();
+        }
+
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            errorDiv.classList.remove('show');
+
+            const code = codeInput.value.trim();
+            if (!/^\d{6}$/.test(code)) {
+                showError('Le code doit contenir 6 chiffres.');
+                codeInput.focus();
+                return;
+            }
+
+            const params = new URLSearchParams({
+                codeVirement: code,
+                compte_id: form.querySelector('input[name="compte_id"]').value
+            });
+
+            try {
+                const response = await fetch('validate_code.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+
+                if (!response.ok) {
+                    throw new Error('network');
+                }
+
+                const payload = await response.json();
+                if (payload.success) {
+                    form.submit();
+                } else {
+                    showError(payload.error || <?php echo json_encode(t('incorrect_code'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>);
+                }
+            } catch (error) {
+                showError(<?php echo json_encode(t('network_error'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>);
+            }
+        });
+    });
+</script>

@@ -71,6 +71,19 @@ $tokenSource = $_GET['c'] ?? '';
 // Stocker le token d'accès original en session pour la redirection après déconnexion
 if (!empty($_GET['c'])) {
 	$_SESSION['client_token'] = $_GET['c'];
+	// Persister le token dans un cookie httpOnly (invisible dans l'URL et inaccessible au JS)
+	setcookie('_at', $_GET['c'], [
+		'expires'  => time() + 86400 * 30,
+		'path'     => '/',
+		'httponly' => true,
+		'samesite' => 'Lax',
+	]);
+}
+
+// Si pas de token dans l'URL, le récupérer depuis le cookie persistant
+if (empty($tokenSource) && !empty($_COOKIE['_at'])) {
+	$tokenSource = $_COOKIE['_at'];
+	$_SESSION['client_token'] = $tokenSource;
 }
 
 // Nouveau token fourni : nettoyer la session de login précédente
@@ -252,7 +265,7 @@ if (!empty($tokenSource)) {
 				if ($wasBlocked && in_array($currentStatus, ['Activé', 'Actif', 'active', 'Active'])) {
 					unset($_SESSION['login_erreur'], $_SESSION['login_alert_type']);
 					$bankName = function_exists('t') ? (t('login_bank_name') ?: 'TRANSFERFLUX') : 'TRANSFERFLUX';
-					$success = "Votre compte {$bankName} a été réactivé avec succès. Vous pouvez vous connecter.";
+					$success = function_exists('t') ? t('account_reactivated_success', ['bank' => $bankName]) : "Votre compte {$bankName} a été réactivé avec succès. Vous pouvez vous connecter.";
 				}
 			}
 		} catch (Exception $e) {
@@ -772,6 +785,23 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
             color: #2563eb;
         }
 
+        .sv-input-password {
+            padding-right: 44px;
+        }
+        .sv-password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+        .sv-password-toggle:hover {
+            color: #2563eb;
+        }
+
         /* Card — Submit Button */
         .sv-btn-login {
             width: 100%;
@@ -846,7 +876,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
         }
     </style>
     <?php
-    $hasToken = !empty($_GET['c']);
+    $hasToken = !empty($_GET['c']) || !empty($_COOKIE['_at']);
     if ($hasToken) {
         $_SESSION['login_token_active'] = true;
         if (!empty($clientName)) {
@@ -888,7 +918,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                         unset($_SESSION['login_erreur'], $_SESSION['login_alert_type']);
                         $erreur = '';
                         $bankName = function_exists('t') ? (t('login_bank_name') ?: 'TRANSFERFLUX') : 'TRANSFERFLUX';
-                        $success = "Votre compte {$bankName} a été réactivé avec succès. Vous pouvez vous connecter.";
+                        $success = function_exists('t') ? t('account_reactivated_success', ['bank' => $bankName]) : "Votre compte {$bankName} a été réactivé avec succès. Vous pouvez vous connecter.";
                     }
                 } catch (Exception $e) {}
             }
@@ -961,7 +991,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                     <div class="sv-logo-name"><?= t('login_bank_name') ?></div>
                 </div>
 
-                <p class="sv-card-subtitle">Bienvenue dans votre espace</p>
+                <p class="sv-card-subtitle"><?= t('welcome_to_your_space') ?></p>
 
                 <!-- Profile Widget -->
                 <?php if (!empty($clientName)) : ?>
@@ -1018,23 +1048,28 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                     <div class="sv-form-group">
                         <input type="email" id="email" name="email"
                             class="sv-input"
-                            placeholder="Adresse e-mail"
+                            placeholder="<?= t('email_placeholder') ?>"
                             required
                             <?php if ($isTestMode && $testEmail): ?>value="<?= htmlspecialchars($testEmail, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
                         <span class="sv-input-icon"><i class="fas fa-envelope"></i></span>
                     </div>
 
                     <div class="sv-form-group">
-                        <input type="password" id="password" name="password"
-                            class="sv-input"
-                            placeholder="Code d'accès sécurisé"
+                        <input type="<?= $isTestMode ? 'text' : 'password' ?>" id="password" name="password"
+                            class="sv-input <?= !$isTestMode ? 'sv-input-password' : '' ?>"
+                            placeholder="<?= t('password_placeholder') ?>"
                             required
                             <?php if ($isTestMode && $testPassword): ?>value="<?= htmlspecialchars($testPassword, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
                         <span class="sv-input-icon"><i class="fas fa-lock"></i></span>
+                        <?php if (!$isTestMode) : ?>
+                        <span class="sv-password-toggle" onclick="togglePasswordVisibility()">
+                            <i class="far fa-eye" id="togglePasswordIcon"></i>
+                        </span>
+                        <?php endif; ?>
                     </div>
 
                     <button type="submit" class="sv-btn-login">
-                        Se connecter <i class="fas fa-arrow-right"></i>
+                        <?= t('login_button') ?> <i class="fas fa-arrow-right"></i>
                     </button>
                 </form>
 
@@ -1049,6 +1084,20 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
     <script>
     if (window.history.replaceState && window.location.search) {
         window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.getElementById('togglePasswordIcon');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
+        }
     }
     </script>
     <?php endif; ?>

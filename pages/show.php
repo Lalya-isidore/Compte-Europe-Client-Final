@@ -336,17 +336,19 @@ foreach ($sortedTransactions as $transaction) {
         }
         body, html {
             margin: 0;
-            min-height: 0 !important;
-            height: auto !important;
             font-family: var(--ui-font);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             color: #111827;
             background: #f5f7fb;
         }
-        .container, .row {
-            min-height: 0 !important;
+        /* Spécificité élevée pour battre Bootstrap min-vh-100 (0,1,0) et d-flex (0,1,0) */
+        html body.min-vh-100,
+        html body.d-flex,
+        html body {
+            min-height: auto !important;
             height: auto !important;
+            display: block !important;
         }
         .dashboard nav {
             display: flex;
@@ -2092,6 +2094,11 @@ foreach ($sortedTransactions as $transaction) {
             panel.style.display = 'none';
         }
     }
+    </script>
+    <script>
+        document.body.style.setProperty('min-height', 'auto', 'important');
+        document.body.style.setProperty('height', 'auto', 'important');
+        document.body.style.setProperty('display', 'block', 'important');
     </script>
 </body>
 </html>

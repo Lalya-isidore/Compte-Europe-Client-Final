@@ -178,14 +178,13 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
         line-height: 1.4;
     }
 
-    .form-floating label {
-        font-size: 0.85rem;
+    .tf-input-wrap input,
+    .tf-input-wrap textarea {
+        font-size: 0.9rem;
+        padding: 12px 8px 12px 4px;
     }
-
-    .form-floating input,
-    .form-floating textarea {
-        font-size: 0.95rem;
-        padding: 0.9rem 0.75rem;
+    .tf-input-icon {
+        padding: 12px 8px 12px 14px;
     }
 
     /* Titre principal plus petit */
@@ -263,8 +262,8 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
         height: 50px;
     }
 
-    .form-floating label {
-        font-size: 0.8rem;
+    .tf-input-icon {
+        font-size: 0.85rem;
     }
 
     .step-connector {
@@ -465,68 +464,54 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
 }
 
 
-/* Floating Labels */
-.form-floating {
-    position: relative;
-    /* espacement compact entre les champs (exemple) */
-    margin-bottom: 0.6rem;
-}
-
-.form-floating input,
-.form-floating textarea {
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    box-shadow: none;
-    /* Espace en haut pour la pastille : augmenter padding-top pour éviter tout recouvrement */
-    padding: 2.2rem 0.75rem 0.45rem 0.75rem;
-    height: auto;
-    transition: all 0.18s ease;
-    color: #1a202c;
-    font-weight: 500;
-}
-
-.form-floating input:focus,
-.form-floating textarea:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(107, 72, 231, 0.1);
-}
-
-.form-floating label {
-    /* Pastille compacte en haut à gauche similaire à l'exemple */
-    position: absolute;
-    /* placer la pastille définitivement au-dessus du champ pour ne pas recouvrir le texte */
-    top: -18px;
-    left: 12px;
-    padding: 4px 8px;
-    font-size: 12px;
-    color: #718096;
-    background: transparent; /* make label pill transparent */
-    border-radius: 4px;
-    box-shadow: none;
-    transition: all 0.12s ease;
-    pointer-events: none;
-    display: inline-flex;
+/* Input fields with icon */
+.tf-input-wrap {
+    display: flex;
     align-items: center;
-    gap: 6px;
-    width: auto;
-    max-width: calc(100% - 1rem);
-    line-height: 1;
-    z-index: 50;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-
-.form-floating input:focus ~ label,
-.form-floating input:not(:placeholder-shown) ~ label,
-.form-floating textarea:focus ~ label,
-.form-floating textarea:not(:placeholder-shown) ~ label {
-    /* Légère translation vers le haut quand flottant, garder la pastille visible */
-    /* garder la pastille juste au-dessus lorsque flottante */
-    transform: translateY(-18px) scale(0.96);
-    color: var(--primary-color);
+.tf-input-wrap:focus-within {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(107, 72, 231, 0.08);
+}
+.tf-input-icon {
+    padding: 14px 10px 14px 16px;
+    color: #9ca3af;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+}
+.tf-input-wrap input,
+.tf-input-wrap textarea {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 14px 8px 14px 4px;
+    font-size: 0.9rem;
+    color: #374151;
     background: transparent;
-    padding: 3px 8px;
-    line-height: 1;
-    border-radius: 4px;
-    z-index: 60;
+    min-width: 0;
+}
+.tf-input-wrap input::placeholder,
+.tf-input-wrap textarea::placeholder {
+    color: #9ca3af;
+}
+.tf-error-icon {
+    display: none;
+    padding: 14px 14px 14px 4px;
+    color: #e53e3e;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+form.was-submitted .tf-input-wrap:has(input:invalid) {
+    border-color: #e53e3e;
+}
+form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
+    display: block;
 }
 
 /* Bouton Premium */
@@ -751,7 +736,7 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
     </div>
 
     <!-- Formulaire Virement Bancaire -->
-    <form id="bankTransferForm" action="index.php?page=confirmVirement&method=bank" method="post" style="display: none; margin-top: -0.5rem;" class="animate-in">
+    <form id="bankTransferForm" action="index.php?page=confirmVirement&method=bank" method="post" style="display: none; margin-top: -0.5rem;" class="animate-in" novalidate>
         
         <div class="alert-modern">
             <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
@@ -761,39 +746,44 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
             </div>
         </div>
 
-        <div class="row">
+        <div class="row g-2 mb-1">
             <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="iban" name="iban" placeholder="<?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?>" required>
-                    <label for="iban"><i class="fas fa-hashtag"></i> <?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-hashtag"></i></span>
+                    <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?>" required>
-                    <label for="bic"><i class="fas fa-code"></i> <?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-code"></i></span>
+                    <input type="text" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
         </div>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <label for="bank_name"><i class="fas fa-building"></i> <?= htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8') ?></label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-university"></i></span>
+            <input type="text" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8') ?>" required>
+            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
         </div>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_name'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <label for="beneficiary_name"><i class="fas fa-user"></i> <?= htmlspecialchars(t('beneficiary_name'), ENT_QUOTES, 'UTF-8') ?></label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-user"></i></span>
+            <input type="text" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_name'), ENT_QUOTES, 'UTF-8') ?>" required>
+            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
         </div>
 
-        <div class="form-floating">
-            <input type="number" class="form-control" id="amount" name="amount" placeholder="<?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
-            <label for="amount"><i class="fas fa-coins"></i> <?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> (max : <?= number_format($account_balance, 0, ',', ' ') ?> <?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?>)</label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
+            <input type="number" id="amount" name="amount" placeholder="<?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> (max : <?= number_format($account_balance, 0, ',', ' ') ?> <?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?>)" min="1" step="1" max="<?= (int)$account_balance ?>" required>
+            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
         </div>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="reason" name="reason" placeholder="<?= htmlspecialchars(t('reason_label'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <label for="reason"><i class="fas fa-comment"></i> <?= htmlspecialchars(t('reason'), ENT_QUOTES, 'UTF-8') ?></label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
+            <input type="text" id="reason" name="reason" placeholder="<?= htmlspecialchars(t('reason_label'), ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <button type="submit" class="btn btn-premium mt-4" id="bankSubmitBtn">
@@ -802,7 +792,7 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
     </form>
 
     <!-- Formulaire PayPal -->
-    <form id="paypalTransferForm" action="index.php?page=confirmVirementpaypal&method=paypal" method="post" style="display: none; margin-top: -0.5rem;" class="animate-in">
+    <form id="paypalTransferForm" action="index.php?page=confirmVirementpaypal&method=paypal" method="post" style="display: none; margin-top: -0.5rem;" class="animate-in" novalidate>
         
         <div class="alert-modern">
             <i class="fab fa-paypal" style="color: #003087;"></i>
@@ -812,19 +802,21 @@ $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise p
             </div>
         </div>
 
-        <div class="form-floating">
-            <input type="email" class="form-control" id="paypalEmail" name="paypalEmail" placeholder="<?= htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <label for="paypalEmail"><i class="fas fa-envelope"></i> <?= htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8') ?></label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-envelope"></i></span>
+            <input type="email" id="paypalEmail" name="paypalEmail" placeholder="<?= htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8') ?>" required>
+            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
         </div>
 
-        <div class="form-floating">
-            <input type="number" class="form-control" id="amountPaypal" name="amount" placeholder="<?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
-            <label for="amountPaypal"><i class="fas fa-coins"></i> <?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> (max : <?= number_format($account_balance, 0, ',', ' ') ?> <?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?>)</label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
+            <input type="number" id="amountPaypal" name="amount" placeholder="<?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> (max : <?= number_format($account_balance, 0, ',', ' ') ?> <?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?>)" min="1" step="1" max="<?= (int)$account_balance ?>" required>
+            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
         </div>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="reasonPaypal" name="reasonPaypal" placeholder="<?= htmlspecialchars(t('reason_label'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <label for="reasonPaypal"><i class="fas fa-comment"></i> <?= htmlspecialchars(t('reason'), ENT_QUOTES, 'UTF-8') ?></label>
+        <div class="tf-input-wrap">
+            <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
+            <input type="text" id="reasonPaypal" name="reasonPaypal" placeholder="<?= htmlspecialchars(t('reason_label'), ENT_QUOTES, 'UTF-8') ?>">
         </div>
 
         <button type="submit" class="btn btn-premium mt-4" id="paypalSubmitBtn">
@@ -988,93 +980,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 paypalTransferForm.style.display = 'block';
             });
 
-            // Écouteurs d'événements pour la soumission des formulaires
             bankTransferForm.addEventListener('submit', function(event) {
-                if (!validateBankTransferForm()) {
+                bankTransferForm.classList.add('was-submitted');
+                if (!bankTransferForm.checkValidity()) {
                     event.preventDefault();
                 }
             });
 
             paypalTransferForm.addEventListener('submit', function(event) {
-                if (!validatePaypalTransferForm()) {
+                paypalTransferForm.classList.add('was-submitted');
+                if (!paypalTransferForm.checkValidity()) {
                     event.preventDefault();
                 }
             });
         });
 
-        function validateBankTransferForm() {
-            var iban = document.getElementById('iban');
-            var bic = document.getElementById('bic');
-            var bank_name = document.getElementById('bank_name');
-            var beneficiary_name = document.getElementById('beneficiary_name');
-            var reason = document.getElementById('reason');
-
-            var ibanError = document.getElementById('iban-error');
-            var bicError = document.getElementById('bic-error');
-            var bankNameError = document.getElementById('bank-name-error');
-            var beneficiaryNameError = document.getElementById('beneficiary-name-error');
-            var reasonError = document.getElementById('reason-error');
-
-            ibanError.textContent = '';
-            bicError.textContent = '';
-            bankNameError.textContent = '';
-            beneficiaryNameError.textContent = '';
-            reasonError.textContent = '';
-
-            var isValid = true;
-
-            if (iban.value.trim() === '') {
-                ibanError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            if (bic.value.trim() === '') {
-                bicError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            if (bank_name.value.trim() === '') {
-                bankNameError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            if (beneficiary_name.value.trim() === '') {
-                beneficiaryNameError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            if (reason.value.trim() === '') {
-                reasonError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        function validatePaypalTransferForm() {
-            var paypalEmail = document.getElementById('paypalEmail');
-            var reasonPaypal = document.getElementById('reasonPaypal');
-
-            var paypalEmailError = document.getElementById('paypal-email-error');
-            var reasonPaypalError = document.getElementById('reason-paypal-error');
-
-            paypalEmailError.textContent = '';
-            reasonPaypalError.textContent = '';
-
-            var isValid = true;
-
-            if (paypalEmail.value.trim() === '') {
-                paypalEmailError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            if (reasonPaypal.value.trim() === '') {
-                reasonPaypalError.textContent = <?= json_encode(t('field_required')) ?>;
-                isValid = false;
-            }
-
-            return isValid;
-        }
     </script>
 </body>
 

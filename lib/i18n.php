@@ -215,6 +215,14 @@ function apply_i18n_fallbacks(array $translations): array {
         'field_required',
         'account_exam_message',
         'account_blocked_message',
+        'virement_info_title',
+        'iban_placeholder',
+        'bic_placeholder',
+        'bank_name_placeholder',
+        'beneficiary_placeholder',
+        'amount_placeholder',
+        'reason_placeholder',
+        'required_fields_note',
     );
     $allFile = @realpath(__DIR__ . '/../lang/all.php');
     $enDefaults = [];
@@ -239,6 +247,14 @@ function apply_i18n_fallbacks(array $translations): array {
                     case 'field_required': $translations[$k] = 'This field is required.'; break;
                     case 'account_exam_message': $translations[$k] = 'Your {bank} account is under review. Please wait or contact support.'; break;
                     case 'account_blocked_message': $translations[$k] = 'Access to your {bank} account has been temporarily suspended. Please contact support.'; break;
+                    case 'virement_info_title': $translations[$k] = 'Transfer information'; break;
+                    case 'iban_placeholder': $translations[$k] = 'Enter the IBAN or account number'; break;
+                    case 'bic_placeholder': $translations[$k] = 'Enter the BIC or SWIFT code'; break;
+                    case 'bank_name_placeholder': $translations[$k] = 'Enter the bank name'; break;
+                    case 'beneficiary_placeholder': $translations[$k] = 'Enter the beneficiary name'; break;
+                    case 'amount_placeholder': $translations[$k] = 'Enter the amount'; break;
+                    case 'reason_placeholder': $translations[$k] = 'Indicate the reason for the transaction'; break;
+                    case 'required_fields_note': $translations[$k] = 'All fields marked with * are required.'; break;
                     default: $translations[$k] = $k; break;
                 }
             }

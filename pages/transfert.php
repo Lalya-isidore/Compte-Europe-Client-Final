@@ -541,6 +541,71 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
     transform: none;
 }
 
+/* Transfer form section card */
+.vir-section-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8e8f4;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 10px rgba(107, 72, 231, 0.06);
+}
+.vir-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+}
+.vir-section-header i {
+    font-size: 1.35rem;
+    color: var(--primary-color);
+}
+.vir-section-header h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a202c;
+}
+.vir-field {
+    margin-bottom: 0.1rem;
+}
+.vir-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.3rem;
+}
+.vir-required {
+    color: var(--primary-color);
+}
+.vir-max-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    background: #f7f8fc;
+    border-left: 1px solid #e2e8f0;
+    color: #4a5568;
+    font-size: 0.78rem;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+    height: 100%;
+}
+.vir-required-note {
+    font-size: 0.8rem;
+    color: #718096;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.vir-required-note i {
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
 /* Alert Box */
 .alert-modern {
     background: rgba(255, 251, 240, 0.9);
@@ -738,52 +803,72 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
     <!-- Formulaire Virement Bancaire -->
     <form id="bankTransferForm" action="index.php?page=confirmVirement&method=bank" method="post" style="display: none; margin-top: -0.5rem;" class="animate-in" novalidate>
         
-        <div class="alert-modern">
-            <i class="fas fa-info-circle" style="color: var(--primary-color);"></i>
-            <div>
-                <strong><?= htmlspecialchars(t('info_title'), ENT_QUOTES, 'UTF-8') ?></strong><br>
-                <?= htmlspecialchars(t('processing_time_bank'), ENT_QUOTES, 'UTF-8') ?> <span class="badge bg-success"><?= htmlspecialchars(t('free_label'), ENT_QUOTES, 'UTF-8') ?></span>
+        <div class="vir-section-card">
+            <div class="vir-section-header">
+                <i class="fas fa-university"></i>
+                <h3><?= htmlspecialchars(t('virement_info_title'), ENT_QUOTES, 'UTF-8') ?></h3>
             </div>
-        </div>
 
-        <div class="row g-2 mb-1">
-            <div class="col-md-6">
+            <div class="row g-2 mb-0">
+                <div class="col-md-6">
+                    <div class="vir-field">
+                        <label class="vir-label"><?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
+                        <div class="tf-input-wrap">
+                            <span class="tf-input-icon"><i class="fas fa-hashtag"></i></span>
+                            <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars(t('iban_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
+                            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="vir-field">
+                        <label class="vir-label"><?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
+                        <div class="tf-input-wrap">
+                            <span class="tf-input-icon"><i class="fas fa-code"></i></span>
+                            <input type="text" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
+                            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
                 <div class="tf-input-wrap">
-                    <span class="tf-input-icon"><i class="fas fa-hashtag"></i></span>
-                    <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    <span class="tf-input-icon"><i class="fas fa-university"></i></span>
+                    <input type="text" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
-            <div class="col-md-6">
+
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('beneficiary_name'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
                 <div class="tf-input-wrap">
-                    <span class="tf-input-icon"><i class="fas fa-code"></i></span>
-                    <input type="text" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    <span class="tf-input-icon"><i class="fas fa-user"></i></span>
+                    <input type="text" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
-        </div>
 
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-university"></i></span>
-            <input type="text" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
-        </div>
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
+                    <input type="number" id="amount" name="amount" placeholder="<?= htmlspecialchars(t('amount_placeholder'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
+                    <span class="vir-max-badge">Max&nbsp;: <?= number_format($account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+            </div>
 
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-user"></i></span>
-            <input type="text" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_name'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
-        </div>
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('reason'), ENT_QUOTES, 'UTF-8') ?></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
+                    <input type="text" id="reason" name="reason" placeholder="<?= htmlspecialchars(t('reason_placeholder'), ENT_QUOTES, 'UTF-8') ?>">
+                </div>
+            </div>
 
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
-            <input type="number" id="amount" name="amount" placeholder="<?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> (max : <?= number_format($account_balance, 0, ',', ' ') ?> <?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?>)" min="1" step="1" max="<?= (int)$account_balance ?>" required>
-            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
-        </div>
-
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
-            <input type="text" id="reason" name="reason" placeholder="<?= htmlspecialchars(t('reason_label'), ENT_QUOTES, 'UTF-8') ?>">
+            <p class="vir-required-note"><i class="fas fa-info-circle"></i> <?= htmlspecialchars(t('required_fields_note'), ENT_QUOTES, 'UTF-8') ?></p>
         </div>
 
         <button type="submit" class="btn btn-premium mt-4" id="bankSubmitBtn">

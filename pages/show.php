@@ -1146,18 +1146,18 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-title {
-                font-size: calc(0.85rem - 5px);
+                font-size: calc(0.85rem - 15px);
                 font-weight: 900 !important;
                 flex: 1;
             }
 
             .timeline-amount {
-                font-size: calc(0.9rem - 5px);
+                font-size: calc(0.9rem - 15px);
                 font-weight: 900 !important;
             }
 
             .timeline-datetime {
-                font-size: calc(0.75rem - 5px);
+                font-size: calc(0.75rem - 15px);
                 color: #9ca3af;
                 font-weight: 600 !important;
                 display: flex !important;
@@ -1167,7 +1167,7 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-meta {
-                font-size: 0.75rem;
+                font-size: calc(0.75rem - 10px);
                 color: #9ca3af;
                 gap: 4px;
                 font-weight: 600 !important;
@@ -1285,7 +1285,7 @@ foreach ($sortedTransactions as $transaction) {
             
             /* Larger, more readable titles on small screens */
             .timeline-title {
-                font-size: calc(0.92rem - 5px);
+                font-size: calc(0.92rem - 15px);
                 line-height: 1.2;
                 font-weight: 900 !important;
                 color: #111827 !important;
@@ -1293,20 +1293,20 @@ foreach ($sortedTransactions as $transaction) {
             }
 
             .timeline-amount {
-                font-size: calc(1rem - 5px);
+                font-size: calc(1rem - 15px);
                 font-weight: 900 !important;
                 line-height: 1.1;
                 font-family: var(--ui-font);
             }
 
             .timeline-datetime {
-                font-size: calc(0.82rem - 5px);
+                font-size: calc(0.82rem - 15px);
                 color: #9ca3af;
                 font-weight: 600 !important;
             }
             
             .timeline-meta {
-                font-size: 0.85rem;
+                font-size: calc(0.85rem - 10px);
                 color: #9ca3af;
                 line-height: 1.15;
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;

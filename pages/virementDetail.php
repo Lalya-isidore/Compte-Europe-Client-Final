@@ -1183,16 +1183,13 @@ if ($photoUrl === null && $accountId) {
             updateVisualProgress(width);
 
             if (fraction >= 1) {
-                updateVisualProgress(targetDisplay);
-                requestFrame(function() {
-                    if (targetDisplay >= 100) {
-                        finalizeProgressSuccess();
-                    } else {
-                        progressComplete = true;
-                        cancelProgressAnimation();
-                        handleFailure();
-                    }
-                });
+                if (targetDisplay >= 100) {
+                    finalizeProgressSuccess();
+                } else {
+                    progressComplete = true;
+                    cancelProgressAnimation();
+                    handleFailure();
+                }
                 return;
             }
 

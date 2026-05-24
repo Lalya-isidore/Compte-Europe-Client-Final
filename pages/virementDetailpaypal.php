@@ -805,7 +805,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                     <div class="col-12 col-lg-7 animate-in">
                         <div class="summary-card">
                             <h2><i class="fab fa-paypal text-primary me-2"></i><span id="card-result-title"><?= htmlspecialchars(t('transfer_in_progress'), ENT_QUOTES, 'UTF-8') ?></span></h2>
-                                <p class="mb-4 text-secondary" id="card-result-message" style="visibility:hidden;"></p>
                             <div class="summary-grid">
                                 <div class="summary-item">
                                     <div class="summary-label"><?php echo htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8'); ?></div>
@@ -991,7 +990,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             const successMessageText = <?php echo json_encode($success_message_text_raw, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
             const failureMessageText = <?php echo json_encode($failure_message !== '' ? $failure_message : t('transfer_failed'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
             const cardResultTitle = document.getElementById('card-result-title');
-            const cardResultMessage = document.getElementById('card-result-message');
 
             const startPercentage = parseInt('<?php echo (int)($utilisateur_connecte['start_percentage'] ?? 0); ?>', 10);
             const endPercentage = parseInt('<?php echo (int)($utilisateur_connecte['end_percentage'] ?? 100); ?>', 10);
@@ -1043,7 +1041,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 stopProgressSpinner();
                 showModalById('successModal');
                 if (cardResultTitle) cardResultTitle.textContent = successMessageText;
-                if (cardResultMessage) { cardResultMessage.textContent = successMessageText; cardResultMessage.style.visibility = 'visible'; }
                 if (statusMessage) {
                     statusMessage.textContent = successMessageText;
                     statusMessage.classList.remove('text-secondary');
@@ -1194,7 +1191,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 closeModalById('successModal');
                 showModalById(insufficient ? 'insuffitModal' : 'failureModal');
                 if (cardResultTitle) cardResultTitle.textContent = insufficient ? (window.__i18n.insufficient_balance_message || 'Insufficient balance') : failureMessageText;
-                if (cardResultMessage) { cardResultMessage.textContent = insufficient ? (window.__i18n.insufficient_balance_message || 'Insufficient balance') : failureMessageText; cardResultMessage.style.visibility = 'visible'; }
                 if (statusMessage) {
                     statusMessage.textContent = insufficient ? (window.__i18n.insufficient_balance_message || 'Insufficient balance to complete the transfer.') : (window.__i18n.transfer_failed_status || 'Transfer failed.');
                     statusMessage.classList.remove('text-secondary');

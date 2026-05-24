@@ -31,6 +31,46 @@ $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $ut
 $formatted_balance = number_format($account_balance, 2, ',', ' ');
 $devise = $utilisateur['devise'] ?? 'EUR'; // ➜ AJOUTÉ : définir la devise par défaut
 
+// Placeholder IBAN basé sur le pays de résidence du titulaire, pas sur la langue de l'interface
+$userCountryRaw = $utilisateur_connecte['country'] ?? '';
+$userCountryName = trim(preg_replace('/\s*\(\+[\d]+\)\s*$/', '', $userCountryRaw));
+$ibanCountryPlaceholders = [
+    'Allemagne'            => 'DE89 3704 0044 0532 0130 00',
+    'Autriche'             => 'AT61 1904 3002 3457 3201',
+    'Belgique'             => 'BE71 0961 2345 6769',
+    'Bulgarie'             => 'BG80 BNBG 9661 1020 3456 78',
+    'Croatie'              => 'HR12 1001 0051 8630 0016 0',
+    'Danemark'             => 'DK50 0040 0440 1162 43',
+    'Espagne'              => 'ES91 2100 0418 4502 0005 1332',
+    'Finlande'             => 'FI21 1234 5600 0007 85',
+    'France'               => 'FR76 3000 6000 0112 3456 7890 189',
+    'Grèce'                => 'GR16 0110 1250 0000 0001 2300 695',
+    'Hongrie'              => 'HU42 1177 3016 1111 1018 0000 0000',
+    'Irlande'              => 'IE29 AIBK 9311 5212 3456 78',
+    'Islande'              => 'IS14 0159 2600 7654 5510 7303 39',
+    'Italie'               => 'IT60 X054 2811 1010 0000 0123 456',
+    'Luxembourg'           => 'LU28 0019 4006 4475 0000',
+    'Norvège'              => 'NO93 8601 1117 947',
+    'Pays-Bas'             => 'NL91 ABNA 0417 1643 00',
+    'Pologne'              => 'PL61 1090 1014 0000 0712 1981 2874',
+    'Portugal'             => 'PT50 0002 0123 1234 5678 9015 4',
+    'République tchèque'   => 'CZ65 0800 0000 1920 0014 5399',
+    'Roumanie'             => 'RO49 AAAA 1B31 0075 9384 0000',
+    'Royaume-Uni'          => 'GB29 NWBK 6016 1331 9268 19',
+    'Suède'                => 'SE45 5000 0000 0583 9825 7466',
+    'Suisse'               => 'CH56 0483 5012 3456 7800 9',
+    'Turquie'              => 'TR33 0006 1005 1978 6457 8413 26',
+    'Ukraine'              => 'UA21 3223 1300 0002 6007 2335 6600 1',
+    'Arabie Saoudite'      => 'SA03 8000 0000 6080 1016 7519',
+    'Émirats arabes unis'  => 'AE07 0331 2345 6789 0123 456',
+    'Qatar'                => 'QA58 DOHB 0000 1234 5678 90AB CDEF G',
+    'Liban'                => 'LB62 0999 0000 0001 0019 0122 9114',
+    'Tunisie'              => 'TN59 1000 6035 1835 9847 8831',
+    'Maroc'                => 'MA64 0115 1900 0001 2050 0053 4921 4',
+    'Mauritanie'           => 'MR13 0002 0001 0100 0012 3456 753',
+];
+$ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
+
 ?>
 
 <body>
@@ -820,7 +860,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                         <label class="vir-label"><?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
                         <div class="tf-input-wrap">
                             <span class="tf-input-icon"><i class="fas fa-hashtag"></i></span>
-                            <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars(t('iban_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
+                            <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars($ibanPlaceholder, ENT_QUOTES, 'UTF-8') ?>" required>
                             <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                         </div>
                     </div>

@@ -1098,48 +1098,48 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-item {
-                padding: 16px 14px;
-                gap: 12px;
-                margin-bottom: 10px;
-                border-radius: 16px;
+                padding: 10px 10px;
+                gap: 10px;
+                margin-bottom: 8px;
+                border-radius: 14px;
             }
-            
+
             .timeline-icon {
-                width: 44px;
-                height: 44px;
-                font-size: 1.15rem;
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
             }
-            
+
             .timeline-content {
-                gap: 5px;
+                gap: 4px;
             }
-            
-            .timeline-row { 
+
+            .timeline-row {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                gap: 8px;
+                gap: 6px;
             }
-            
+
             .timeline-row:first-child {
-                margin-bottom: 2px;
+                margin-bottom: 1px;
             }
-            
+
             .timeline-title {
-                font-size: calc(0.85rem - 15px);
-                font-weight: 900 !important;
+                font-size: 0.82rem;
+                font-weight: 700 !important;
                 flex: 1;
             }
 
             .timeline-amount {
-                font-size: calc(0.9rem - 15px);
-                font-weight: 900 !important;
+                font-size: 0.82rem;
+                font-weight: 700 !important;
             }
 
             .timeline-datetime {
-                font-size: calc(0.75rem - 2px);
+                font-size: 0.7rem;
                 color: #9ca3af;
-                font-weight: 600 !important;
+                font-weight: 500 !important;
                 display: flex !important;
                 flex-direction: row !important;
                 flex-wrap: nowrap !important;
@@ -1147,14 +1147,14 @@ foreach ($sortedTransactions as $transaction) {
             }
 
             .timeline-meta {
-                font-size: calc(0.75rem - 1px);
+                font-size: 0.7rem;
                 color: #9ca3af;
                 gap: 4px;
-                font-weight: 600 !important;
+                font-weight: 500 !important;
             }
-            
+
             .timeline-meta i {
-                font-size: 0.75rem;
+                font-size: 0.65rem;
             }
             
             footer.footer-show {
@@ -1223,8 +1223,8 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-item {
-                padding: 12px 10px;
-                margin-bottom: 8px;
+                padding: 8px 10px;
+                margin-bottom: 6px;
             }
 
             /* Notifications: améliorer lisibilité sur très petits écrans */
@@ -1258,39 +1258,35 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-icon {
-                width: 46px;
-                height: 46px;
-                font-size: 1.15rem;
+                width: 34px;
+                height: 34px;
+                font-size: 0.85rem;
             }
-            
-            /* Larger, more readable titles on small screens */
+
             .timeline-title {
-                font-size: calc(0.92rem - 15px);
+                font-size: 0.80rem;
                 line-height: 1.2;
-                font-weight: 900 !important;
+                font-weight: 700 !important;
                 color: #111827 !important;
-                font-family: var(--ui-font);
             }
 
             .timeline-amount {
-                font-size: calc(1rem - 15px);
-                font-weight: 900 !important;
+                font-size: 0.80rem;
+                font-weight: 700 !important;
                 line-height: 1.1;
-                font-family: var(--ui-font);
             }
 
             .timeline-datetime {
-                font-size: calc(0.82rem - 2px);
+                font-size: 0.68rem;
                 color: #9ca3af;
-                font-weight: 600 !important;
+                font-weight: 500 !important;
             }
 
             .timeline-meta {
-                font-size: calc(0.85rem - 2px);
+                font-size: 0.68rem;
                 color: #9ca3af;
                 line-height: 1.15;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                font-weight: 600 !important;
+                font-weight: 500 !important;
             }
             
         }

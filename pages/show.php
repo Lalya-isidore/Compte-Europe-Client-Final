@@ -1104,17 +1104,17 @@ foreach ($sortedTransactions as $transaction) {
             .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
             .timeline-card .timeline-item .timeline-title { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
             .timeline-card .timeline-item .timeline-amount { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: 0.62rem !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: 0.72rem !important; font-weight: 500 !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-datetime .date,
             .show-wrapper .timeline-card .timeline-item .timeline-datetime .time,
-            .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: 0.62rem !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: 0.62rem !important; font-weight: 500 !important; gap: 4px !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: 0.72rem !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: 0.72rem !important; font-weight: 500 !important; gap: 4px !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-bank,
             .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-email,
             .show-wrapper .timeline-card .timeline-item .timeline-meta i,
             .show-wrapper .timeline-card .timeline-item .timeline-submeta,
             .show-wrapper .timeline-card .timeline-item .timeline-submeta .meta-email,
-            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: 0.62rem !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: 0.72rem !important; }
             
             footer.footer-show {
                 width: calc(100% - 24px);
@@ -1217,17 +1217,17 @@ foreach ($sortedTransactions as $transaction) {
             .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.68rem + 1px) !important; }
             .timeline-card .timeline-item .timeline-title { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; color: #111827 !important; }
             .timeline-card .timeline-item .timeline-amount { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: 0.57rem !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: 0.67rem !important; font-weight: 500 !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-datetime .date,
             .show-wrapper .timeline-card .timeline-item .timeline-datetime .time,
-            .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: 0.57rem !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: 0.57rem !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: 0.67rem !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: 0.67rem !important; font-weight: 500 !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-bank,
             .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-email,
             .show-wrapper .timeline-card .timeline-item .timeline-meta i,
             .show-wrapper .timeline-card .timeline-item .timeline-submeta,
             .show-wrapper .timeline-card .timeline-item .timeline-submeta .meta-email,
-            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: 0.57rem !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: 0.67rem !important; }
             
         }
 
@@ -1793,7 +1793,7 @@ foreach ($sortedTransactions as $transaction) {
                         $sign = $isIncoming ? '+' : '-';
                     ?>
                     <div class="timeline-item variant-<?= $variant; ?>">
-                        <div class="timeline-icon variant-<?= $variant; ?>">
+                        <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;border-radius:50%!important;flex-shrink:0!important;">
                             <i class="fas <?= $iconClassName; ?>"></i>
                         </div>
                         <div class="timeline-content">
@@ -1810,7 +1810,7 @@ foreach ($sortedTransactions as $transaction) {
                                 <span class="timeline-amount variant-<?= $variant; ?>" style="color: <?= $amountColor; ?> !important;"><?= $sign; ?> <?= $formattedAmount; ?> <?= $deviseSafe; ?></span>
                             </div>
                             <div class="timeline-row">
-                                <div class="timeline-meta" style="font-size:0.62rem!important;">
+                                <div class="timeline-meta" style="font-size:0.72rem!important;">
                                     <?php
                                         // Si c'est un remboursement, et que l'entrée est liée à PayPal,
                                         // afficher l'étiquette localisée 'PayPal' (avec icône PayPal) au lieu
@@ -1907,7 +1907,7 @@ foreach ($sortedTransactions as $transaction) {
                                         <i class="fas fa-building-columns"></i> <span class="meta-bank"><?= $displayDescSafe; ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <span class="timeline-datetime" style="display:inline-flex!important;flex-direction:column!important;align-items:flex-end!important;white-space:nowrap;gap:1px;font-size:0.62rem!important;"><span style="display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:3px;white-space:nowrap;"><i class="far fa-clock" style="display:inline!important;font-size:0.62rem!important;flex-shrink:0;"></i><span class="date" style="display:inline!important;"><?= $dateOnlySafe; ?></span></span><?php if ($timeOnlySafe !== ''): ?><span class="time" style="display:inline!important;"><?= $timeOnlySafe; ?></span><?php endif; ?></span>
+                                <span class="timeline-datetime" style="display:inline-flex!important;flex-direction:column!important;align-items:flex-end!important;white-space:nowrap;gap:1px;font-size:0.72rem!important;"><span style="display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:3px;white-space:nowrap;"><i class="far fa-clock" style="display:inline!important;font-size:0.72rem!important;flex-shrink:0;"></i><span class="date" style="display:inline!important;"><?= $dateOnlySafe; ?></span></span><?php if ($timeOnlySafe !== ''): ?><span class="time" style="display:inline!important;"><?= $timeOnlySafe; ?></span><?php endif; ?></span>
                             </div>
                         </div>
                     </div>

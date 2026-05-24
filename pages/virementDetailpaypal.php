@@ -442,7 +442,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 font-size: 16px;
                 padding: 16px;
             }
-        }
 
             .progress-bar-custom {
                 font-size: 0.95rem;

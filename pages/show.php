@@ -1654,7 +1654,7 @@ foreach ($sortedTransactions as $transaction) {
                 <?php if (!empty($historique_transactions)) : ?>
                     <?php foreach ($sortedTransactions as $transaction) :
                         $amount = (float)($transaction['amount'] ?? 0);
-                        $formattedAmount = number_format($amount, 0, ',', ' ');
+                        $formattedAmount = number_format($amount, 2, ',', ' ');
                         $typeKey = is_string($transaction['transaction_type'] ?? null) ? strtolower(trim($transaction['transaction_type'])) : '';
                         // Prefer i18n keys for transaction labels. Try `transaction_<slug>` then fall back to known notif titles.
                         $rawTypeLabel = $transaction['transaction_type'] ?? 'Transaction';

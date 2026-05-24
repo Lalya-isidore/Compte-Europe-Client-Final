@@ -225,6 +225,7 @@ function apply_i18n_fallbacks(array $translations): array {
         'amount_placeholder',
         'reason_placeholder',
         'required_fields_note',
+        'optional_label',
     );
     $allFile = @realpath(__DIR__ . '/../lang/all.php');
     $enDefaults = [];
@@ -259,6 +260,7 @@ function apply_i18n_fallbacks(array $translations): array {
                     case 'amount_placeholder': $translations[$k] = '1 000'; break;
                     case 'reason_placeholder': $translations[$k] = 'Rent payment'; break;
                     case 'required_fields_note': $translations[$k] = 'All fields marked with * are required.'; break;
+                    case 'optional_label': $translations[$k] = 'optional'; break;
                     default: $translations[$k] = $k; break;
                 }
             }

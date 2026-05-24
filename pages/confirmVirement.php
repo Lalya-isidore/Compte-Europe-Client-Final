@@ -421,10 +421,12 @@ if ($photoUrl === null && $compte_id) {
                                 <span class="detail-label"><i class="fas fa-credit-card"></i> <?= t('iban_label') ?></span>
                                 <span class="detail-value"><?php echo $iban !== '' ? $iban : '—'; ?></span>
                             </li>
+                            <?php if (!empty($bic)): ?>
                             <li class="detail-item">
                                 <span class="detail-label"><i class="fas fa-code"></i> <?= t('bic_label') ?></span>
-                                <span class="detail-value"><?php echo $bic !== '' ? $bic : '—'; ?></span>
+                                <span class="detail-value"><?= htmlspecialchars($bic, ENT_QUOTES, 'UTF-8') ?></span>
                             </li>
+                            <?php endif; ?>
                             <li class="detail-item">
                                 <span class="detail-label"><i class="fas fa-building"></i> <?= t('bank_name') ?></span>
                                 <span class="detail-value"><?php echo $bank_name !== '' ? $bank_name : '—'; ?></span>

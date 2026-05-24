@@ -827,10 +827,10 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 </div>
                 <div class="col-md-6">
                     <div class="vir-field">
-                        <label class="vir-label"><?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
+                        <label class="vir-label"><?= htmlspecialchars(t('bic_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-optional" style="font-size:0.78em;font-weight:400;color:#9ca3af;">(<?= htmlspecialchars(t('optional_label'), ENT_QUOTES, 'UTF-8') ?>)</span></label>
                         <div class="tf-input-wrap">
                             <span class="tf-input-icon"><i class="fas fa-code"></i></span>
-                            <input type="text" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
+                            <input type="text" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_placeholder'), ENT_QUOTES, 'UTF-8') ?>">
                             <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                         </div>
                     </div>

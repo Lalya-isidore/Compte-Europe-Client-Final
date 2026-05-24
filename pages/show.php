@@ -1271,6 +1271,7 @@ foreach ($sortedTransactions as $transaction) {
         }
 
         /* ===== HISTORIQUE : 5 premiers visibles, reste masqué ===== */
+        .timeline-extra { display: none !important; }
         .timeline-see-all-wrap {
             display: flex;
             justify-content: center;
@@ -1817,7 +1818,7 @@ foreach ($sortedTransactions as $transaction) {
                         $labelSafe = htmlspecialchars($transactionLabel, ENT_QUOTES, 'UTF-8');
                         $sign = $isIncoming ? '+' : '-';
                     ?>
-                    <div class="timeline-item variant-<?= $variant; ?><?= $tx_index > 5 ? ' timeline-extra' : ''; ?>"<?= $tx_index > 5 ? ' style="display:none!important;"' : ''; ?>>
+                    <div class="timeline-item variant-<?= $variant; ?><?= $tx_index > 5 ? ' timeline-extra' : ''; ?>">
                         <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;border-radius:50%!important;flex-shrink:0!important;align-self:center!important;aspect-ratio:1/1!important;overflow:hidden!important;box-sizing:border-box!important;">
                             <i class="fas <?= $iconClassName; ?>"></i>
                         </div>
@@ -1961,11 +1962,7 @@ foreach ($sortedTransactions as $transaction) {
             const extras = document.querySelectorAll('.timeline-extra');
             const expanded = btn.classList.toggle('expanded');
             extras.forEach(function(el) {
-                if (expanded) {
-                    el.style.removeProperty('display');
-                } else {
-                    el.style.setProperty('display', 'none', 'important');
-                }
+                el.style.display = expanded ? '' : 'none';
             });
             const label = btn.querySelector('span');
             label.textContent = expanded ? '<?= htmlspecialchars(t('see_less') !== 'see_less' ? t('see_less') : 'Voir moins', ENT_QUOTES, 'UTF-8') ?>' : '<?= htmlspecialchars(t('see_all'), ENT_QUOTES, 'UTF-8') ?>';

@@ -138,11 +138,11 @@ if ($photoUrl === null && $accountId) {
         }
 
         .step.active {
-            color: #0f9d58;
+            color: #667eea;
         }
 
         .step.active .step-number {
-            background: var(--success-gradient);
+            background: var(--primary-gradient);
             color: #fff;
             transform: scale(1.05);
         }

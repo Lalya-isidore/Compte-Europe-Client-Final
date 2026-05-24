@@ -65,7 +65,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .verify-section {
-            --primary-gradient: linear-gradient(135deg, #0070ba 0%, #003087 100%);
+            --primary-gradient: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             --success-gradient: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);
             --danger-gradient: linear-gradient(135deg, #d93025 0%, #ea4335 100%);
             --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -78,9 +78,12 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             background: var(--primary-gradient);
             color: #fff;
             padding: 2rem 1rem;
+            margin-top: -8px;
+            margin-left: -16px;
+            margin-right: -16px;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 20px rgba(0, 48, 135, 0.35);
+            box-shadow: 0 4px 20px rgba(107, 72, 231, 0.3);
         }
 
         .verify-section .balance-label {
@@ -132,7 +135,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .step.active {
-            color: #0070ba;
+            color: #6b48e7;
         }
 
         .step.active .step-number {
@@ -228,19 +231,19 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             gap: 0.6rem;
             padding: 0.85rem 1.6rem;
             border-radius: 999px;
-            background: linear-gradient(135deg, rgba(0, 112, 186, 0.14), rgba(0, 48, 135, 0.22));
-            color: #0c4a6e;
+            background: linear-gradient(135deg, rgba(107, 72, 231, 0.14), rgba(74, 61, 196, 0.22));
+            color: #4a3dc4;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 12px 32px rgba(2, 132, 199, 0.18);
+            box-shadow: 0 12px 32px rgba(107, 72, 231, 0.18);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid rgba(3, 105, 161, 0.28);
+            border: 1px solid rgba(107, 72, 231, 0.28);
         }
 
         .cta-soft:hover {
             transform: translateY(-2px);
-            box-shadow: 0 18px 44px rgba(3, 105, 161, 0.26);
-            color: #083344;
+            box-shadow: 0 18px 44px rgba(107, 72, 231, 0.26);
+            color: #3a2db0;
         }
 
         .cta-soft i {
@@ -299,8 +302,8 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .verification-tag {
-            background: rgba(0, 112, 186, 0.12);
-            color: #0059a8;
+            background: rgba(107, 72, 231, 0.12);
+            color: #6b48e7;
             border-radius: 999px;
             padding: 0.5rem 1rem;
             font-weight: 600;
@@ -324,8 +327,8 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .back-btn:hover {
-            color: #0059a8;
-            border-color: #0059a8;
+            color: #6b48e7;
+            border-color: #6b48e7;
             transform: translateY(-2px);
         }
 

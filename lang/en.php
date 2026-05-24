@@ -171,4 +171,6 @@ return [
   'welcome_to_your_space' => 'Welcome to your space',
   'account_currency_label' => 'Account currency',
   'max_label' => 'Max',
+  'see_all' => 'See all',
+  'see_less' => 'See less',
 ];

@@ -1548,6 +1548,8 @@ return [
         'welcome_to_your_space' => 'Welcome to your space',
         'account_currency_label' => 'Account currency',
         'max_label' => 'Max',
+        'see_all' => 'See all',
+        'see_less' => 'See less',
     ],
     'es' => [
         'account_and_transfers' => 'Cuenta y transferencias',
@@ -2412,6 +2414,8 @@ return [
         'welcome_to_your_space' => 'Bienvenue dans votre espace',
         'account_currency_label' => 'Devise du compte',
         'max_label' => 'Max',
+        'see_all' => 'Voir tout',
+        'see_less' => 'Voir moins',
     ],
     'ga' => [
         'account_and_transfers' => 'Cuntas agus aistrithe',

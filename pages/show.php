@@ -745,7 +745,7 @@ foreach ($sortedTransactions as $transaction) {
             gap: 12px;
         }
         .timeline-row:first-child {
-            margin-bottom: 2px;
+            margin-bottom: 6px;
         }
         .timeline-title {
             font-weight: 900;
@@ -1144,7 +1144,7 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-row:first-child {
-                margin-bottom: 4px;
+                margin-bottom: 7px;
             }
             
             .timeline-title {

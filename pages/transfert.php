@@ -884,29 +884,40 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
     <!-- Formulaire PayPal -->
     <form id="paypalTransferForm" action="index.php?page=confirmVirementpaypal&method=paypal" method="post" style="display: none; margin-top: -0.5rem;" class="animate-in" novalidate>
         
-        <div class="alert-modern">
-            <i class="fab fa-paypal" style="color: #003087;"></i>
-            <div>
-                <strong><?= htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8') ?></strong><br>
-                <?= htmlspecialchars(t('processing_time_paypal'), ENT_QUOTES, 'UTF-8') ?> <span class="badge bg-success"><?= htmlspecialchars(t('free_label'), ENT_QUOTES, 'UTF-8') ?></span>
+        <div class="vir-section-card">
+            <div class="vir-section-header">
+                <i class="fab fa-paypal" style="color: #003087;"></i>
+                <h3><?= htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8') ?></h3>
             </div>
-        </div>
 
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-envelope"></i></span>
-            <input type="email" id="paypalEmail" name="paypalEmail" placeholder="<?= htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8') ?>" required>
-            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
-        </div>
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-envelope"></i></span>
+                    <input type="email" id="paypalEmail" name="paypalEmail" placeholder="exemple@email.com" required>
+                    <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+            </div>
 
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
-            <input type="number" id="amountPaypal" name="amount" placeholder="<?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> (max : <?= number_format($account_balance, 0, ',', ' ') ?> <?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?>)" min="1" step="1" max="<?= (int)$account_balance ?>" required>
-            <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
-        </div>
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('amount_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
+                    <input type="number" id="amountPaypal" name="amount" placeholder="<?= htmlspecialchars(t('amount_placeholder'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
+                    <span class="vir-max-badge">Max&nbsp;: <?= number_format($account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+            </div>
 
-        <div class="tf-input-wrap">
-            <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
-            <input type="text" id="reasonPaypal" name="reasonPaypal" placeholder="<?= htmlspecialchars(t('reason_label'), ENT_QUOTES, 'UTF-8') ?>">
+            <div class="vir-field">
+                <label class="vir-label"><?= htmlspecialchars(t('reason'), ENT_QUOTES, 'UTF-8') ?></label>
+                <div class="tf-input-wrap">
+                    <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
+                    <input type="text" id="reasonPaypal" name="reasonPaypal" placeholder="<?= htmlspecialchars(t('reason_placeholder'), ENT_QUOTES, 'UTF-8') ?>">
+                </div>
+            </div>
+
+            <p class="vir-required-note"><i class="fas fa-info-circle"></i> <?= htmlspecialchars(t('required_fields_note'), ENT_QUOTES, 'UTF-8') ?></p>
         </div>
 
         <button type="submit" class="btn btn-premium mt-4" id="paypalSubmitBtn">

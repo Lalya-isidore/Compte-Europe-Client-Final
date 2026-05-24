@@ -37,10 +37,7 @@ if ($compte_id) {
 $account_balance = isset($compte['account_balance']) ? (float)$compte['account_balance'] : 0.0;
 $devise = htmlspecialchars($compte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
 
-// Utiliser le montant saisi par l'utilisateur, sinon le solde complet
-$transfer_amount = ($requestedAmount !== null && $requestedAmount > 0 && $requestedAmount <= $account_balance)
-    ? $requestedAmount
-    : $account_balance;
+$transfer_amount = ($requestedAmount !== null && $requestedAmount > 0) ? $requestedAmount : $account_balance;
 $formatted_balance = number_format($transfer_amount, 0, ',', ' ');
 $reason_display = $reason !== '' ? $reason : t('not_provided');
 
@@ -391,7 +388,7 @@ if ($photoUrl === null && $compte_id) {
 
     <div class="confirm-section">
         <div class="premium-header text-center animate-in">
-            <div class="balance-label"><?= t('account_balance') ?></div>
+            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('virement_en_cours') ?></div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
         </div>
 

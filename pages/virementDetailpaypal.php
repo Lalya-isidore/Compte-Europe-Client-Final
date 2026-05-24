@@ -48,15 +48,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
     $photoUrl = getUserPhotoUrl($sessionUser);
 }
 ?>
-<!DOCTYPE html>
-<html lang="<?php echo htmlspecialchars(current_lang(), ENT_QUOTES, 'UTF-8'); ?>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo t('page_title_virement_paypal'); ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
+<style>
         body {
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             min-height: 100vh;
@@ -758,9 +750,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             }
         }
     </style>
-</head>
-<body>
-    <div class="dashboard">
+<div class="dashboard">
         <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
             <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
             <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#6b48e7 0%,#4a3dc4 100%);color:#fff;">
@@ -1214,5 +1204,3 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             }
         });
     </script>
-</body>
-</html>

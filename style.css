@@ -1104,6 +1104,8 @@ label {
 .dashboard nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .d-flex {

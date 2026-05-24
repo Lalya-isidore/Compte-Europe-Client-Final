@@ -763,7 +763,7 @@ if ($photoUrl === null && $accountId) {
 
     <div class="verify-section">
         <div class="premium-header text-center animate-in">
-            <div class="balance-label"><?= t('transfer_amount_title') ?></div>
+            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('transfer_amount_title') ?></div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
         </div>
 

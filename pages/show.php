@@ -1080,6 +1080,11 @@ foreach ($sortedTransactions as $transaction) {
                 text-align: right;
             }
             
+            .stat-card { padding: 12px 14px !important; gap: 10px !important; border-radius: 14px !important; }
+            .stat-icon { width: 38px !important; height: 38px !important; border-radius: 10px !important; font-size: 1.05rem !important; }
+            .stat-label { font-size: 0.72rem !important; }
+            .stat-value { font-size: 1.15rem !important; margin: 3px 0 0 !important; }
+
             .timeline-card {
                 padding: 0;
                 background: transparent;

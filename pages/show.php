@@ -1097,64 +1097,15 @@ foreach ($sortedTransactions as $transaction) {
                 font-size: 0.8rem;
             }
             
-            .timeline-item {
-                padding: 10px 10px;
-                gap: 10px;
-                margin-bottom: 8px;
-                border-radius: 14px;
-            }
-
-            .timeline-icon {
-                width: 36px;
-                height: 36px;
-                font-size: 0.9rem;
-            }
-
-            .timeline-content {
-                gap: 4px;
-            }
-
-            .timeline-row {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                gap: 6px;
-            }
-
-            .timeline-row:first-child {
-                margin-bottom: 1px;
-            }
-
-            .timeline-title {
-                font-size: 0.82rem;
-                font-weight: 700 !important;
-                flex: 1;
-            }
-
-            .timeline-amount {
-                font-size: 0.82rem;
-                font-weight: 700 !important;
-            }
-
-            .timeline-datetime {
-                font-size: 0.7rem;
-                color: #9ca3af;
-                font-weight: 500 !important;
-                display: flex !important;
-                flex-direction: row !important;
-                flex-wrap: nowrap !important;
-                align-items: center !important;
-            }
-
-            .timeline-meta {
-                font-size: 0.7rem;
-                color: #9ca3af;
-                gap: 4px;
-                font-weight: 500 !important;
-            }
-
-            .timeline-meta i {
-                font-size: 0.65rem;
+            .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; }
+            .timeline-card .timeline-item .timeline-icon { width: 36px !important; height: 36px !important; font-size: 0.9rem !important; min-width: 36px !important; }
+            .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
+            .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: 0.82rem !important; font-weight: 700 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: 0.82rem !important; font-weight: 700 !important; }
+            .timeline-card .timeline-item .timeline-datetime { font-size: 0.7rem !important; font-weight: 500 !important; }
+            .timeline-card .timeline-item .timeline-meta { font-size: 0.7rem !important; font-weight: 500 !important; gap: 4px !important; }
+            .timeline-card .timeline-item .timeline-meta i { font-size: 0.65rem;
             }
             
             footer.footer-show {
@@ -1222,10 +1173,7 @@ foreach ($sortedTransactions as $transaction) {
                 padding: 0;
             }
             
-            .timeline-item {
-                padding: 8px 10px;
-                margin-bottom: 6px;
-            }
+            .timeline-card .timeline-item { padding: 8px 10px !important; margin-bottom: 6px !important; }
 
             /* Notifications: améliorer lisibilité sur très petits écrans */
             .alert-modern {
@@ -1257,37 +1205,11 @@ foreach ($sortedTransactions as $transaction) {
                 font-size: 1.05rem;
             }
             
-            .timeline-icon {
-                width: 34px;
-                height: 34px;
-                font-size: 0.85rem;
-            }
-
-            .timeline-title {
-                font-size: 0.80rem;
-                line-height: 1.2;
-                font-weight: 700 !important;
-                color: #111827 !important;
-            }
-
-            .timeline-amount {
-                font-size: 0.80rem;
-                font-weight: 700 !important;
-                line-height: 1.1;
-            }
-
-            .timeline-datetime {
-                font-size: 0.68rem;
-                color: #9ca3af;
-                font-weight: 500 !important;
-            }
-
-            .timeline-meta {
-                font-size: 0.68rem;
-                color: #9ca3af;
-                line-height: 1.15;
-                font-weight: 500 !important;
-            }
+            .timeline-card .timeline-item .timeline-icon { width: 34px !important; height: 34px !important; min-width: 34px !important; font-size: 0.85rem !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: 0.80rem !important; font-weight: 700 !important; color: #111827 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: 0.80rem !important; font-weight: 700 !important; }
+            .timeline-card .timeline-item .timeline-datetime { font-size: 0.68rem !important; font-weight: 500 !important; }
+            .timeline-card .timeline-item .timeline-meta { font-size: 0.68rem !important; font-weight: 500 !important; }
             
         }
 

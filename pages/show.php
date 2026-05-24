@@ -658,6 +658,7 @@ foreach ($sortedTransactions as $transaction) {
         }
         .timeline-item {
             display: flex;
+            align-items: center;
             gap: 10px;
             padding: 10px 10px;
             margin-bottom: 8px;
@@ -1097,7 +1098,7 @@ foreach ($sortedTransactions as $transaction) {
                 font-size: 0.8rem;
             }
             
-            .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; }
+            .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; align-items: center !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 29px !important; height: 29px !important; min-width: 29px !important; min-height: 29px !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.78rem + 1px) !important; }
             .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
@@ -1181,7 +1182,7 @@ foreach ($sortedTransactions as $transaction) {
                 padding: 0;
             }
             
-            .timeline-card .timeline-item { padding: 8px 10px !important; margin-bottom: 6px !important; }
+            .timeline-card .timeline-item { padding: 8px 10px !important; margin-bottom: 6px !important; align-items: center !important; }
 
             /* Notifications: améliorer lisibilité sur très petits écrans */
             .alert-modern {
@@ -1793,7 +1794,7 @@ foreach ($sortedTransactions as $transaction) {
                         $sign = $isIncoming ? '+' : '-';
                     ?>
                     <div class="timeline-item variant-<?= $variant; ?>">
-                        <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;border-radius:50%!important;flex-shrink:0!important;">
+                        <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;border-radius:50%!important;flex-shrink:0!important;align-self:center!important;aspect-ratio:1/1!important;overflow:hidden!important;box-sizing:border-box!important;">
                             <i class="fas <?= $iconClassName; ?>"></i>
                         </div>
                         <div class="timeline-content">

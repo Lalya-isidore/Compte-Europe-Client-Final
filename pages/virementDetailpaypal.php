@@ -761,11 +761,9 @@ if (empty($photoUrl) && !empty($sessionUser)) {
     <div class="dashboard">
         <nav class="pt-2 d-flex justify-content-between align-items-center">
             <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
-            <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0070ba 0%,#003087 100%);color:#fff;">
+            <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#0070ba 0%,#003087 100%);color:#fff;">
                 <?php if (!empty($photoUrl)): ?>
-                    <span class="avatar-sm" style="width:40px;height:40px;">
-                        <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar">
-                    </span>
+                    <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
                 <?php else: ?>
                     <i class="fas fa-user"></i>
                 <?php endif; ?>

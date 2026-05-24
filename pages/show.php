@@ -1100,7 +1100,7 @@ foreach ($sortedTransactions as $transaction) {
             
             .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; align-items: center !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 29px !important; height: 29px !important; min-width: 29px !important; min-height: 29px !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.78rem + 1px) !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.78rem + 2px) !important; }
             .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
             .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
             .timeline-card .timeline-item .timeline-title { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
@@ -1215,7 +1215,7 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 24px !important; height: 24px !important; min-width: 24px !important; min-height: 24px !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.68rem + 1px) !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.68rem + 2px) !important; }
             .timeline-card .timeline-item .timeline-title { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; color: #111827 !important; }
             .timeline-card .timeline-item .timeline-amount { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.67rem + 1px) !important; font-weight: 500 !important; }

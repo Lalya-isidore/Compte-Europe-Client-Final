@@ -170,7 +170,6 @@ return [
         'reason_placeholder' => 'دفع الإيجار',
         'required_fields_note' => 'جميع الحقول المحددة بـ * مطلوبة.',
         'virement_en_cours' => 'التحويل قيد المعالجة',
-        'account_currency_label' => 'عملة الحساب',
         'max_label' => 'أقصى',
     ],
     'bg' => [
@@ -1546,7 +1545,6 @@ return [
         'virement_en_cours' => 'Transfer in progress',
         'virement_sortant' => 'Outgoing transfer',
         'welcome_to_your_space' => 'Welcome to your space',
-        'account_currency_label' => 'Account currency',
         'max_label' => 'Max',
     ],
     'es' => [
@@ -2410,7 +2408,6 @@ return [
         'virement_en_cours' => 'Virement en cours',
         'virement_sortant' => 'Virement émis',
         'welcome_to_your_space' => 'Bienvenue dans votre espace',
-        'account_currency_label' => 'Devise du compte',
         'max_label' => 'Max',
     ],
     'ga' => [
@@ -5506,7 +5503,6 @@ return [
         'reason_placeholder' => 'Pagamento de renda',
         'required_fields_note' => 'Todos os campos marcados com * são obrigatórios.',
         'virement_en_cours' => 'Transferência em andamento',
-        'account_currency_label' => 'Moeda da conta',
         'max_label' => 'Máx',
     ],
     'ro' => [

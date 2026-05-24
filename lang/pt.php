@@ -168,5 +168,6 @@ return [
   'reason_placeholder' => 'Pagamento de renda',
   'required_fields_note' => 'Todos os campos marcados com * são obrigatórios.',
   'virement_en_cours' => 'Transferência em andamento',
+  'account_currency_label' => 'Moeda da conta',
   'max_label' => 'Máx',
 ];

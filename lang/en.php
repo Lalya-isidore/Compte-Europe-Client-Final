@@ -169,5 +169,6 @@ return [
   'virement_en_cours' => 'Transfer in progress',
   'virement_sortant' => 'Outgoing transfer',
   'welcome_to_your_space' => 'Welcome to your space',
+  'account_currency_label' => 'Account currency',
   'max_label' => 'Max',
 ];

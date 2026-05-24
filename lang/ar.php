@@ -167,5 +167,6 @@ return [
   'reason_placeholder' => 'دفع الإيجار',
   'required_fields_note' => 'جميع الحقول المحددة بـ * مطلوبة.',
   'virement_en_cours' => 'التحويل قيد المعالجة',
+  'account_currency_label' => 'عملة الحساب',
   'max_label' => 'أقصى',
 ];

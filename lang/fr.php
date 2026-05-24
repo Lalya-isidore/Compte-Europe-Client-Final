@@ -169,5 +169,6 @@ return [
   'virement_en_cours' => 'Virement en cours',
   'virement_sortant' => 'Virement émis',
   'welcome_to_your_space' => 'Bienvenue dans votre espace',
+  'account_currency_label' => 'Devise du compte',
   'max_label' => 'Max',
 ];

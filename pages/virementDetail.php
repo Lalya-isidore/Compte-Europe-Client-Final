@@ -57,7 +57,7 @@ if ($photoUrl === null && $accountId) {
 <div class="dashboard">
     <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
         <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
-        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;">
+        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#6b48e7 0%,#4a3dc4 100%);color:#fff;">
             <?php if (!empty($photoUrl)): ?>
                 <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
             <?php else: ?>
@@ -68,7 +68,7 @@ if ($photoUrl === null && $accountId) {
 
     <style>
         .verify-section {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --primary-gradient: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             --success-gradient: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);
             --danger-gradient: linear-gradient(135deg, #d93025 0%, #ea4335 100%);
             --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -138,7 +138,7 @@ if ($photoUrl === null && $accountId) {
         }
 
         .step.active {
-            color: #667eea;
+            color: #6b48e7;
         }
 
         .step.active .step-number {

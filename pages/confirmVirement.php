@@ -75,7 +75,7 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .confirm-section .premium-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             color: #fff;
             padding: 1.5rem 1rem;
             margin-top: -8px;
@@ -83,7 +83,7 @@ if ($photoUrl === null && $compte_id) {
             margin-right: -16px;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 20px rgba(107, 72, 231, 0.3);
         }
 
         .confirm-section .balance-label {
@@ -127,11 +127,11 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .step.active {
-            color: #667eea;
+            color: #6b48e7;
         }
 
         .step.active .step-number {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             color: #fff;
             transform: scale(1.05);
         }

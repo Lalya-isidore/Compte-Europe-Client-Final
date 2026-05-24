@@ -166,6 +166,7 @@ return [
   'user_placeholder' => 'User',
   'valid_until_label' => 'Valid until',
   'verification_in_progress' => 'Verification in progress',
+  'virement_en_cours' => 'Transfer in progress',
   'virement_sortant' => 'Outgoing transfer',
   'welcome_to_your_space' => 'Welcome to your space',
   'max_label' => 'Max',

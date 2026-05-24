@@ -208,6 +208,7 @@ function apply_i18n_fallbacks(array $translations): array {
     // Ensure some newer transfer-related keys exist by falling back to English defaults
     $needed_keys = array(
         'max_label',
+        'virement_en_cours',
         'info_title',
         'processing_time_bank',
         'processing_time_paypal',
@@ -241,6 +242,7 @@ function apply_i18n_fallbacks(array $translations): array {
                 // sensible English fallback if even all.php lacks it
                 switch ($k) {
                     case 'max_label': $translations[$k] = 'Max'; break;
+                    case 'virement_en_cours': $translations[$k] = 'Transfer in progress'; break;
                     case 'info_title': $translations[$k] = 'Information'; break;
                     case 'processing_time_bank': $translations[$k] = 'Processing within 1 to 3 business days. Fees:'; break;
                     case 'processing_time_paypal': $translations[$k] = 'Processing within 1 to 2 business days. Fees:'; break;

@@ -166,6 +166,7 @@ return [
   'user_placeholder' => 'Utilisateur',
   'valid_until_label' => 'VALIDITE',
   'verification_in_progress' => 'Vérification en cours',
+  'virement_en_cours' => 'Virement en cours',
   'virement_sortant' => 'Virement émis',
   'welcome_to_your_space' => 'Bienvenue dans votre espace',
   'max_label' => 'Max',

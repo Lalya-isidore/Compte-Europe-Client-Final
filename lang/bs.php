@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Plaćanje stanarine',
   'required_fields_note' => 'Sva polja označena s * su obavezna.',
+  'virement_en_cours' => 'Prijenos u toku',
   'max_label' => 'Maks',
 ];

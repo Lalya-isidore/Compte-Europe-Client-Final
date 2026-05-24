@@ -167,5 +167,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Mietzahlung',
   'required_fields_note' => 'Alle mit * gekennzeichneten Felder sind Pflichtfelder.',
+  'virement_en_cours' => 'Überweisung läuft',
   'max_label' => 'Max',
 ];

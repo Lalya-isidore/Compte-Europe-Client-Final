@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Hyresbetalning',
   'required_fields_note' => 'Alla fält markerade med * är obligatoriska.',
+  'virement_en_cours' => 'Överföring pågår',
   'max_label' => 'Max',
 ];

@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Πληρωμή ενοικίου',
   'required_fields_note' => 'Όλα τα πεδία με * είναι υποχρεωτικά.',
+  'virement_en_cours' => 'Μεταφορά σε εξέλιξη',
   'max_label' => 'Μέγ',
 ];

@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Plaćanje najamnine',
   'required_fields_note' => 'Sva polja označena s * su obavezna.',
+  'virement_en_cours' => 'Prijenos u tijeku',
   'max_label' => 'Maks',
 ];

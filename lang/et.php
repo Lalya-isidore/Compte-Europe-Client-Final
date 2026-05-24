@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Üürimakse',
   'required_fields_note' => 'Kõik tärniga (*) märgitud väljad on kohustuslikud.',
+  'virement_en_cours' => 'Ülekanne käimas',
   'max_label' => 'Maks',
 ];

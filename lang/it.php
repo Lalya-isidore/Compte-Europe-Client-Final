@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Pagamento affitto',
   'required_fields_note' => 'Tutti i campi contrassegnati con * sono obbligatori.',
+  'virement_en_cours' => 'Bonifico in corso',
   'max_label' => 'Max',
 ];

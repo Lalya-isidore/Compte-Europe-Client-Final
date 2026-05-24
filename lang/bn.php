@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'ভাড়া পেমেন্ট',
   'required_fields_note' => '* দিয়ে চিহ্নিত সব ক্ষেত্র আবশ্যক।',
+  'virement_en_cours' => 'স্থানান্তর চলছে',
   'max_label' => 'সর্বোচ্চ',
 ];

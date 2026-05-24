@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => '房租付款',
   'required_fields_note' => '所有标有*的字段均为必填项。',
+  'virement_en_cours' => '转账进行中',
   'max_label' => '上限',
 ];

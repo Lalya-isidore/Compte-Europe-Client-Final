@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Lejeafgift',
   'required_fields_note' => 'Alle felter markeret med * er påkrævet.',
+  'virement_en_cours' => 'Overførsel i gang',
   'max_label' => 'Maks',
 ];

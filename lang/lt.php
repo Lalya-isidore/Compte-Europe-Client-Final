@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Nuomos mokestis',
   'required_fields_note' => 'Visi laukai pažymėti * yra privalomi.',
+  'virement_en_cours' => 'Pervedimas vykdomas',
   'max_label' => 'Maks',
 ];

@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Pembayaran sewa',
   'required_fields_note' => 'Semua bidang bertanda * wajib diisi.',
+  'virement_en_cours' => 'Transfer sedang berlangsung',
   'max_label' => 'Maks',
 ];

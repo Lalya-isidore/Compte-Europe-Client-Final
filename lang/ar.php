@@ -166,5 +166,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'دفع الإيجار',
   'required_fields_note' => 'جميع الحقول المحددة بـ * مطلوبة.',
+  'virement_en_cours' => 'التحويل قيد المعالجة',
   'max_label' => 'أقصى',
 ];

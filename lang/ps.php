@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'د کرایې تادیه',
   'required_fields_note' => 'د * سره ټول ځایونه اړین دي.',
+  'virement_en_cours' => 'لیږد روان دی',
   'max_label' => 'ډیره',
 ];

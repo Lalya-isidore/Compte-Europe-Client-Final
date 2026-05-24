@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Īres maksājums',
   'required_fields_note' => 'Visi ar * atzīmētie lauki ir obligāti.',
+  'virement_en_cours' => 'Pārskaitījums notiek',
   'max_label' => 'Maks',
 ];

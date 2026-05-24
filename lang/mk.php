@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Плаќање кирија',
   'required_fields_note' => 'Сите полиња означени со * се задолжителни.',
+  'virement_en_cours' => 'Трансфер во тек',
   'max_label' => 'Макс',
 ];

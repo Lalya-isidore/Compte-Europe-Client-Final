@@ -171,5 +171,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Pago de alquiler',
   'required_fields_note' => 'Todos los campos marcados con * son obligatorios.',
+  'virement_en_cours' => 'Transferencia en curso',
   'max_label' => 'Máx',
 ];

@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Оплата оренди',
   'required_fields_note' => 'Усі поля, позначені *, є обов\'язковими.',
+  'virement_en_cours' => 'Переказ виконується',
   'max_label' => 'Макс',
 ];

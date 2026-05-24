@@ -167,5 +167,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Pagamento de renda',
   'required_fields_note' => 'Todos os campos marcados com * são obrigatórios.',
+  'virement_en_cours' => 'Transferência em andamento',
   'max_label' => 'Máx',
 ];

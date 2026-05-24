@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Kira ödemesi',
   'required_fields_note' => '* ile işaretlenmiş tüm alanlar zorunludur.',
+  'virement_en_cours' => 'Transfer devam ediyor',
   'max_label' => 'Maks',
 ];

@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Ħlas tal-kera',
   'required_fields_note' => 'Il-kampuri kollha mmarkati b\'* huma obbligatorji.',
+  'virement_en_cours' => 'Trasferiment għaddej',
   'max_label' => 'Maks',
 ];

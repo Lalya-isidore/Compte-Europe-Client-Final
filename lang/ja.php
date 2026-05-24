@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => '家賃支払い',
   'required_fields_note' => '* が付いたすべてのフィールドは必須です。',
+  'virement_en_cours' => '送金処理中',
   'max_label' => '上限',
 ];

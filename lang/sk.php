@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Platba nájomného',
   'required_fields_note' => 'Všetky polia označené * sú povinné.',
+  'virement_en_cours' => 'Prevod prebieha',
   'max_label' => 'Max',
 ];

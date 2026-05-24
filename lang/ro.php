@@ -168,5 +168,6 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Plată chirie',
   'required_fields_note' => 'Toate câmpurile marcate cu * sunt obligatorii.',
+  'virement_en_cours' => 'Transfer în curs',
   'max_label' => 'Max',
 ];

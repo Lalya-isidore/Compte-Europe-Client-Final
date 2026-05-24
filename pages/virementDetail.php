@@ -81,7 +81,7 @@ if ($photoUrl === null && $accountId) {
             background: var(--primary-gradient);
             color: #fff;
             padding: 2rem 1rem;
-            margin-top: -16px;
+            margin-top: -8px;
             margin-left: -16px;
             margin-right: -16px;
             margin-bottom: 2rem;

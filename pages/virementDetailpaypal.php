@@ -759,7 +759,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
 </head>
 <body>
     <div class="dashboard">
-        <nav class="pt-2 d-flex justify-content-between align-items-center">
+        <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
             <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
             <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#0070ba 0%,#003087 100%);color:#fff;">
                 <?php if (!empty($photoUrl)): ?>

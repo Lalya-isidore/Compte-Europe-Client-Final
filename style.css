@@ -1822,8 +1822,8 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 .timeline-card .timeline-item {
     display: flex !important;
     align-items: center !important;
-    gap: 12px !important;
-    padding: 12px 12px !important;
+    gap: 10px !important;
+    padding: 10px 10px !important;
     border-radius: 10px !important;
 }
 
@@ -1833,10 +1833,10 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 .timeline-card .timeline-item .iconHist2,
 .timeline-card .timeline-item .iconHist3,
 .timeline-card .timeline-item .avatar-sm {
-    width: 48px !important;
-    height: 48px !important;
-    min-width: 48px !important;
-    min-height: 48px !important;
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
     padding: 0 !important;
     border-radius: 50% !important;
     display: inline-flex !important;
@@ -1868,30 +1868,30 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
     flex: 1 1 auto !important;
     min-width: 0 !important;
     margin: 0 !important;
-    font-size: 1.05rem !important;
-        font-weight: 900 !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
     line-height: 1.08 !important;
 }
 
 /* Amount stays on the right and does not wrap */
 .timeline-card .timeline-row .timeline-amount {
     flex: 0 0 auto !important;
-    margin-left: 12px !important;
-    font-size: 1.05rem !important;
-        font-weight: 900 !important;
+    margin-left: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
     text-align: right !important;
     white-space: nowrap !important;
 }
 
 /* Slightly smaller on very small screens but still single-line */
 @media (max-width: 576px) {
-    .timeline-card .timeline-item { padding: 9px 8px !important; }
-    .timeline-card .timeline-row .timeline-title { font-size: 1.00rem !important; }
-    .timeline-card .timeline-row .timeline-amount { font-size: 1.00rem !important; }
+    .timeline-card .timeline-item { padding: 7px 8px !important; }
+    .timeline-card .timeline-row .timeline-title { font-size: 0.85rem !important; }
+    .timeline-card .timeline-row .timeline-amount { font-size: 0.85rem !important; }
     .timeline-card .timeline-item .timeline-icon,
     .timeline-card .timeline-item .iconHist,
     .timeline-card .timeline-item .iconHist2,
-    .timeline-card .timeline-item .iconHist3 { width: 40px !important; height: 40px !important; min-width: 40px !important; }
+    .timeline-card .timeline-item .iconHist3 { width: 34px !important; height: 34px !important; min-width: 34px !important; }
 }
 
 /* Limit hover effects to pointer-capable devices and keep them subtle */
@@ -1905,13 +1905,31 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 
 /* Override overly-large final rule that was causing huge titles */
 .timeline-card .timeline-item .timeline-title {
-    font-size: 1.05rem !important;
-    font-weight: 900 !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
     line-height: 1.08 !important;
 }
 .timeline-card .timeline-item .timeline-amount {
-    font-size: 1.05rem !important;
-    font-weight: 900 !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+}
+.timeline-card .timeline-item .timeline-meta,
+.timeline-card .timeline-item .timeline-datetime {
+    font-size: 0.78rem !important;
+    color: #6b7280 !important;
+}
+.timeline-card .timeline-item .timeline-icon i,
+.timeline-card .timeline-item .iconHist i,
+.timeline-card .timeline-item .iconHist2 i,
+.timeline-card .timeline-item .iconHist3 i {
+    font-size: 1.0rem !important;
+    line-height: 1 !important;
+}
+@media (max-width: 576px) {
+    .timeline-card .timeline-item .timeline-meta,
+    .timeline-card .timeline-item .timeline-datetime { font-size: 0.72rem !important; }
+    .timeline-card .timeline-item .timeline-icon i,
+    .timeline-card .timeline-item .iconHist i { font-size: 0.9rem !important; }
 }
 
 /* Small safety: prevent footer from growing too large accidentally */

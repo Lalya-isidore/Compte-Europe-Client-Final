@@ -390,7 +390,7 @@ if ($photoUrl === null && $compte_id) {
 
     <div class="confirm-section">
         <div class="premium-header text-center animate-in">
-            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('virement_en_cours') ?></div>
+            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('amount_to_receive') ?></div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
         </div>
 

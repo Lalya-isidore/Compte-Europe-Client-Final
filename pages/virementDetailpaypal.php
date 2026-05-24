@@ -774,15 +774,14 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         </nav>
         <hr>
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> <?php echo htmlspecialchars(t('back'), ENT_QUOTES, 'UTF-8'); ?></a>
-            <span class="verification-tag"><i class="fab fa-paypal"></i> <?php echo htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8'); ?></span>
-        </div>
-
         <div class="verify-section">
             <div class="premium-header text-center animate-in">
                 <div class="balance-label"><?php echo htmlspecialchars(t('amount_to_receive'), ENT_QUOTES, 'UTF-8'); ?></div>
                 <h1 class="balance-display"><?php echo $transfer_amount_display; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
+            </div>
+
+            <div class="text-center mb-3">
+                <span class="verification-tag"><i class="fab fa-paypal"></i> <?php echo htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8'); ?></span>
             </div>
 
             <div class="stepper animate-in">

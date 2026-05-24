@@ -72,7 +72,7 @@ return [
   'generated_link_label' => 'Connection link:',
   'hero_label' => 'Available balance',
   'iban_label' => 'IBAN / Account number',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'GB29 NWBK 6016 1331 9268 19',
   'incorrect_code' => 'Incorrect code.',
   'info_account_holder' => 'Account holder',
   'info_contact_support' => 'To modify your information, please contact our support team.',

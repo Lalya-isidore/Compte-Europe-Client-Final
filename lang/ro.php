@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Transfer de ieșire',
   'welcome_to_your_space' => 'Bine ați venit în spațiul dvs.',
   'virement_info_title' => 'Informații despre transfer',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'RO49 AAAA 1B31 0075 9384 0000',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Ion Popescu',

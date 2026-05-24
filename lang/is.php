@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Útstreymandi millifærsla',
   'welcome_to_your_space' => 'Velkomin í þitt rými',
   'virement_info_title' => 'Upplýsingar um millifærslu',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'IS14 0159 2600 7654 5510 7303 39',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Jón Jónsson',

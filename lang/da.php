@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Udgående overførsel',
   'welcome_to_your_space' => 'Velkommen til dit rum',
   'virement_info_title' => 'Overførselsoplysninger',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'DK50 0040 0440 1162 43',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Lars Jensen',

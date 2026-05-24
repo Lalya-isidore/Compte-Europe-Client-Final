@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Lähtevä siirto',
   'welcome_to_your_space' => 'Tervetuloa tilaasi',
   'virement_info_title' => 'Siirtotiedot',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'FI21 1234 5600 0007 85',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Matti Virtanen',

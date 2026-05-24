@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'انتقال خروجی',
   'welcome_to_your_space' => 'به فضای خود خوش آمدید',
   'virement_info_title' => 'اطلاعات انتقال',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => '1234567890',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'علی محمدی',

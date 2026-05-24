@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Odlazni transfer',
   'welcome_to_your_space' => 'Dobrodošli u svoj prostor',
   'virement_info_title' => 'Informacije o transferu',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'HR12 1001 0051 8630 0016 0',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Ivan Horvat',

@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Uitgaande overboeking',
   'welcome_to_your_space' => 'Welkom in uw ruimte',
   'virement_info_title' => 'Overboekingsinformatie',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'NL91 ABNA 0417 1643 00',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Jan de Vries',

@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Излезен трансфер',
   'welcome_to_your_space' => 'Добредојдовте во вашиот простор',
   'virement_info_title' => 'Информации за трансфер',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'MK07 2501 2000 0058 984',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Никола Петров',

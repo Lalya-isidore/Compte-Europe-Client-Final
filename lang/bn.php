@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'প্রস্থান ট্রান্সফার',
   'welcome_to_your_space' => 'আপনার স্পেসে স্বাগতম',
   'virement_info_title' => 'স্থানান্তর তথ্য',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => '1234567890',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'রাহুল সেন',

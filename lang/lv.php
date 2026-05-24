@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Izejā pārskaitījums',
   'welcome_to_your_space' => 'Laipni lūdzam jūsu telpā',
   'virement_info_title' => 'Pārskaitījuma informācija',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'LV80 BANK 0000 4351 9500 1',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Jānis Bērziņš',

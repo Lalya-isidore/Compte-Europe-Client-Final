@@ -160,7 +160,7 @@ return [
   'virement_sortant' => 'Transferência de saída',
   'welcome_to_your_space' => 'Bem-vindo ao seu espaço',
   'virement_info_title' => 'Informações sobre a transferência',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'PT50 0002 0123 1234 5678 9015 4',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'João Silva',

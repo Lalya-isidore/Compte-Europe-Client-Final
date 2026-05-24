@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'आउटगोइंग ट्रांसफर',
   'welcome_to_your_space' => 'अपने स्थान पर आपका स्वागत है',
   'virement_info_title' => 'स्थानांतरण जानकारी',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => '1234567890',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'राहुल शर्मा',

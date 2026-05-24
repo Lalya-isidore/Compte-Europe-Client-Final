@@ -160,7 +160,7 @@ return [
   'virement_sortant' => 'Ausgehende Überweisung',
   'welcome_to_your_space' => 'Willkommen in Ihrem Bereich',
   'virement_info_title' => 'Überweisungsinformationen',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'DE89 3704 0044 0532 0130 00',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Hans Müller',

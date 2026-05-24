@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Trasferiment għax-xiri',
   'welcome_to_your_space' => 'Merħba fl-ispazju tiegħek',
   'virement_info_title' => 'Informazzjoni dwar it-trasferiment',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'MT84 MALT 0110 0001 2345 MTLC AST0 01S',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Mario Borg',

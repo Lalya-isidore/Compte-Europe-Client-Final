@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Bonifico in uscita',
   'welcome_to_your_space' => 'Benvenuto nel tuo spazio',
   'virement_info_title' => 'Informazioni sul bonifico',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'IT60 X054 2811 1010 0000 0123 456',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Mario Rossi',

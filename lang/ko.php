@@ -161,7 +161,7 @@ return [
   'virement_sortant' => '출금 이체',
   'welcome_to_your_space' => '귀하의 공간에 오신 것을 환영합니다',
   'virement_info_title' => '송금 정보',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => '1234567890',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => '김철수',

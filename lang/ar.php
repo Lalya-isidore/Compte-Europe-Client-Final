@@ -159,7 +159,7 @@ return [
   'virement_sortant' => 'تحويل صادر',
   'welcome_to_your_space' => 'مرحبًا بك في مساحتك',
   'virement_info_title' => 'معلومات التحويل',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => '1234567890',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'محمد علي',

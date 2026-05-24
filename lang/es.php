@@ -164,7 +164,7 @@ return [
   'virement_sortant' => 'Transferencia saliente',
   'welcome_to_your_space' => 'Bienvenido a tu espacio',
   'virement_info_title' => 'Información de la transferencia',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'ES91 2100 0418 4502 0005 1332',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Carlos García',

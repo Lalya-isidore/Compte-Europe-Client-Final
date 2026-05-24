@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Giden transfer',
   'welcome_to_your_space' => 'Alanınıza hoş geldiniz',
   'virement_info_title' => 'Transfer bilgileri',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'TR33 0006 1005 1978 6457 8413 26',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Mehmet Yılmaz',

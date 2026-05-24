@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Utgående överföring',
   'welcome_to_your_space' => 'Välkommen till ditt utrymme',
   'virement_info_title' => 'Överföringsinformation',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'SE45 5000 0000 0583 9825 7466',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Lars Larsson',

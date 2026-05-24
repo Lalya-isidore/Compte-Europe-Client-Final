@@ -161,7 +161,7 @@ return [
   'virement_sortant' => '送金（出金）',
   'welcome_to_your_space' => 'あなたのスペースへようこそ',
   'virement_info_title' => '送金情報',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => '1234567890',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => '田中太郎',

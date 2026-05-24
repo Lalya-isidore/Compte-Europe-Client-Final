@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Väljuv ülekanne',
   'welcome_to_your_space' => 'Tere tulemast oma alasse',
   'virement_info_title' => 'Ülekande teave',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'EE38 2200 2210 2014 5685',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Jaan Tamm',

@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Kimenő átutalás',
   'welcome_to_your_space' => 'Üdvözöljük a saját területén',
   'virement_info_title' => 'Átutalási információk',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'HU42 1177 3016 1111 1018 0000 0000',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Kovács János',

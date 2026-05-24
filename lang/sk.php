@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Odchádzajúci prevod',
   'welcome_to_your_space' => 'Vitajte vo vašom priestore',
   'virement_info_title' => 'Informácie o prevode',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'SK31 1200 0000 1987 4263 7541',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Ján Novák',

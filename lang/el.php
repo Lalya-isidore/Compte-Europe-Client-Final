@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Εξερχόμενη μεταφορά',
   'welcome_to_your_space' => 'Καλώς ήλθατε στον χώρο σας',
   'virement_info_title' => 'Πληροφορίες μεταφοράς',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'GR16 0110 1250 0000 0001 2300 695',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Γιάννης Παπαδόπουλος',

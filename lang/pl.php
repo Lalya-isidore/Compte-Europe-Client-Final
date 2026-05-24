@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Przelew wychodzący',
   'welcome_to_your_space' => 'Witamy w Twojej przestrzeni',
   'virement_info_title' => 'Informacje o przelewie',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'PL61 1090 1014 0000 0712 1981 2874',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Jan Kowalski',

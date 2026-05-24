@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Вихідний переказ',
   'welcome_to_your_space' => 'Ласкаво просимо до вашого простору',
   'virement_info_title' => 'Інформація про переказ',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'UA21 3223 1300 0002 6007 2335 6600 1',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Іван Іваненко',

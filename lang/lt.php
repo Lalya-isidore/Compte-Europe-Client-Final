@@ -161,7 +161,7 @@ return [
   'virement_sortant' => 'Išvykstamasis pervedimas',
   'welcome_to_your_space' => 'Sveiki atvykę į savo erdvę',
   'virement_info_title' => 'Pervedimo informacija',
-  'iban_placeholder' => 'FR76 3000 6000 0112 3456 7890 189',
+  'iban_placeholder' => 'LT12 1000 0111 0100 1000',
   'bic_placeholder' => 'BNPAFRPPXXX',
   'bank_name_placeholder' => 'BNP Paribas',
   'beneficiary_placeholder' => 'Jonas Jonaitis',

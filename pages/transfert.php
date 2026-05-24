@@ -571,10 +571,15 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
 }
 .vir-label {
     display: block;
+    position: static;
+    top: auto;
+    left: auto;
     font-size: 0.82rem;
     font-weight: 600;
     color: #4a5568;
     margin-bottom: 0.3rem;
+    pointer-events: auto;
+    transition: none;
 }
 .vir-required {
     color: var(--primary-color);

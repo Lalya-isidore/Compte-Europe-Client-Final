@@ -728,7 +728,7 @@ foreach ($sortedTransactions as $transaction) {
         .timeline-title {
             font-weight: 900;
             color: #111827;
-            font-size: calc(0.82rem + 3px);
+            font-size: calc(0.82rem + 2px);
             flex: 1;
             min-width: 0;
             overflow: hidden;
@@ -736,7 +736,7 @@ foreach ($sortedTransactions as $transaction) {
             white-space: nowrap;
         }
         .timeline-amount {
-            font-size: calc(0.82rem + 3px);
+            font-size: calc(0.82rem + 2px);
             font-weight: 900;
             white-space: nowrap;
             flex-shrink: 0;
@@ -747,7 +747,7 @@ foreach ($sortedTransactions as $transaction) {
         .timeline-amount.variant-refund { color: #16a34a; }
         .timeline-amount.variant-neutral { color: #374151; }
         .timeline-datetime {
-            font-size: calc(0.7rem + 3px);
+            font-size: calc(0.7rem + 2px);
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
@@ -768,7 +768,7 @@ foreach ($sortedTransactions as $transaction) {
             display: flex;
             align-items: center;
             gap: 4px;
-            font-size: calc(0.7rem + 3px);
+            font-size: calc(0.7rem + 2px);
             color: #6b7280;
         }
         /* allow bank/iban text to truncate with ellipsis when space is limited */
@@ -1098,14 +1098,14 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; }
-            .timeline-card .timeline-item .timeline-icon { width: 36px !important; height: 36px !important; font-size: calc(0.9rem + 3px) !important; min-width: 36px !important; }
+            .timeline-card .timeline-item .timeline-icon { width: 36px !important; height: 36px !important; font-size: calc(0.9rem + 2px) !important; min-width: 36px !important; }
             .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
             .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
-            .timeline-card .timeline-item .timeline-title { font-size: calc(0.82rem + 3px) !important; font-weight: 900 !important; }
-            .timeline-card .timeline-item .timeline-amount { font-size: calc(0.82rem + 3px) !important; font-weight: 900 !important; }
-            .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.7rem + 3px) !important; font-weight: 500 !important; }
-            .timeline-card .timeline-item .timeline-meta { font-size: calc(0.7rem + 3px) !important; font-weight: 500 !important; gap: 4px !important; }
-            .timeline-card .timeline-item .timeline-meta i { font-size: calc(0.65rem + 3px);
+            .timeline-card .timeline-item .timeline-title { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
+            .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.7rem + 2px) !important; font-weight: 500 !important; }
+            .timeline-card .timeline-item .timeline-meta { font-size: calc(0.7rem + 2px) !important; font-weight: 500 !important; gap: 4px !important; }
+            .timeline-card .timeline-item .timeline-meta i { font-size: calc(0.65rem + 2px);
             }
             
             footer.footer-show {
@@ -1205,11 +1205,11 @@ foreach ($sortedTransactions as $transaction) {
                 font-size: 1.05rem;
             }
             
-            .timeline-card .timeline-item .timeline-icon { width: 34px !important; height: 34px !important; min-width: 34px !important; font-size: calc(0.85rem + 3px) !important; }
-            .timeline-card .timeline-item .timeline-title { font-size: calc(0.80rem + 3px) !important; font-weight: 900 !important; color: #111827 !important; }
-            .timeline-card .timeline-item .timeline-amount { font-size: calc(0.80rem + 3px) !important; font-weight: 900 !important; }
-            .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.68rem + 3px) !important; font-weight: 500 !important; }
-            .timeline-card .timeline-item .timeline-meta { font-size: calc(0.68rem + 3px) !important; font-weight: 500 !important; }
+            .timeline-card .timeline-item .timeline-icon { width: 34px !important; height: 34px !important; min-width: 34px !important; font-size: calc(0.85rem + 2px) !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; color: #111827 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; }
+            .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.68rem + 2px) !important; font-weight: 500 !important; }
+            .timeline-card .timeline-item .timeline-meta { font-size: calc(0.68rem + 2px) !important; font-weight: 500 !important; }
             
         }
 

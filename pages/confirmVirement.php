@@ -78,7 +78,7 @@ if ($photoUrl === null && $compte_id) {
             background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             color: #fff;
             padding: 1.5rem 1rem;
-            margin-top: -8px;
+            margin-top: 8px;
             margin-left: -16px;
             margin-right: -16px;
             margin-bottom: 2rem;

@@ -49,13 +49,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
 }
 ?>
 <style>
-        body {
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-            min-height: 100vh;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: #1f2937;
-        }
-
         .verify-section {
             --primary-gradient: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             --success-gradient: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);

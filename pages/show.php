@@ -1098,16 +1098,23 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 29px !important; height: 29px !important; min-width: 29px !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 29px !important; height: 29px !important; min-width: 29px !important; min-height: 29px !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.78rem + 1px) !important; }
             .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
             .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
             .timeline-card .timeline-item .timeline-title { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
             .timeline-card .timeline-item .timeline-amount { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: 0.62rem !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .date,
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .time,
             .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: 0.62rem !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: 0.62rem !important; font-weight: 500 !important; gap: 4px !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-meta i { font-size: 0.58rem !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-bank,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta i,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: 0.62rem !important; }
             
             footer.footer-show {
                 width: calc(100% - 24px);
@@ -1206,14 +1213,21 @@ foreach ($sortedTransactions as $transaction) {
                 font-size: 1.05rem;
             }
             
-            .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 24px !important; height: 24px !important; min-width: 24px !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 24px !important; height: 24px !important; min-width: 24px !important; min-height: 24px !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.68rem + 1px) !important; }
             .timeline-card .timeline-item .timeline-title { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; color: #111827 !important; }
             .timeline-card .timeline-item .timeline-amount { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: 0.57rem !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .date,
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .time,
             .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: 0.57rem !important; }
             .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: 0.57rem !important; font-weight: 500 !important; }
-            .show-wrapper .timeline-card .timeline-item .timeline-meta i { font-size: 0.53rem !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-bank,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta i,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: 0.57rem !important; }
             
         }
 

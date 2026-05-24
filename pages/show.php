@@ -1270,32 +1270,6 @@ foreach ($sortedTransactions as $transaction) {
             }
         }
 
-        /* ===== HISTORIQUE : 5 premiers visibles ===== */
-        .timeline-extra                  { display: none !important; }   /* 1 classe — cache */
-        .timeline-extra.timeline-visible { display: flex !important; }   /* 2 classes — révèle, gagne toujours */
-        .timeline-see-all-wrap {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        .timeline-see-all-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 9px 22px;
-            border: 1.5px solid #6366f1;
-            border-radius: 999px;
-            background: transparent;
-            color: #6366f1;
-            font-size: 0.88rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.18s, color 0.18s;
-        }
-        .timeline-see-all-btn:hover { background: #6366f1; color: #fff; }
-        .timeline-see-all-btn i { font-size: 0.75rem; transition: transform 0.2s; }
-        .timeline-see-all-btn.expanded i { transform: rotate(180deg); }
-
         /* ===== FOOTER (copié de style.css / carte.php) ===== */
         footer {
             position: fixed;
@@ -1678,7 +1652,7 @@ foreach ($sortedTransactions as $transaction) {
                         </div>
 
                 <?php if (!empty($historique_transactions)) : ?>
-                    <?php $tx_index = 0; foreach ($sortedTransactions as $transaction) : $tx_index++; ?>
+                    <?php foreach ($sortedTransactions as $transaction) :
                         $amount = (float)($transaction['amount'] ?? 0);
                         $formattedAmount = number_format($amount, 2, ',', ' ');
                         $typeKey = is_string($transaction['transaction_type'] ?? null) ? strtolower(trim($transaction['transaction_type'])) : '';
@@ -1819,7 +1793,7 @@ foreach ($sortedTransactions as $transaction) {
                         $labelSafe = htmlspecialchars($transactionLabel, ENT_QUOTES, 'UTF-8');
                         $sign = $isIncoming ? '+' : '-';
                     ?>
-                    <div class="timeline-item variant-<?= $variant; ?><?= $tx_index > 5 ? ' timeline-extra' : ''; ?>">
+                    <div class="timeline-item variant-<?= $variant; ?>">
                         <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;border-radius:50%!important;flex-shrink:0!important;align-self:center!important;aspect-ratio:1/1!important;overflow:hidden!important;box-sizing:border-box!important;">
                             <i class="fas <?= $iconClassName; ?>"></i>
                         </div>
@@ -1939,14 +1913,6 @@ foreach ($sortedTransactions as $transaction) {
                         </div>
                     </div>
                     <?php endforeach; ?>
-                    <?php if (count($sortedTransactions) > 5) : ?>
-                    <div class="timeline-see-all-wrap">
-                        <button class="timeline-see-all-btn" onclick="toggleTimelineExtra(this)">
-                            <span><?= htmlspecialchars(t('see_all'), ENT_QUOTES, 'UTF-8') ?></span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                    </div>
-                    <?php endif; ?>
                 <?php else : ?>
                     <div class="timeline-empty">
                         <i class="fas fa-inbox"></i>
@@ -1959,17 +1925,6 @@ foreach ($sortedTransactions as $transaction) {
 
     <?php include __DIR__ . '/../partials/footer_nav.php'; ?>
     <script>
-        function toggleTimelineExtra(btn) {
-            const extras = document.querySelectorAll('.timeline-extra');
-            const expanded = btn.classList.toggle('expanded');
-            extras.forEach(function(el) {
-                el.classList.toggle('timeline-visible', expanded);
-            });
-            btn.querySelector('span').textContent = expanded
-                ? '<?= htmlspecialchars(t('see_less') !== 'see_less' ? t('see_less') : 'Voir moins', ENT_QUOTES, 'UTF-8') ?>'
-                : '<?= htmlspecialchars(t('see_all'), ENT_QUOTES, 'UTF-8') ?>';
-        }
-
         function persistDismiss(alert, alert_id = null) {
             const payload = { alert };
             if (alert_id) {

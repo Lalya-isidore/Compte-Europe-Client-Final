@@ -127,11 +127,11 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .step.active {
-            color: var(--primary-color);
+            color: #667eea;
         }
-        
+
         .step.active .step-number {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             transform: scale(1.05);
         }

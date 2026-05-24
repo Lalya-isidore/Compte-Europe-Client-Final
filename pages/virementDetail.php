@@ -31,7 +31,7 @@ if (!is_array($utilisateur_connecte)) {
 
 $montant = (float)$_POST['montant'];
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float)$utilisateur_connecte['account_balance'] : 0.0;
-$transfer_amount = ($montant > 0 && $montant <= $account_balance) ? $montant : $account_balance;
+$transfer_amount = $montant;
 $formatted_balance = number_format($transfer_amount, 0, ',', ' ');
 $devise = htmlspecialchars($utilisateur_connecte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
 $transfer_amount_display = number_format($transfer_amount, 0, ',', ' ');

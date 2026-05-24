@@ -658,10 +658,10 @@ foreach ($sortedTransactions as $transaction) {
         }
         .timeline-item {
             display: flex;
-            gap: 14px;
-            padding: 16px 14px;
-            margin-bottom: 12px;
-            border-radius: 18px;
+            gap: 10px;
+            padding: 10px 10px;
+            margin-bottom: 8px;
+            border-radius: 14px;
             background: #ffffff;
             border: 1px solid rgba(226, 232, 240, 0.75);
             box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
@@ -685,13 +685,13 @@ foreach ($sortedTransactions as $transaction) {
             border-color: #a7f3d0;
         }
         .timeline-icon {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             flex-shrink: 0;
         }
         .timeline-icon.variant-positive { 
@@ -726,9 +726,9 @@ foreach ($sortedTransactions as $transaction) {
             margin-bottom: 1px;
         }
         .timeline-title {
-            font-weight: 900;
-            color: #111827; /* darker, but softer than pure black to match target */
-            font-size: calc(0.90rem - 5px);
+            font-weight: 700;
+            color: #111827;
+            font-size: 0.82rem;
             flex: 1;
             min-width: 0;
             overflow: hidden;
@@ -736,18 +736,18 @@ foreach ($sortedTransactions as $transaction) {
             white-space: nowrap;
         }
         .timeline-amount {
-            font-size: calc(1rem - 5px);
-            font-weight: 900;
+            font-size: 0.82rem;
+            font-weight: 700;
             white-space: nowrap;
             flex-shrink: 0;
-            margin-left: 8px;
+            margin-left: 6px;
         }
         .timeline-amount.variant-positive { color: #16a34a; }
         .timeline-amount.variant-negative { color: #dc2626; }
         .timeline-amount.variant-refund { color: #16a34a; }
         .timeline-amount.variant-neutral { color: #374151; }
         .timeline-datetime {
-            font-size: calc(0.8rem + 0px);
+            font-size: 0.7rem;
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
@@ -756,7 +756,7 @@ foreach ($sortedTransactions as $transaction) {
             color: #6b7280;
         }
         .timeline-datetime i {
-            font-size: 0.8rem;
+            font-size: 0.65rem;
             flex-shrink: 0;
         }
         .timeline-datetime .date,
@@ -767,9 +767,9 @@ foreach ($sortedTransactions as $transaction) {
         .timeline-meta {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: calc(0.82rem + 0px);
-            color: #6b7280; /* lighter gray to match target */
+            gap: 4px;
+            font-size: 0.7rem;
+            color: #6b7280;
         }
         /* allow bank/iban text to truncate with ellipsis when space is limited */
         .timeline-meta { min-width: 0; }

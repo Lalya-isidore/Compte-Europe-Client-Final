@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Íocaíocht cíosa',
   'required_fields_note' => 'Tá gach réimse atá marcáilte le * riachtanach.',
+  'max_label' => 'Max',
 ];

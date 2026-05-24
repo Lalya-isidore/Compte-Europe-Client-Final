@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => '임대료 지불',
   'required_fields_note' => '*로 표시된 모든 필드는 필수입니다.',
+  'max_label' => '최대',
 ];

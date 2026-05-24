@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Leiebetalning',
   'required_fields_note' => 'Alle felt merket med * er obligatoriske.',
+  'max_label' => 'Maks',
 ];

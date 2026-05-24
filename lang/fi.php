@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Vuokramaksu',
   'required_fields_note' => 'Kaikki tähdellä (*) merkityt kentät ovat pakollisia.',
+  'max_label' => 'Maks',
 ];

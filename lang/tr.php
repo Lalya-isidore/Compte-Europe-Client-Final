@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Kira ödemesi',
   'required_fields_note' => '* ile işaretlenmiş tüm alanlar zorunludur.',
+  'max_label' => 'Maks',
 ];

@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'کرایہ کی ادائیگی',
   'required_fields_note' => '* سے نشان زدہ تمام خانے ضروری ہیں۔',
+  'max_label' => 'زیادہ',
 ];

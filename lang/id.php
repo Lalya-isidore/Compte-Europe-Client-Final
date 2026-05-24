@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Pembayaran sewa',
   'required_fields_note' => 'Semua bidang bertanda * wajib diisi.',
+  'max_label' => 'Maks',
 ];

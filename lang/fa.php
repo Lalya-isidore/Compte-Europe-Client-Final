@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'پرداخت اجاره',
   'required_fields_note' => 'همه فیلدهای مشخص شده با * الزامی هستند.',
+  'max_label' => 'حداکثر',
 ];

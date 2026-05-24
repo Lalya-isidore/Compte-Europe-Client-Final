@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'किराया भुगतान',
   'required_fields_note' => '* से चिह्नित सभी क्षेत्र आवश्यक हैं।',
+  'max_label' => 'अधिकतम',
 ];

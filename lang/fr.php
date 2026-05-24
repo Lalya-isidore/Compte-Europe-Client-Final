@@ -168,4 +168,5 @@ return [
   'verification_in_progress' => 'Vérification en cours',
   'virement_sortant' => 'Virement émis',
   'welcome_to_your_space' => 'Bienvenue dans votre espace',
+  'max_label' => 'Max',
 ];

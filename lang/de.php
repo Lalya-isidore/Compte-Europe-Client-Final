@@ -167,4 +167,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Mietzahlung',
   'required_fields_note' => 'Alle mit * gekennzeichneten Felder sind Pflichtfelder.',
+  'max_label' => 'Max',
 ];

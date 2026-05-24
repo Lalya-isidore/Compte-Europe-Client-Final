@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Opłata za wynajem',
   'required_fields_note' => 'Wszystkie pola oznaczone * są wymagane.',
+  'max_label' => 'Maks',
 ];

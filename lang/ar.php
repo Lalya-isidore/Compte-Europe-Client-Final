@@ -166,4 +166,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'دفع الإيجار',
   'required_fields_note' => 'جميع الحقول المحددة بـ * مطلوبة.',
+  'max_label' => 'أقصى',
 ];

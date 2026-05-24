@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Plačilo najemnine',
   'required_fields_note' => 'Vsa polja, označena z *, so obvezna.',
+  'max_label' => 'Maks',
 ];

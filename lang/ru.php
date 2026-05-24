@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Оплата аренды',
   'required_fields_note' => 'Все поля, отмеченные *, обязательны для заполнения.',
+  'max_label' => 'Макс',
 ];

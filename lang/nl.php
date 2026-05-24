@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Huuruitkering',
   'required_fields_note' => 'Alle velden gemarkeerd met * zijn verplicht.',
+  'max_label' => 'Max',
 ];

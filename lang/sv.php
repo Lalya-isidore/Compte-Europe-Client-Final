@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Hyresbetalning',
   'required_fields_note' => 'Alla fält markerade med * är obligatoriska.',
+  'max_label' => 'Max',
 ];

@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Platba nájmu',
   'required_fields_note' => 'Všechna pole označená * jsou povinná.',
+  'max_label' => 'Max',
 ];

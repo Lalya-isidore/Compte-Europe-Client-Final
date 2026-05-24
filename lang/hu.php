@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Bérleti díj',
   'required_fields_note' => 'A *-gal jelölt összes mező kitöltése kötelező.',
+  'max_label' => 'Max',
 ];

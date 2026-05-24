@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Плащане на наем',
   'required_fields_note' => 'Всички полета, отбелязани с *, са задължителни.',
+  'max_label' => 'Макс',
 ];

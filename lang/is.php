@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Leigugreiðsla',
   'required_fields_note' => 'Öll reit sem eru merkt * eru nauðsynleg.',
+  'max_label' => 'Hám',
 ];

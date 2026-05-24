@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Lejeafgift',
   'required_fields_note' => 'Alle felter markeret med * er påkrævet.',
+  'max_label' => 'Maks',
 ];

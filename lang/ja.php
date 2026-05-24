@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => '家賃支払い',
   'required_fields_note' => '* が付いたすべてのフィールドは必須です。',
+  'max_label' => '上限',
 ];

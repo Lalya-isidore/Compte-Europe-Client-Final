@@ -167,4 +167,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Pagamento de renda',
   'required_fields_note' => 'Todos os campos marcados com * são obrigatórios.',
+  'max_label' => 'Máx',
 ];

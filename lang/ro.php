@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Plată chirie',
   'required_fields_note' => 'Toate câmpurile marcate cu * sunt obligatorii.',
+  'max_label' => 'Max',
 ];

@@ -168,4 +168,5 @@ return [
   'amount_placeholder' => '1 000',
   'reason_placeholder' => 'Īres maksājums',
   'required_fields_note' => 'Visi ar * atzīmētie lauki ir obligāti.',
+  'max_label' => 'Maks',
 ];

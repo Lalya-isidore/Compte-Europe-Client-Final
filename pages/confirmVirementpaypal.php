@@ -75,13 +75,15 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .paypal-confirm-section .premium-header {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
             color: #fff;
             padding: 1.5rem 1rem;
-            margin-top: 0;
+            margin-top: -8px;
+            margin-left: -16px;
+            margin-right: -16px;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 10px 30px rgba(107, 72, 231, 0.2);
+            box-shadow: 0 4px 20px rgba(107, 72, 231, 0.3);
         }
 
         .paypal-confirm-section .balance-label {
@@ -439,14 +441,13 @@ if ($photoUrl === null && $compte_id) {
     </style>
 
     <div class="paypal-confirm-section">
-        <div class="header-row">
-            <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> <?= t('back') ?></a>
-            <span class="paypal-tag"><i class="fab fa-paypal"></i> <?= t('paypal') ?></span>
-        </div>
-
-            <div class="premium-header text-center animate-in">
+        <div class="premium-header text-center animate-in">
             <div class="balance-label"><?= t('transfer_amount_title') ?></div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
+        </div>
+
+        <div class="text-center mb-3">
+            <span class="paypal-tag"><i class="fab fa-paypal"></i> <?= t('paypal') ?></span>
         </div>
 
         <div class="stepper animate-in">

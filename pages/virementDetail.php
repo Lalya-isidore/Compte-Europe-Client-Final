@@ -318,23 +318,25 @@ if ($photoUrl === null && $accountId) {
         }
 
         .back-btn {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 0.6rem 1.2rem;
-            color: #64748b;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            color: #fff;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+            transition: all 0.25s ease;
         }
 
         .back-btn:hover {
-            color: #4f46e5;
-            border-color: #4f46e5;
-            transform: translateY(-2px);
+            color: #fff;
+            transform: translateX(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         }
 
         .menu-icon {
@@ -376,10 +378,8 @@ if ($photoUrl === null && $accountId) {
             }
 
             .back-btn {
-                width: 100%;
-                justify-content: center;
                 font-size: 14px;
-                padding: 12px 16px;
+                padding: 10px 20px;
             }
 
             .stepper {

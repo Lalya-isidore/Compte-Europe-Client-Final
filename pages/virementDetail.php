@@ -67,9 +67,8 @@ if ($photoUrl === null && $accountId) {
     </nav>
     <hr>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="mb-3">
         <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> <?= t('back') ?></a>
-            <span class="verification-tag"><i class="fas fa-shield-alt"></i> <?= t('verification_in_progress') ?></span>
     </div>
 
     <style>
@@ -768,6 +767,10 @@ if ($photoUrl === null && $accountId) {
         <div class="premium-header text-center animate-in">
             <div class="balance-label"><?= t('transfer_amount_title') ?></div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
+        </div>
+
+        <div class="text-center mb-2">
+            <span class="verification-tag"><i class="fas fa-shield-alt"></i> <?= t('verification_in_progress') ?></span>
         </div>
 
         <div class="stepper animate-in">

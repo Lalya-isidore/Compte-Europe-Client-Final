@@ -726,7 +726,7 @@ foreach ($sortedTransactions as $transaction) {
             margin-bottom: 1px;
         }
         .timeline-title {
-            font-weight: 700;
+            font-weight: 900;
             color: #111827;
             font-size: 0.82rem;
             flex: 1;
@@ -737,7 +737,7 @@ foreach ($sortedTransactions as $transaction) {
         }
         .timeline-amount {
             font-size: 0.82rem;
-            font-weight: 700;
+            font-weight: 900;
             white-space: nowrap;
             flex-shrink: 0;
             margin-left: 6px;
@@ -1101,8 +1101,8 @@ foreach ($sortedTransactions as $transaction) {
             .timeline-card .timeline-item .timeline-icon { width: 36px !important; height: 36px !important; font-size: 0.9rem !important; min-width: 36px !important; }
             .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
             .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
-            .timeline-card .timeline-item .timeline-title { font-size: 0.82rem !important; font-weight: 700 !important; }
-            .timeline-card .timeline-item .timeline-amount { font-size: 0.82rem !important; font-weight: 700 !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: 0.82rem !important; font-weight: 900 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: 0.82rem !important; font-weight: 900 !important; }
             .timeline-card .timeline-item .timeline-datetime { font-size: 0.7rem !important; font-weight: 500 !important; }
             .timeline-card .timeline-item .timeline-meta { font-size: 0.7rem !important; font-weight: 500 !important; gap: 4px !important; }
             .timeline-card .timeline-item .timeline-meta i { font-size: 0.65rem;
@@ -1206,8 +1206,8 @@ foreach ($sortedTransactions as $transaction) {
             }
             
             .timeline-card .timeline-item .timeline-icon { width: 34px !important; height: 34px !important; min-width: 34px !important; font-size: 0.85rem !important; }
-            .timeline-card .timeline-item .timeline-title { font-size: 0.80rem !important; font-weight: 700 !important; color: #111827 !important; }
-            .timeline-card .timeline-item .timeline-amount { font-size: 0.80rem !important; font-weight: 700 !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: 0.80rem !important; font-weight: 900 !important; color: #111827 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: 0.80rem !important; font-weight: 900 !important; }
             .timeline-card .timeline-item .timeline-datetime { font-size: 0.68rem !important; font-weight: 500 !important; }
             .timeline-card .timeline-item .timeline-meta { font-size: 0.68rem !important; font-weight: 500 !important; }
             

@@ -67,9 +67,6 @@ if ($photoUrl === null && $accountId) {
     </nav>
     <hr>
 
-    <div class="mb-3">
-        <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> <?= t('back') ?></a>
-    </div>
 
     <style>
         .verify-section {

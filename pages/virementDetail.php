@@ -65,8 +65,6 @@ if ($photoUrl === null && $accountId) {
             <?php endif; ?>
         </a>
     </nav>
-    <hr>
-
 
     <style>
         .verify-section {
@@ -83,6 +81,9 @@ if ($photoUrl === null && $accountId) {
             background: var(--primary-gradient);
             color: #fff;
             padding: 2rem 1rem;
+            margin-top: -16px;
+            margin-left: -16px;
+            margin-right: -16px;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
             box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);

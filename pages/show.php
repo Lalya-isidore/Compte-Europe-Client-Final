@@ -315,34 +315,12 @@ foreach ($sortedTransactions as $transaction) {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Compte - TRANSFERFLUX</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
         :root {
             --ui-font: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             --alert-font: 'Space Grotesk', var(--ui-font);
-        }
-        body, html {
-            margin: 0;
-            font-family: var(--ui-font);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            color: #111827;
-            background: #f5f7fb;
-        }
-        /* Spécificité élevée pour battre Bootstrap min-vh-100 (0,1,0) et d-flex (0,1,0) */
-        html body.min-vh-100,
-        html body.d-flex,
-        html body {
-            min-height: auto !important;
-            height: auto !important;
-            display: block !important;
         }
         .dashboard nav {
             display: flex;
@@ -1553,9 +1531,7 @@ foreach ($sortedTransactions as $transaction) {
             }
         }
     </style>
-</head>
-<body>
-    <div class="dashboard">
+<div class="dashboard">
         <nav>
             <div><i class="fas fa-bars menu-icon"></i> <strong style="font-size:1.35rem;letter-spacing:-0.3px;">TRANSFERFLUX</strong></div>
             <?php
@@ -2089,10 +2065,3 @@ foreach ($sortedTransactions as $transaction) {
         }
     }
     </script>
-    <script>
-        document.body.style.setProperty('min-height', 'auto', 'important');
-        document.body.style.setProperty('height', 'auto', 'important');
-        document.body.style.setProperty('display', 'block', 'important');
-    </script>
-</body>
-</html>

@@ -159,4 +159,12 @@ return [
   'verification_in_progress' => 'Verificação em andamento',
   'virement_sortant' => 'Transferência de saída',
   'welcome_to_your_space' => 'Bem-vindo ao seu espaço',
+  'virement_info_title' => 'Informações sobre a transferência',
+  'iban_placeholder' => 'Introduza o IBAN ou o número de conta',
+  'bic_placeholder' => 'Introduza o BIC ou o código SWIFT',
+  'bank_name_placeholder' => 'Introduza o nome do banco',
+  'beneficiary_placeholder' => 'Introduza o nome do beneficiário',
+  'amount_placeholder' => 'Introduza o valor',
+  'reason_placeholder' => 'Indique o motivo da transação',
+  'required_fields_note' => 'Todos os campos marcados com * são obrigatórios.',
 ];

@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Probíhá ověřování',
   'virement_sortant' => 'Odchozí převod',
   'welcome_to_your_space' => 'Vítejte ve vašem prostoru',
+  'virement_info_title' => 'Informace o převodu',
+  'iban_placeholder' => 'Zadejte IBAN nebo číslo účtu',
+  'bic_placeholder' => 'Zadejte BIC nebo SWIFT kód',
+  'bank_name_placeholder' => 'Zadejte název banky',
+  'beneficiary_placeholder' => 'Zadejte jméno příjemce',
+  'amount_placeholder' => 'Zadejte částku',
+  'reason_placeholder' => 'Uveďte důvod transakce',
+  'required_fields_note' => 'Všechna pole označená * jsou povinná.',
 ];

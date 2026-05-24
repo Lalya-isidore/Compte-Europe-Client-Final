@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verifika fil-proċess',
   'virement_sortant' => 'Trasferiment għax-xiri',
   'welcome_to_your_space' => 'Merħba fl-ispazju tiegħek',
+  'virement_info_title' => 'Informazzjoni dwar it-trasferiment',
+  'iban_placeholder' => 'Daħħal l-IBAN jew in-numru tal-kont',
+  'bic_placeholder' => 'Daħħal il-BIC jew il-kodiċi SWIFT',
+  'bank_name_placeholder' => 'Daħħal l-isem tal-bank',
+  'beneficiary_placeholder' => 'Daħħal l-isem tal-benefiċjarju',
+  'amount_placeholder' => 'Daħħal l-ammont',
+  'reason_placeholder' => 'Indika r-raġuni tat-tranżazzjoni',
+  'required_fields_note' => 'Il-kampuri kollha mmarkati b\'* huma obbligatorji.',
 ];

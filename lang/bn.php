@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'যাচাইকরণ চলমান',
   'virement_sortant' => 'প্রস্থান ট্রান্সফার',
   'welcome_to_your_space' => 'আপনার স্পেসে স্বাগতম',
+  'virement_info_title' => 'স্থানান্তর তথ্য',
+  'iban_placeholder' => 'IBAN বা অ্যাকাউন্ট নম্বর লিখুন',
+  'bic_placeholder' => 'BIC বা SWIFT কোড লিখুন',
+  'bank_name_placeholder' => 'ব্যাংকের নাম লিখুন',
+  'beneficiary_placeholder' => 'সুবিধাভোগীর নাম লিখুন',
+  'amount_placeholder' => 'পরিমাণ লিখুন',
+  'reason_placeholder' => 'লেনদেনের কারণ উল্লেখ করুন',
+  'required_fields_note' => '* দিয়ে চিহ্নিত সব ক্ষেত্র আবশ্যক।',
 ];

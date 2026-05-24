@@ -159,4 +159,12 @@ return [
   'verification_in_progress' => 'Verifizierung läuft',
   'virement_sortant' => 'Ausgehende Überweisung',
   'welcome_to_your_space' => 'Willkommen in Ihrem Bereich',
+  'virement_info_title' => 'Überweisungsinformationen',
+  'iban_placeholder' => 'Geben Sie die IBAN oder Kontonummer ein',
+  'bic_placeholder' => 'Geben Sie den BIC oder SWIFT-Code ein',
+  'bank_name_placeholder' => 'Geben Sie den Namen der Bank ein',
+  'beneficiary_placeholder' => 'Geben Sie den Namen des Empfängers ein',
+  'amount_placeholder' => 'Geben Sie den Betrag ein',
+  'reason_placeholder' => 'Geben Sie den Grund der Transaktion an',
+  'required_fields_note' => 'Alle mit * gekennzeichneten Felder sind Pflichtfelder.',
 ];

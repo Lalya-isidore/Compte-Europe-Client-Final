@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Staðfesting í gangi',
   'virement_sortant' => 'Útstreymandi millifærsla',
   'welcome_to_your_space' => 'Velkomin í þitt rými',
+  'virement_info_title' => 'Upplýsingar um millifærslu',
+  'iban_placeholder' => 'Sláðu inn IBAN eða reikningsnúmer',
+  'bic_placeholder' => 'Sláðu inn BIC eða SWIFT-kóða',
+  'bank_name_placeholder' => 'Sláðu inn nafn banka',
+  'beneficiary_placeholder' => 'Sláðu inn nafn rétthafa',
+  'amount_placeholder' => 'Sláðu inn upphæð',
+  'reason_placeholder' => 'Gefðu til kynna ástæðu viðskiptanna',
+  'required_fields_note' => 'Öll reit sem eru merkt * eru nauðsynleg.',
 ];

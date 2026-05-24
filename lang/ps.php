@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'تصدیق روان دی',
   'virement_sortant' => 'وتونکې لیږد',
   'welcome_to_your_space' => 'ستاسو ځای ته ښه راغلاست',
+  'virement_info_title' => 'د لیږد معلومات',
+  'iban_placeholder' => 'IBAN یا د حساب شمیره ولیکئ',
+  'bic_placeholder' => 'BIC یا SWIFT کوډ ولیکئ',
+  'bank_name_placeholder' => 'د بانک نوم ولیکئ',
+  'beneficiary_placeholder' => 'د ترلاسه کوونکي نوم ولیکئ',
+  'amount_placeholder' => 'مقدار ولیکئ',
+  'reason_placeholder' => 'د معامله دلیل وښایئ',
+  'required_fields_note' => 'د * سره ټول ځایونه اړین دي.',
 ];

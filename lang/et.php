@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Kinnitamine käib',
   'virement_sortant' => 'Väljuv ülekanne',
   'welcome_to_your_space' => 'Tere tulemast oma alasse',
+  'virement_info_title' => 'Ülekande teave',
+  'iban_placeholder' => 'Sisestage IBAN või kontonumber',
+  'bic_placeholder' => 'Sisestage BIC või SWIFT kood',
+  'bank_name_placeholder' => 'Sisestage panga nimi',
+  'beneficiary_placeholder' => 'Sisestage saaja nimi',
+  'amount_placeholder' => 'Sisestage summa',
+  'reason_placeholder' => 'Märkige tehingu põhjus',
+  'required_fields_note' => 'Kõik tärniga (*) märgitud väljad on kohustuslikud.',
 ];

@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Επαλήθευση σε εξέλιξη',
   'virement_sortant' => 'Εξερχόμενη μεταφορά',
   'welcome_to_your_space' => 'Καλώς ήλθατε στον χώρο σας',
+  'virement_info_title' => 'Πληροφορίες μεταφοράς',
+  'iban_placeholder' => 'Εισαγάγετε IBAN ή αριθμό λογαριασμού',
+  'bic_placeholder' => 'Εισαγάγετε BIC ή κωδικό SWIFT',
+  'bank_name_placeholder' => 'Εισαγάγετε το όνομα της τράπεζας',
+  'beneficiary_placeholder' => 'Εισαγάγετε το όνομα δικαιούχου',
+  'amount_placeholder' => 'Εισαγάγετε το ποσό',
+  'reason_placeholder' => 'Δηλώστε τον λόγο της συναλλαγής',
+  'required_fields_note' => 'Όλα τα πεδία με * είναι υποχρεωτικά.',
 ];

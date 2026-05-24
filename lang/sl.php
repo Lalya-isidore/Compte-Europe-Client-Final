@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Preverjanje v teku',
   'virement_sortant' => 'Odhodni prenos',
   'welcome_to_your_space' => 'Dobrodošli v vašem prostoru',
+  'virement_info_title' => 'Informacije o nakazilu',
+  'iban_placeholder' => 'Vnesite IBAN ali številko računa',
+  'bic_placeholder' => 'Vnesite BIC ali kodo SWIFT',
+  'bank_name_placeholder' => 'Vnesite ime banke',
+  'beneficiary_placeholder' => 'Vnesite ime upravičenca',
+  'amount_placeholder' => 'Vnesite znesek',
+  'reason_placeholder' => 'Navedite razlog za transakcijo',
+  'required_fields_note' => 'Vsa polja, označena z *, so obvezna.',
 ];

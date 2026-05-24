@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verifiering pågår',
   'virement_sortant' => 'Utgående överföring',
   'welcome_to_your_space' => 'Välkommen till ditt utrymme',
+  'virement_info_title' => 'Överföringsinformation',
+  'iban_placeholder' => 'Ange IBAN eller kontonummer',
+  'bic_placeholder' => 'Ange BIC eller SWIFT-kod',
+  'bank_name_placeholder' => 'Ange bankens namn',
+  'beneficiary_placeholder' => 'Ange mottagarens namn',
+  'amount_placeholder' => 'Ange beloppet',
+  'reason_placeholder' => 'Ange orsaken till transaktionen',
+  'required_fields_note' => 'Alla fält markerade med * är obligatoriska.',
 ];

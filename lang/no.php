@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verifisering pågår',
   'virement_sortant' => 'Utgående overføring',
   'welcome_to_your_space' => 'Velkommen til ditt rom',
+  'virement_info_title' => 'Overføringsinformasjon',
+  'iban_placeholder' => 'Skriv inn IBAN eller kontonummer',
+  'bic_placeholder' => 'Skriv inn BIC eller SWIFT-kode',
+  'bank_name_placeholder' => 'Skriv inn bankens navn',
+  'beneficiary_placeholder' => 'Skriv inn mottakerens navn',
+  'amount_placeholder' => 'Skriv inn beløpet',
+  'reason_placeholder' => 'Angi årsaken til transaksjonen',
+  'required_fields_note' => 'Alle felt merket med * er obligatoriske.',
 ];

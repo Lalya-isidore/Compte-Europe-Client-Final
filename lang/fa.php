@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'تأیید در جریان است',
   'virement_sortant' => 'انتقال خروجی',
   'welcome_to_your_space' => 'به فضای خود خوش آمدید',
+  'virement_info_title' => 'اطلاعات انتقال',
+  'iban_placeholder' => 'IBAN یا شماره حساب را وارد کنید',
+  'bic_placeholder' => 'BIC یا کد SWIFT را وارد کنید',
+  'bank_name_placeholder' => 'نام بانک را وارد کنید',
+  'beneficiary_placeholder' => 'نام ذینفع را وارد کنید',
+  'amount_placeholder' => 'مبلغ را وارد کنید',
+  'reason_placeholder' => 'دلیل تراکنش را مشخص کنید',
+  'required_fields_note' => 'همه فیلدهای مشخص شده با * الزامی هستند.',
 ];

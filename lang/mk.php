@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Верификацијата е во тек',
   'virement_sortant' => 'Излезен трансфер',
   'welcome_to_your_space' => 'Добредојдовте во вашиот простор',
+  'virement_info_title' => 'Информации за трансфер',
+  'iban_placeholder' => 'Внесете IBAN или број на сметка',
+  'bic_placeholder' => 'Внесете BIC или SWIFT код',
+  'bank_name_placeholder' => 'Внесете го името на банката',
+  'beneficiary_placeholder' => 'Внесете го името на корисникот',
+  'amount_placeholder' => 'Внесете износ',
+  'reason_placeholder' => 'Наведете ја причината за трансакцијата',
+  'required_fields_note' => 'Сите полиња означени со * се задолжителни.',
 ];

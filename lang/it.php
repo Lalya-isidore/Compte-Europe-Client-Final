@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verifica in corso',
   'virement_sortant' => 'Bonifico in uscita',
   'welcome_to_your_space' => 'Benvenuto nel tuo spazio',
+  'virement_info_title' => 'Informazioni sul bonifico',
+  'iban_placeholder' => 'Inserisci l\'IBAN o il numero di conto',
+  'bic_placeholder' => 'Inserisci il codice BIC o SWIFT',
+  'bank_name_placeholder' => 'Inserisci il nome della banca',
+  'beneficiary_placeholder' => 'Inserisci il nome del beneficiario',
+  'amount_placeholder' => 'Inserisci l\'importo',
+  'reason_placeholder' => 'Indica il motivo della transazione',
+  'required_fields_note' => 'Tutti i campi contrassegnati con * sono obbligatori.',
 ];

@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Weryfikacja w toku',
   'virement_sortant' => 'Przelew wychodzący',
   'welcome_to_your_space' => 'Witamy w Twojej przestrzeni',
+  'virement_info_title' => 'Informacje o przelewie',
+  'iban_placeholder' => 'Wprowadź IBAN lub numer konta',
+  'bic_placeholder' => 'Wprowadź BIC lub kod SWIFT',
+  'bank_name_placeholder' => 'Wprowadź nazwę banku',
+  'beneficiary_placeholder' => 'Wprowadź imię i nazwisko odbiorcy',
+  'amount_placeholder' => 'Wprowadź kwotę',
+  'reason_placeholder' => 'Podaj powód transakcji',
+  'required_fields_note' => 'Wszystkie pola oznaczone * są wymagane.',
 ];

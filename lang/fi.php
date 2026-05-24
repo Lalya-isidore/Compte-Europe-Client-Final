@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Varmistus käynnissä',
   'virement_sortant' => 'Lähtevä siirto',
   'welcome_to_your_space' => 'Tervetuloa tilaasi',
+  'virement_info_title' => 'Siirtotiedot',
+  'iban_placeholder' => 'Syötä IBAN tai tilinumero',
+  'bic_placeholder' => 'Syötä BIC tai SWIFT-koodi',
+  'bank_name_placeholder' => 'Syötä pankin nimi',
+  'beneficiary_placeholder' => 'Syötä saajan nimi',
+  'amount_placeholder' => 'Syötä summa',
+  'reason_placeholder' => 'Ilmoita tapahtuman syy',
+  'required_fields_note' => 'Kaikki tähdellä (*) merkityt kentät ovat pakollisia.',
 ];

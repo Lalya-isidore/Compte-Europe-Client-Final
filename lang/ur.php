@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'تصدیق جاری ہے',
   'virement_sortant' => 'جانیوالا ٹرانسفر',
   'welcome_to_your_space' => 'اپنی جگہ پر خوش آمدید',
+  'virement_info_title' => 'منتقلی کی معلومات',
+  'iban_placeholder' => 'IBAN یا اکاؤنٹ نمبر درج کریں',
+  'bic_placeholder' => 'BIC یا SWIFT کوڈ درج کریں',
+  'bank_name_placeholder' => 'بینک کا نام درج کریں',
+  'beneficiary_placeholder' => 'استفادہ کنندہ کا نام درج کریں',
+  'amount_placeholder' => 'رقم درج کریں',
+  'reason_placeholder' => 'لین دین کی وجہ بتائیں',
+  'required_fields_note' => '* سے نشان زدہ تمام خانے ضروری ہیں۔',
 ];

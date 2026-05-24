@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Fíorú ar siúl',
   'virement_sortant' => 'Aistriú amach',
   'welcome_to_your_space' => 'Fáilte chuig do spás',
+  'virement_info_title' => 'Eolas aistrithe',
+  'iban_placeholder' => 'Cuir isteach an IBAN nó uimhir chuntais',
+  'bic_placeholder' => 'Cuir isteach an BIC nó cód SWIFT',
+  'bank_name_placeholder' => 'Cuir isteach ainm an bhainc',
+  'beneficiary_placeholder' => 'Cuir isteach ainm an tairbhí',
+  'amount_placeholder' => 'Cuir isteach an méid',
+  'reason_placeholder' => 'Tabhair le fios cúis na hidirbhearta',
+  'required_fields_note' => 'Tá gach réimse atá marcáilte le * riachtanach.',
 ];

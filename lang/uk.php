@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Перевірка в процесі',
   'virement_sortant' => 'Вихідний переказ',
   'welcome_to_your_space' => 'Ласкаво просимо до вашого простору',
+  'virement_info_title' => 'Інформація про переказ',
+  'iban_placeholder' => 'Введіть IBAN або номер рахунку',
+  'bic_placeholder' => 'Введіть BIC або код SWIFT',
+  'bank_name_placeholder' => 'Введіть назву банку',
+  'beneficiary_placeholder' => 'Введіть ім\'я одержувача',
+  'amount_placeholder' => 'Введіть суму',
+  'reason_placeholder' => 'Вкажіть причину транзакції',
+  'required_fields_note' => 'Усі поля, позначені *, є обов\'язковими.',
 ];

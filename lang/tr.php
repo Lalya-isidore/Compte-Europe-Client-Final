@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Doğrulama devam ediyor',
   'virement_sortant' => 'Giden transfer',
   'welcome_to_your_space' => 'Alanınıza hoş geldiniz',
+  'virement_info_title' => 'Transfer bilgileri',
+  'iban_placeholder' => 'IBAN veya hesap numarasını girin',
+  'bic_placeholder' => 'BIC veya SWIFT kodunu girin',
+  'bank_name_placeholder' => 'Bankanın adını girin',
+  'beneficiary_placeholder' => 'Yararlanıcının adını girin',
+  'amount_placeholder' => 'Miktarı girin',
+  'reason_placeholder' => 'İşlemin nedenini belirtin',
+  'required_fields_note' => '* ile işaretlenmiş tüm alanlar zorunludur.',
 ];

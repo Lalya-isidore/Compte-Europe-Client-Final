@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Patvirtinimas vyksta',
   'virement_sortant' => 'Išvykstamasis pervedimas',
   'welcome_to_your_space' => 'Sveiki atvykę į savo erdvę',
+  'virement_info_title' => 'Pervedimo informacija',
+  'iban_placeholder' => 'Įveskite IBAN arba sąskaitos numerį',
+  'bic_placeholder' => 'Įveskite BIC arba SWIFT kodą',
+  'bank_name_placeholder' => 'Įveskite banko pavadinimą',
+  'beneficiary_placeholder' => 'Įveskite gavėjo vardą',
+  'amount_placeholder' => 'Įveskite sumą',
+  'reason_placeholder' => 'Nurodykite operacijos priežastį',
+  'required_fields_note' => 'Visi laukai pažymėti * yra privalomi.',
 ];

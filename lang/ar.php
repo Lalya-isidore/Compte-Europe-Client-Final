@@ -158,4 +158,12 @@ return [
   'verification_in_progress' => 'جارٍ التحقق',
   'virement_sortant' => 'تحويل صادر',
   'welcome_to_your_space' => 'مرحبًا بك في مساحتك',
+  'virement_info_title' => 'معلومات التحويل',
+  'iban_placeholder' => 'أدخل رقم IBAN أو رقم الحساب',
+  'bic_placeholder' => 'أدخل رمز BIC أو SWIFT',
+  'bank_name_placeholder' => 'أدخل اسم البنك',
+  'beneficiary_placeholder' => 'أدخل اسم المستفيد',
+  'amount_placeholder' => 'أدخل المبلغ',
+  'reason_placeholder' => 'حدد سبب المعاملة',
+  'required_fields_note' => 'جميع الحقول المحددة بـ * مطلوبة.',
 ];

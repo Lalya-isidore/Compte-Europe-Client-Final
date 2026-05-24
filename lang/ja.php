@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => '検証中',
   'virement_sortant' => '送金（出金）',
   'welcome_to_your_space' => 'あなたのスペースへようこそ',
+  'virement_info_title' => '送金情報',
+  'iban_placeholder' => 'IBANまたは口座番号を入力してください',
+  'bic_placeholder' => 'BICまたはSWIFTコードを入力してください',
+  'bank_name_placeholder' => '銀行名を入力してください',
+  'beneficiary_placeholder' => '受取人名を入力してください',
+  'amount_placeholder' => '金額を入力してください',
+  'reason_placeholder' => '取引の理由を示してください',
+  'required_fields_note' => '* が付いたすべてのフィールドは必須です。',
 ];

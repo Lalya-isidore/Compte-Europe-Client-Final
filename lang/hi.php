@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'सत्यापन प्रगति पर है',
   'virement_sortant' => 'आउटगोइंग ट्रांसफर',
   'welcome_to_your_space' => 'अपने स्थान पर आपका स्वागत है',
+  'virement_info_title' => 'स्थानांतरण जानकारी',
+  'iban_placeholder' => 'IBAN या खाता नंबर दर्ज करें',
+  'bic_placeholder' => 'BIC या SWIFT कोड दर्ज करें',
+  'bank_name_placeholder' => 'बैंक का नाम दर्ज करें',
+  'beneficiary_placeholder' => 'लाभार्थी का नाम दर्ज करें',
+  'amount_placeholder' => 'राशि दर्ज करें',
+  'reason_placeholder' => 'लेनदेन का कारण बताएं',
+  'required_fields_note' => '* से चिह्नित सभी क्षेत्र आवश्यक हैं।',
 ];

@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verifikasi sedang berlangsung',
   'virement_sortant' => 'Transfer keluar',
   'welcome_to_your_space' => 'Selamat datang di ruang Anda',
+  'virement_info_title' => 'Informasi transfer',
+  'iban_placeholder' => 'Masukkan IBAN atau nomor rekening',
+  'bic_placeholder' => 'Masukkan BIC atau kode SWIFT',
+  'bank_name_placeholder' => 'Masukkan nama bank',
+  'beneficiary_placeholder' => 'Masukkan nama penerima',
+  'amount_placeholder' => 'Masukkan jumlah',
+  'reason_placeholder' => 'Tunjukkan alasan transaksi',
+  'required_fields_note' => 'Semua bidang bertanda * wajib diisi.',
 ];

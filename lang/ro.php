@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verificare în curs',
   'virement_sortant' => 'Transfer de ieșire',
   'welcome_to_your_space' => 'Bine ați venit în spațiul dvs.',
+  'virement_info_title' => 'Informații despre transfer',
+  'iban_placeholder' => 'Introduceți IBAN sau numărul de cont',
+  'bic_placeholder' => 'Introduceți BIC sau codul SWIFT',
+  'bank_name_placeholder' => 'Introduceți numele băncii',
+  'beneficiary_placeholder' => 'Introduceți numele beneficiarului',
+  'amount_placeholder' => 'Introduceți suma',
+  'reason_placeholder' => 'Indicați motivul tranzacției',
+  'required_fields_note' => 'Toate câmpurile marcate cu * sunt obligatorii.',
 ];

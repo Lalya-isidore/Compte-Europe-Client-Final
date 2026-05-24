@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Provjera u tijeku',
   'virement_sortant' => 'Odlazni transfer',
   'welcome_to_your_space' => 'Dobrodošli u vaš prostor',
+  'virement_info_title' => 'Informacije o transferu',
+  'iban_placeholder' => 'Unesite IBAN ili broj računa',
+  'bic_placeholder' => 'Unesite BIC ili SWIFT kod',
+  'bank_name_placeholder' => 'Unesite naziv banke',
+  'beneficiary_placeholder' => 'Unesite ime korisnika',
+  'amount_placeholder' => 'Unesite iznos',
+  'reason_placeholder' => 'Navedite razlog transakcije',
+  'required_fields_note' => 'Sva polja označena s * su obavezna.',
 ];

@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Ellenőrzés folyamatban',
   'virement_sortant' => 'Kimenő átutalás',
   'welcome_to_your_space' => 'Üdvözöljük a saját területén',
+  'virement_info_title' => 'Átutalási információk',
+  'iban_placeholder' => 'Adja meg az IBAN-t vagy számlaszámot',
+  'bic_placeholder' => 'Adja meg a BIC- vagy SWIFT-kódot',
+  'bank_name_placeholder' => 'Adja meg a bank nevét',
+  'beneficiary_placeholder' => 'Adja meg a kedvezményezett nevét',
+  'amount_placeholder' => 'Adja meg az összeget',
+  'reason_placeholder' => 'Adja meg a tranzakció okát',
+  'required_fields_note' => 'A *-gal jelölt összes mező kitöltése kötelező.',
 ];

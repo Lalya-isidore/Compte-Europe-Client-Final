@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verificatie bezig',
   'virement_sortant' => 'Uitgaande overboeking',
   'welcome_to_your_space' => 'Welkom in uw ruimte',
+  'virement_info_title' => 'Overboekingsinformatie',
+  'iban_placeholder' => 'Voer de IBAN of het rekeningnummer in',
+  'bic_placeholder' => 'Voer de BIC of SWIFT-code in',
+  'bank_name_placeholder' => 'Voer de naam van de bank in',
+  'beneficiary_placeholder' => 'Voer de naam van de begunstigde in',
+  'amount_placeholder' => 'Voer het bedrag in',
+  'reason_placeholder' => 'Geef de reden van de transactie aan',
+  'required_fields_note' => 'Alle velden gemarkeerd met * zijn verplicht.',
 ];

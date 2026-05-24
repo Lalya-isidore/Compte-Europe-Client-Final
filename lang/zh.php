@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => '正在验证',
   'virement_sortant' => '外发转账',
   'welcome_to_your_space' => '欢迎来到您的空间',
+  'virement_info_title' => '转账信息',
+  'iban_placeholder' => '输入IBAN或账号',
+  'bic_placeholder' => '输入BIC或SWIFT代码',
+  'bank_name_placeholder' => '输入银行名称',
+  'beneficiary_placeholder' => '输入受益人姓名',
+  'amount_placeholder' => '输入金额',
+  'reason_placeholder' => '说明交易原因',
+  'required_fields_note' => '所有标有*的字段均为必填项。',
 ];

@@ -160,4 +160,12 @@ return [
   'verification_in_progress' => 'Verifikācija notiek',
   'virement_sortant' => 'Izejā pārskaitījums',
   'welcome_to_your_space' => 'Laipni lūdzam jūsu telpā',
+  'virement_info_title' => 'Pārskaitījuma informācija',
+  'iban_placeholder' => 'Ievadiet IBAN vai konta numuru',
+  'bic_placeholder' => 'Ievadiet BIC vai SWIFT kodu',
+  'bank_name_placeholder' => 'Ievadiet bankas nosaukumu',
+  'beneficiary_placeholder' => 'Ievadiet saņēmēja vārdu',
+  'amount_placeholder' => 'Ievadiet summu',
+  'reason_placeholder' => 'Norādiet darījuma iemeslu',
+  'required_fields_note' => 'Visi ar * atzīmētie lauki ir obligāti.',
 ];

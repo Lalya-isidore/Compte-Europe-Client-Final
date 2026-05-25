@@ -540,6 +540,18 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 .tf-input-wrap textarea::placeholder {
     color: #9ca3af;
 }
+.tf-check-icon {
+    display: none;
+    padding: 14px 14px 14px 4px;
+    color: #10b981;
+    flex-shrink: 0;
+}
+.tf-input-wrap:has(input.is-valid) .tf-check-icon { display: block; }
+.tf-input-wrap:has(input.is-valid) .tf-error-icon { display: none !important; }
+.tf-input-wrap:has(input.is-valid) { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16,185,129,0.08); }
+.tf-input-wrap:has(input.is-invalid) .tf-error-icon { display: block; }
+.tf-input-wrap:has(input.is-invalid) .tf-check-icon { display: none !important; }
+.tf-input-wrap:has(input.is-invalid) { border-color: #e53e3e; box-shadow: 0 0 0 3px rgba(229,62,62,0.08); }
 .tf-error-icon {
     display: none;
     padding: 14px 14px 14px 4px;
@@ -622,7 +634,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
     transition: none;
 }
 .vir-required {
-    color: var(--primary-color);
+    color: #e53e3e;
 }
 .vir-max-badge {
     display: inline-flex;
@@ -861,6 +873,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                         <div class="tf-input-wrap">
                             <span class="tf-input-icon"><i class="fas fa-hashtag"></i></span>
                             <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars($ibanPlaceholder, ENT_QUOTES, 'UTF-8') ?>" required minlength="5" maxlength="34">
+                            <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                             <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                         </div>
                     </div>
@@ -882,6 +895,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-university"></i></span>
                     <input type="text" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required minlength="2" maxlength="100">
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
@@ -891,6 +905,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-user"></i></span>
                     <input type="text" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required minlength="2" maxlength="100">
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
@@ -901,6 +916,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                     <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
                     <input type="number" id="amount" name="amount" placeholder="<?= htmlspecialchars(t('amount_placeholder'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
                     <span class="vir-max-badge"><?= htmlspecialchars(t('max_label'), ENT_QUOTES, 'UTF-8') ?>&nbsp;: <?= number_format($account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
@@ -935,6 +951,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-envelope"></i></span>
                     <input type="email" id="paypalEmail" name="paypalEmail" placeholder="exemple@email.com" required>
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
@@ -945,6 +962,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                     <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
                     <input type="number" id="amountPaypal" name="amount" placeholder="<?= htmlspecialchars(t('amount_placeholder'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
                     <span class="vir-max-badge"><?= htmlspecialchars(t('max_label'), ENT_QUOTES, 'UTF-8') ?>&nbsp;: <?= number_format($account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>

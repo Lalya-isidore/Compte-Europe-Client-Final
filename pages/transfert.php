@@ -884,6 +884,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                         <div class="tf-input-wrap">
                             <span class="tf-input-icon"><i class="fas fa-code"></i></span>
                             <input type="text" id="bic" name="bic" placeholder="<?= htmlspecialchars(t('bic_placeholder'), ENT_QUOTES, 'UTF-8') ?>">
+                            <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                             <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                         </div>
                     </div>
@@ -926,6 +927,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
                     <input type="text" id="reason" name="reason" placeholder="<?= htmlspecialchars(t('reason_placeholder'), ENT_QUOTES, 'UTF-8') ?>">
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                 </div>
             </div>
 
@@ -972,6 +974,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-comment"></i></span>
                     <input type="text" id="reasonPaypal" name="reasonPaypal" placeholder="<?= htmlspecialchars(t('reason_placeholder'), ENT_QUOTES, 'UTF-8') ?>">
+                    <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                 </div>
             </div>
 
@@ -1064,6 +1067,20 @@ function selectTransferType(type) {
     // Smooth scroll to the newly revealed form
     scrollToForm(type);
 }
+
+// Champs optionnels : coche verte si rempli, rien si vide
+['bic', 'reason', 'reasonPaypal'].forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    field.addEventListener('blur', function() {
+        if (this.value.trim() !== '') {
+            this.classList.add('is-valid');
+        } else {
+            this.classList.remove('is-valid');
+        }
+        this.classList.remove('is-invalid');
+    });
+});
 
 // Validation en temps réel (BIC exclu car optionnel)
 ['iban', 'bank_name', 'beneficiary_name'].forEach(fieldId => {

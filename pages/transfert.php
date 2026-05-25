@@ -1102,22 +1102,6 @@ if (paypalEmailField) {
     });
 }
 
-// Validation au submit PayPal (novalidate sur ce formulaire)
-document.getElementById('paypalTransferForm')?.addEventListener('submit', function(e) {
-    let valid = true;
-    const email = document.getElementById('paypalEmail');
-    const amt = document.getElementById('amountPaypal');
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email.value.trim())) {
-        if (email) { email.classList.add('is-invalid'); email.classList.remove('is-valid'); }
-        valid = false;
-    }
-    if (!amt || !amt.value || parseFloat(amt.value) <= 0 || parseFloat(amt.value) > parseFloat(amt.getAttribute('max') || '0')) {
-        if (amt) { amt.classList.add('is-invalid'); amt.classList.remove('is-valid'); }
-        valid = false;
-    }
-    if (!valid) e.preventDefault();
-});
 
 // Vérification du solde avant soumission
 document.getElementById('bankSubmitBtn')?.addEventListener('click', function(e) {
@@ -1163,34 +1147,64 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var bankTransferOption = document.getElementById('bankTransferOption');
-            var paypalTransferOption = document.getElementById('paypalTransferOption');
             var bankTransferForm = document.getElementById('bankTransferForm');
             var paypalTransferForm = document.getElementById('paypalTransferForm');
 
-            bankTransferOption.addEventListener('click', function() {
-                bankTransferForm.style.display = 'block';
-                paypalTransferForm.style.display = 'none';
-            });
+            if (bankTransferForm) {
+                bankTransferForm.addEventListener('submit', function(event) {
+                    var valid = true;
+                    ['iban', 'bank_name', 'beneficiary_name', 'amount'].forEach(function(id) {
+                        var f = document.getElementById(id);
+                        if (!f) return;
+                        var val = f.value.trim();
+                        var min = parseInt(f.getAttribute('minlength') || '1');
+                        var minVal = parseFloat(f.getAttribute('min') || '0');
+                        var maxVal = parseFloat(f.getAttribute('max') || 'Infinity');
+                        var isNum = f.type === 'number';
+                        var ok = isNum ? (val !== '' && parseFloat(val) >= minVal && parseFloat(val) <= maxVal)
+                                       : (val.length >= min);
+                        if (!ok) {
+                            f.classList.add('is-invalid');
+                            f.classList.remove('is-valid');
+                            valid = false;
+                        } else {
+                            f.classList.remove('is-invalid');
+                            f.classList.add('is-valid');
+                        }
+                    });
+                    if (!valid) {
+                        event.preventDefault();
+                        var first = bankTransferForm.querySelector('.is-invalid');
+                        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
 
-            paypalTransferOption.addEventListener('click', function() {
-                bankTransferForm.style.display = 'none';
-                paypalTransferForm.style.display = 'block';
-            });
-
-            bankTransferForm.addEventListener('submit', function(event) {
-                bankTransferForm.classList.add('was-submitted');
-                if (!bankTransferForm.checkValidity()) {
-                    event.preventDefault();
-                }
-            });
-
-            paypalTransferForm.addEventListener('submit', function(event) {
-                paypalTransferForm.classList.add('was-submitted');
-                if (!paypalTransferForm.checkValidity()) {
-                    event.preventDefault();
-                }
-            });
+            if (paypalTransferForm) {
+                paypalTransferForm.addEventListener('submit', function(event) {
+                    var valid = true;
+                    var email = document.getElementById('paypalEmail');
+                    var amt = document.getElementById('amountPaypal');
+                    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!email || !emailRegex.test(email.value.trim())) {
+                        if (email) { email.classList.add('is-invalid'); email.classList.remove('is-valid'); }
+                        valid = false;
+                    } else {
+                        email.classList.remove('is-invalid'); email.classList.add('is-valid');
+                    }
+                    if (!amt || !amt.value || parseFloat(amt.value) <= 0 || parseFloat(amt.value) > parseFloat(amt.getAttribute('max') || '0')) {
+                        if (amt) { amt.classList.add('is-invalid'); amt.classList.remove('is-valid'); }
+                        valid = false;
+                    } else {
+                        amt.classList.remove('is-invalid'); amt.classList.add('is-valid');
+                    }
+                    if (!valid) {
+                        event.preventDefault();
+                        var first = paypalTransferForm.querySelector('.is-invalid');
+                        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                });
+            }
         });
 
     </script>

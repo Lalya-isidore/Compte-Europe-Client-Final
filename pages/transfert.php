@@ -860,7 +860,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                         <label class="vir-label"><?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
                         <div class="tf-input-wrap">
                             <span class="tf-input-icon"><i class="fas fa-hashtag"></i></span>
-                            <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars($ibanPlaceholder, ENT_QUOTES, 'UTF-8') ?>" required>
+                            <input type="text" id="iban" name="iban" placeholder="<?= htmlspecialchars($ibanPlaceholder, ENT_QUOTES, 'UTF-8') ?>" required minlength="5" maxlength="34">
                             <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                         </div>
                     </div>
@@ -881,7 +881,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <label class="vir-label"><?= htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-university"></i></span>
-                    <input type="text" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    <input type="text" id="bank_name" name="bank_name" placeholder="<?= htmlspecialchars(t('bank_name_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required minlength="2" maxlength="100">
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
@@ -890,7 +890,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <label class="vir-label"><?= htmlspecialchars(t('beneficiary_name'), ENT_QUOTES, 'UTF-8') ?> <span class="vir-required">*</span></label>
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-user"></i></span>
-                    <input type="text" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required>
+                    <input type="text" id="beneficiary_name" name="beneficiary_name" placeholder="<?= htmlspecialchars(t('beneficiary_placeholder'), ENT_QUOTES, 'UTF-8') ?>" required minlength="2" maxlength="100">
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
             </div>
@@ -1047,19 +1047,76 @@ function selectTransferType(type) {
     scrollToForm(type);
 }
 
-// Validation en temps réel
-['iban', 'bic', 'bank_name', 'beneficiary_name', 'reason'].forEach(fieldId => {
+// Validation en temps réel (BIC exclu car optionnel)
+['iban', 'bank_name', 'beneficiary_name'].forEach(fieldId => {
     const field = document.getElementById(fieldId);
-    if (field) {
-        field.addEventListener('blur', function() {
-            if (this.value.trim() === '') {
-                this.classList.add('is-invalid');
-            } else {
-                this.classList.remove('is-invalid');
-                this.classList.add('is-valid');
-            }
-        });
+    if (!field) return;
+    field.addEventListener('blur', function() {
+        const val = this.value.trim();
+        const min = parseInt(this.getAttribute('minlength') || '1');
+        if (val === '' || val.length < min) {
+            this.classList.add('is-invalid');
+            this.classList.remove('is-valid');
+        } else {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+    field.addEventListener('input', function() {
+        if (this.classList.contains('is-invalid') && this.value.trim().length >= parseInt(this.getAttribute('minlength') || '1')) {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+});
+
+// Validation montant virement bancaire
+['amount', 'amountPaypal'].forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    field.addEventListener('blur', function() {
+        const val = parseFloat(this.value);
+        const max = parseFloat(this.getAttribute('max') || '0');
+        if (!this.value || isNaN(val) || val <= 0 || val > max) {
+            this.classList.add('is-invalid');
+            this.classList.remove('is-valid');
+        } else {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+});
+
+// Validation email PayPal
+const paypalEmailField = document.getElementById('paypalEmail');
+if (paypalEmailField) {
+    paypalEmailField.addEventListener('blur', function() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(this.value.trim())) {
+            this.classList.add('is-invalid');
+            this.classList.remove('is-valid');
+        } else {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+}
+
+// Validation au submit PayPal (novalidate sur ce formulaire)
+document.getElementById('paypalTransferForm')?.addEventListener('submit', function(e) {
+    let valid = true;
+    const email = document.getElementById('paypalEmail');
+    const amt = document.getElementById('amountPaypal');
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email.value.trim())) {
+        if (email) { email.classList.add('is-invalid'); email.classList.remove('is-valid'); }
+        valid = false;
     }
+    if (!amt || !amt.value || parseFloat(amt.value) <= 0 || parseFloat(amt.value) > parseFloat(amt.getAttribute('max') || '0')) {
+        if (amt) { amt.classList.add('is-invalid'); amt.classList.remove('is-valid'); }
+        valid = false;
+    }
+    if (!valid) e.preventDefault();
 });
 
 // Vérification du solde avant soumission

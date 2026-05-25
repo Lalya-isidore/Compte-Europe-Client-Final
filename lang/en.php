@@ -18,7 +18,7 @@ return [
   'admin_generate_link_help' => 'If you don\'t have a domain, open this page from the machine hosting the app (e.g. <code>http://localhost</code>) or use its local IP on the network (e.g. <code>http://192.168.1.23</code>).',
   'admin_generate_link_title' => 'Link generator - TRANSFERFLUX',
   'already_logged_in' => 'You are already logged in. Please continue browsing.',
-  'amount_label' => 'Amount',
+  'amount_label' => 'Transfer amount',
   'amount_placeholder' => '1 000',
   'amount_sent' => 'Amount sent',
   'amount_to_receive' => 'Amount to receive',

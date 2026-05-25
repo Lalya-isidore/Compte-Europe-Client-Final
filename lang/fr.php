@@ -18,7 +18,7 @@ return [
   'admin_generate_link_help' => 'Si vous n\'avez pas de domaine, ouvrez cette page depuis la machine hébergeant l\'application (ex. <code>http://localhost</code>) ou utilisez son IP locale sur le réseau (ex. <code>http://192.168.1.23</code>).',
   'admin_generate_link_title' => 'Générateur de lien - TRANSFERFLUX',
   'already_logged_in' => 'Vous êtes déjà connecté. Veuillez poursuivre votre navigation.',
-  'amount_label' => 'Montant',
+  'amount_label' => 'Montant à virer',
   'amount_placeholder' => '1 000',
   'amount_sent' => 'Montant envoyé',
   'amount_to_receive' => 'Montant à recevoir',

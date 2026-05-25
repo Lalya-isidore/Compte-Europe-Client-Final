@@ -50,8 +50,7 @@ $__currentLangLabel = $langNames[$__currentLang] ?? $__currentLang;
     <title>TRANSFERFLUX</title>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" sizes="32x32" href="/image/image.png">
-    <!-- Favicon FB -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     

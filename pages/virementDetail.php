@@ -77,11 +77,15 @@ if ($photoUrl === null && $accountId) {
             --glass-border: rgba(255, 255, 255, 0.4);
         }
 
+        .verify-section {
+            padding-top: 1.25rem;
+        }
+
         .verify-section .premium-header {
             background: var(--primary-gradient);
             color: #fff;
             padding: 2rem 1rem;
-            margin-top: -8px;
+            margin-top: 0;
             margin-left: -16px;
             margin-right: -16px;
             margin-bottom: 2rem;

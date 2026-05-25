@@ -916,7 +916,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
                     <input type="number" id="amount" name="amount" placeholder="<?= htmlspecialchars(t('amount_placeholder'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
-                    <span class="vir-max-badge"><?= htmlspecialchars(t('max_label'), ENT_QUOTES, 'UTF-8') ?>&nbsp;: <?= number_format($account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="vir-max-badge"><?= htmlspecialchars(t('max_label'), ENT_QUOTES, 'UTF-8') ?>&nbsp;: <?= number_format((int)$account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
                     <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>
@@ -963,7 +963,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
                 <div class="tf-input-wrap">
                     <span class="tf-input-icon"><i class="fas fa-coins"></i></span>
                     <input type="number" id="amountPaypal" name="amount" placeholder="<?= htmlspecialchars(t('amount_placeholder'), ENT_QUOTES, 'UTF-8') ?>" min="1" step="1" max="<?= (int)$account_balance ?>" required>
-                    <span class="vir-max-badge"><?= htmlspecialchars(t('max_label'), ENT_QUOTES, 'UTF-8') ?>&nbsp;: <?= number_format($account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="vir-max-badge"><?= htmlspecialchars(t('max_label'), ENT_QUOTES, 'UTF-8') ?>&nbsp;: <?= number_format((int)$account_balance, 0, ',', ' ') ?>&nbsp;<?= htmlspecialchars($devise, ENT_QUOTES, 'UTF-8') ?></span>
                     <span class="tf-check-icon"><i class="fas fa-check-circle"></i></span>
                     <span class="tf-error-icon"><i class="fas fa-exclamation-circle"></i></span>
                 </div>

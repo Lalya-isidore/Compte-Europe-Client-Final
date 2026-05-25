@@ -1,7 +1,7 @@
 {
-  "name": "Compte Europe",
-  "short_name": "CompteEurope",
-  "description": "Accédez à votre compte Compte Europe en toute sécurité.",
+  "name": "TransferFlux",
+  "short_name": "TransferFlux",
+  "description": "Accédez à votre compte TransferFlux en toute sécurité.",
   "start_url": "index.php",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -432,19 +432,20 @@ $devise = $utilisateur['devise'] ?? 'EUR';
 }
 
 /* Animation au chargement */
+@-webkit-keyframes fadeInUp {
+    from { opacity: 0; -webkit-transform: translateY(30px); transform: translateY(30px); }
+    to   { opacity: 1; -webkit-transform: translateY(0);    transform: translateY(0); }
+}
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .animate-in {
-    animation: fadeInUp 0.6s ease-out;
+    -webkit-animation: fadeInUp 0.6s ease-out both;
+    animation: fadeInUp 0.6s ease-out both;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
 }
 
 /* Responsive */

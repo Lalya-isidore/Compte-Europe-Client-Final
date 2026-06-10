@@ -53,13 +53,14 @@ if (!empty($erreurs)) {
         // Vérifier si le compte est bloqué ou suspendu
         $status = $utilisateur['account_status'] ?? 'Activé';
         $isActivated = in_array($status, ['Activé', 'Actif', 'active', 'Active']);
+
         if (!$isActivated) {
             $bankName = function_exists('t') ? (t('login_bank_name') ?: 'TRANSFERFLUX') : 'TRANSFERFLUX';
             if ($status === 'Examen') {
-                $erreur = function_exists('t') ? t('account_exam_message', ['bank' => $bankName]) : "Votre compte {$bankName} est en cours d'examen. Veuillez patienter ou contacter le support.";
+                $erreur = "Votre compte {$bankName} est en cours d'examen. Veuillez patienter ou contacter le support.";
                 $alertType = 'warning';
             } else {
-                $erreur = function_exists('t') ? t('account_blocked_message', ['bank' => $bankName]) : "L'accès à votre compte {$bankName} est temporairement suspendu. Veuillez contacter le support.";
+                $erreur = "L'accès à votre compte {$bankName} est temporairement suspendu. Veuillez contacter le support.";
                 $alertType = 'error';
             }
             $token = $_SESSION['client_token'] ?? '';
@@ -80,12 +81,6 @@ if (!empty($erreurs)) {
             'prenom' => $utilisateur['prenom'] ?? '',
             'devise' => $utilisateur['devise'] ?? '€'
         ];
-
-        // Appliquer la langue du compte pour l'interface client
-        $compteLang = $utilisateur['lang'] ?? 'fr';
-        if (!empty($compteLang)) {
-            $_SESSION['lang'] = $compteLang;
-        }
         
         // ✅ Synchronisation des alertes (gardée du code original)
         try {

@@ -9,19 +9,77 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-$rawIban = trim((string)($_POST['iban'] ?? ''));
-$rawBic = trim((string)($_POST['bic'] ?? ''));
-$rawBankName = trim((string)($_POST['bank_name'] ?? ''));
-$rawBeneficiary = trim((string)($_POST['beneficiary_name'] ?? ''));
-$rawReason = trim((string)($_POST['reason'] ?? ''));
-$rawAmount = trim((string)($_POST['amount'] ?? ''));
+// Détection du type de transfert
+$transfer_method = trim((string)($_POST['method'] ?? 'bank')); // 'mobilemoney' ou 'bank'
 
-$iban = htmlspecialchars($rawIban, ENT_QUOTES, 'UTF-8');
-$bic = htmlspecialchars($rawBic, ENT_QUOTES, 'UTF-8');
-$bank_name = htmlspecialchars($rawBankName, ENT_QUOTES, 'UTF-8');
-$beneficiary_name = htmlspecialchars($rawBeneficiary, ENT_QUOTES, 'UTF-8');
-$reason = htmlspecialchars($rawReason, ENT_QUOTES, 'UTF-8');
-$requestedAmount = $rawAmount !== '' ? (float)$rawAmount : null;
+// Tableau des opérateurs Mobile Money pour récupérer le nom et le code
+$mobileMoneyOperators = [
+    'mtn' => [
+        'name' => 'MTN Money',
+        'code' => 'MTN'
+    ],
+    'moov' => [
+        'name' => 'Moov Money',
+        'code' => 'MOOV'
+    ],
+    'orange' => [
+        'name' => 'Orange Money',
+        'code' => 'ORANGE'
+    ],
+    'wave' => [
+        'name' => 'Wave',
+        'code' => 'WAVE'
+    ],
+    'airtel' => [
+        'name' => 'Airtel Money',
+        'code' => 'AIRTEL'
+    ]
+];
+
+// Si c'est un transfert Mobile Money
+if ($transfer_method === 'mobilemoney') {
+    $operator_key = trim((string)($_POST['operator'] ?? ''));
+    $nom = trim((string)($_POST['nom'] ?? ''));
+    $prenom = trim((string)($_POST['prenom'] ?? ''));
+    $mobile_number = trim((string)($_POST['mobile_number'] ?? ''));
+    $rawReason = trim((string)($_POST['reason'] ?? ''));
+
+    // Mapper les données Mobile Money aux variables existantes
+    $beneficiary_name = htmlspecialchars($prenom . ' ' . $nom, ENT_QUOTES, 'UTF-8');
+    $bank_name = htmlspecialchars($mobileMoneyOperators[$operator_key]['name'] ?? '—', ENT_QUOTES, 'UTF-8');
+    $iban = htmlspecialchars($mobile_number, ENT_QUOTES, 'UTF-8');
+    $bic = htmlspecialchars($mobileMoneyOperators[$operator_key]['code'] ?? '—', ENT_QUOTES, 'UTF-8');
+    $reason = htmlspecialchars($rawReason, ENT_QUOTES, 'UTF-8');
+
+    // Labels et icônes adaptés pour Mobile Money
+    $label_iban = 'Numéro Mobile Money';
+    $icon_iban = 'fas fa-mobile-alt';
+    $label_bic = 'Code opérateur';
+    $icon_bic = 'fas fa-code';
+    $label_bank = 'Opérateur';
+    $icon_bank = 'fas fa-signal';
+} else {
+    // Transfert bancaire classique
+    $rawIban = trim((string)($_POST['iban'] ?? ''));
+    $rawBic = trim((string)($_POST['bic'] ?? ''));
+    $rawBankName = trim((string)($_POST['bank_name'] ?? ''));
+    $rawBeneficiary = trim((string)($_POST['beneficiary_name'] ?? ''));
+    $rawReason = trim((string)($_POST['reason'] ?? ''));
+
+    $iban = htmlspecialchars($rawIban, ENT_QUOTES, 'UTF-8');
+    $bic = htmlspecialchars($rawBic, ENT_QUOTES, 'UTF-8');
+    $bank_name = htmlspecialchars($rawBankName, ENT_QUOTES, 'UTF-8');
+    $beneficiary_name = htmlspecialchars($rawBeneficiary, ENT_QUOTES, 'UTF-8');
+    $reason = htmlspecialchars($rawReason, ENT_QUOTES, 'UTF-8');
+
+    // Labels et icônes pour transfert bancaire
+    $label_iban = 'IBAN';
+    $icon_iban = 'fas fa-credit-card';
+    $label_bic = 'BIC';
+    $icon_bic = 'fas fa-code';
+    $label_bank = 'Banque';
+    $icon_bank = 'fas fa-building';
+}
 
 $sessionUser = $_SESSION['utilisateur_connecter'] ?? [];
 $compte_id = $sessionUser['compte_id'] ?? null;
@@ -35,10 +93,8 @@ if ($compte_id) {
 }
 
 $account_balance = isset($compte['account_balance']) ? (float)$compte['account_balance'] : 0.0;
+$formatted_balance = number_format($account_balance, 2, ',', ' ');
 $devise = htmlspecialchars($compte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
-
-$transfer_amount = ($requestedAmount !== null && $requestedAmount > 0) ? $requestedAmount : $account_balance;
-$formatted_balance = number_format($transfer_amount, 0, ',', ' ');
 $reason_display = $reason !== '' ? $reason : t('not_provided');
 
 $photoUrl = null;
@@ -53,11 +109,11 @@ if ($photoUrl === null && $compte_id) {
 }
 ?>
 <div class="dashboard">
-    <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
+    <nav class="pt-2 d-flex justify-content-between align-items-center">
         <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
-        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--primary-color);color:#fff;">
+        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;">
             <?php if (!empty($photoUrl)): ?>
-                <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.06);">
             <?php else: ?>
                 <i class="fas fa-user"></i>
             <?php endif; ?>
@@ -75,15 +131,13 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .confirm-section .premium-header {
-            background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
+            background: var(--primary-color);
             color: #fff;
             padding: 1.5rem 1rem;
-            margin-top: 8px;
-            margin-left: -16px;
-            margin-right: -16px;
+            margin-top: 0;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 20px rgba(107, 72, 231, 0.3);
+            box-shadow: 0 10px 30px rgba(107, 72, 231, 0.2);
         }
 
         .confirm-section .balance-label {
@@ -127,11 +181,11 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .step.active {
-            color: #6b48e7;
+            color: var(--primary-color);
         }
 
         .step.active .step-number {
-            background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
+            background: var(--primary-color);
             color: #fff;
             transform: scale(1.05);
         }
@@ -172,8 +226,8 @@ if ($photoUrl === null && $compte_id) {
         }
 
         /* Ensure consistent site font and alert sizing */
-        body { font-family: 'Roboto', Arial, sans-serif; }
-        .alert-modern, .alert-premium { font-family: 'Roboto', Arial, sans-serif; }
+        body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        .alert-modern, .alert-premium { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
         .alert-title { font-size: 1.05rem; font-weight: 700; }
         .alert-message { font-size: 1.00rem; line-height: 1.5; font-weight: 500; }
 
@@ -263,7 +317,7 @@ if ($photoUrl === null && $compte_id) {
             box-shadow: 0 6px 18px rgba(107, 72, 231, 0.35);
             transition: all 0.3s ease;
         }
-        
+
         .btn-premium:hover {
             transform: translateY(-2px);
             background: #5b39c9 !important;
@@ -390,7 +444,7 @@ if ($photoUrl === null && $compte_id) {
 
     <div class="confirm-section">
         <div class="premium-header text-center animate-in">
-            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('amount_to_receive') ?></div>
+            <div class="balance-label"><?= t('account_balance') ?></div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
         </div>
 
@@ -407,7 +461,7 @@ if ($photoUrl === null && $compte_id) {
             <div class="step-connector"></div>
             <div class="step">
                 <div class="step-number">3</div>
-                <span class="d-none d-md-inline"><?= t('step_verification') ?></span>
+                <span class="d-none d-md-inline">Vérification</span>
             </div>
         </div>
 
@@ -415,32 +469,32 @@ if ($photoUrl === null && $compte_id) {
             <div class="row g-4 justify-content-center">
                 <div class="col-12 col-lg-6 animate-in">
                     <div class="confirm-card">
-                        <h2 class="card-title"><?= t('details_transfer') ?></h2>
+                        <h2 class="card-title">Détails du transfert</h2>
                         <ul class="detail-list">
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-credit-card"></i> <?= t('iban_label') ?></span>
+                                <span class="detail-label"><i class="<?php echo $icon_iban; ?>"></i> <?php echo $label_iban; ?></span>
                                 <span class="detail-value"><?php echo $iban !== '' ? $iban : '—'; ?></span>
                             </li>
-                            <?php if (!empty($bic)): ?>
+<?php if ($transfer_method !== 'mobilemoney') { ?>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-code"></i> <?= t('bic_label') ?></span>
-                                <span class="detail-value"><?= htmlspecialchars($bic, ENT_QUOTES, 'UTF-8') ?></span>
+                                <span class="detail-label"><i class="<?php echo $icon_bic; ?>"></i> <?php echo $label_bic; ?></span>
+                                <span class="detail-value"><?php echo $bic !== '' ? $bic : '—'; ?></span>
                             </li>
-                            <?php endif; ?>
+<?php } ?>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-building"></i> <?= t('bank_name') ?></span>
+                                <span class="detail-label"><i class="<?php echo $icon_bank; ?>"></i> <?php echo $label_bank; ?></span>
                                 <span class="detail-value"><?php echo $bank_name !== '' ? $bank_name : '—'; ?></span>
                             </li>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-user"></i> <?= t('beneficiary_name') ?></span>
+                                <span class="detail-label"><i class="fas fa-user"></i> Bénéficiaire</span>
                                 <span class="detail-value"><?php echo $beneficiary_name !== '' ? $beneficiary_name : '—'; ?></span>
                             </li>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-comment"></i> <?= t('reason') ?></span>
+                                <span class="detail-label"><i class="fas fa-comment"></i> Motif</span>
                                 <span class="detail-value"><?php echo $reason_display; ?></span>
                             </li>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-coins"></i> <?= t('amount_label') ?></span>
+                                <span class="detail-label"><i class="fas fa-coins"></i> Montant</span>
                                 <span class="detail-value amount-highlight"><?php echo $formatted_balance . ' ' . $devise; ?></span>
                             </li>
                         </ul>
@@ -449,22 +503,35 @@ if ($photoUrl === null && $compte_id) {
 
                 <div class="col-12 col-lg-5 animate-in">
                     <div class="confirm-card">
-                        <h2 class="card-title"><?= t('security_code_title') ?></h2>
-                        <p class="code-intro"><?= t('security_code_intro') ?></p>
+                        <h2 class="card-title">Code de sécurité</h2>
+                        <p class="code-intro">Votre compte est-il activé ? Si oui, saisissez le code de vérification reçu par mail pour finaliser votre transfert.</p>
                         <form id="virement-form" action="index.php?page=virementDetail" method="post" novalidate>
-                            <input type="hidden" name="iban" value="<?php echo htmlspecialchars($rawIban, ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="hidden" name="bic" value="<?php echo htmlspecialchars($rawBic, ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="hidden" name="bank_name" value="<?php echo htmlspecialchars($rawBankName, ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="hidden" name="beneficiary_name" value="<?php echo htmlspecialchars($rawBeneficiary, ENT_QUOTES, 'UTF-8'); ?>">
+                            <?php if ($transfer_method === 'mobilemoney'): ?>
+                                <input type="hidden" name="method" value="mobilemoney">
+                                <input type="hidden" name="operator" value="<?php echo htmlspecialchars($operator_key, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="nom" value="<?php echo htmlspecialchars($nom, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="prenom" value="<?php echo htmlspecialchars($prenom, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="mobile_number" value="<?php echo htmlspecialchars($mobile_number, ENT_QUOTES, 'UTF-8'); ?>">
+                                <!-- Mapper les champs Mobile Money vers les noms attendus par virementDetail.php -->
+                                <input type="hidden" name="iban" value="<?php echo $iban; ?>">
+                                <input type="hidden" name="bic" value="<?php echo $bic; ?>">
+                                <input type="hidden" name="bank_name" value="<?php echo $bank_name; ?>">
+                                <input type="hidden" name="beneficiary_name" value="<?php echo $beneficiary_name; ?>">
+                            <?php else: ?>
+                                <input type="hidden" name="iban" value="<?php echo htmlspecialchars($rawIban, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="bic" value="<?php echo htmlspecialchars($rawBic, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="bank_name" value="<?php echo htmlspecialchars($rawBankName, ENT_QUOTES, 'UTF-8'); ?>">
+                                <input type="hidden" name="beneficiary_name" value="<?php echo htmlspecialchars($rawBeneficiary, ENT_QUOTES, 'UTF-8'); ?>">
+                            <?php endif; ?>
                             <input type="hidden" name="reason" value="<?php echo htmlspecialchars($rawReason, ENT_QUOTES, 'UTF-8'); ?>">
                             <input type="hidden" name="compte_id" value="<?php echo htmlspecialchars((string)$compte_id, ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="hidden" name="montant" value="<?php echo htmlspecialchars((string)$transfer_amount, ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="montant" value="<?php echo htmlspecialchars((string)$account_balance, ENT_QUOTES, 'UTF-8'); ?>">
 
                             <input type="text" class="code-input" name="codeVirement" id="codeVirement" inputmode="numeric" pattern="\d*" maxlength="6" autocomplete="one-time-code" placeholder="••••••" required>
 
                             <button type="submit" class="btn-premium mt-4">
                                 <i class="fas fa-check-circle"></i>
-                                <?= t('confirm_transfer') ?>
+                                Confirmer le transfert
                             </button>
 
                             <div id="error-message" class="error-banner" role="alert"></div>
@@ -497,7 +564,7 @@ if ($photoUrl === null && $compte_id) {
 
             const code = codeInput.value.trim();
             if (!/^\d{6}$/.test(code)) {
-                showError(LOCALE.code_must_be_6_digits);
+                showError('Le code doit contenir 6 chiffres.');
                 codeInput.focus();
                 return;
             }
@@ -522,20 +589,11 @@ if ($photoUrl === null && $compte_id) {
                 if (payload.success) {
                     form.submit();
                 } else {
-                    showError(payload.error || LOCALE.incorrect_code);
+                    showError(payload.error || 'Code incorrect.');
                 }
             } catch (error) {
-                showError(LOCALE.network_error);
+                showError('Erreur réseau. Veuillez réessayer.');
             }
         });
     });
-</script>
-
-<script>
-    // Export localized strings for client-side use
-    const LOCALE = {
-        code_must_be_6_digits: <?php echo json_encode(t('code_must_be_6_digits')); ?>,
-        incorrect_code: <?php echo json_encode(t('incorrect_code')); ?>,
-        network_error: <?php echo json_encode(t('network_error')); ?>
-    };
 </script>

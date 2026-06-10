@@ -24,17 +24,29 @@ $bank_name = htmlspecialchars($rawBankName, ENT_QUOTES, 'UTF-8');
 $beneficiary_name = htmlspecialchars($rawBeneficiary, ENT_QUOTES, 'UTF-8');
 $reason = htmlspecialchars($rawReason, ENT_QUOTES, 'UTF-8');
 
+// Déterminer le type de transfert pour afficher des libellés adaptés
+$transfer_method = trim((string)($_POST['method'] ?? 'bank'));
+if ($transfer_method === 'mobilemoney') {
+    $label_iban = 'Numéro Mobile Money';
+    // $label_bic intentionally left defined but not displayed in virementDetail
+    $label_bic = 'Code opérateur';
+    $label_bank = 'Opérateur';
+} else {
+    $label_iban = 'IBAN / Numéro de compte';
+    // $label_bic intentionally left defined but not displayed in virementDetail
+    $label_bic = 'Code banque (BIC / SWIFT)';
+    $label_bank = 'Agence de réception';
+}
+
 $utilisateur_connecte = getUserDetails($accountId);
 if (!is_array($utilisateur_connecte)) {
     $utilisateur_connecte = [];
 }
 
-$montant = (float)$_POST['montant'];
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float)$utilisateur_connecte['account_balance'] : 0.0;
-$transfer_amount = $montant;
-$formatted_balance = number_format($transfer_amount, 0, ',', ' ');
+$formatted_balance = number_format($account_balance, 2, ',', ' ');
 $devise = htmlspecialchars($utilisateur_connecte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
-$transfer_amount_display = number_format($transfer_amount, 0, ',', ' ');
+$transfer_amount_display = number_format($account_balance, 2, ',', ' ');
 $date = date('Y-m-d H:i:s');
 $date_display = date('d/m/Y H:i');
 $failure_message = trim((string)($utilisateur_connecte['failure_message'] ?? ''));
@@ -55,20 +67,28 @@ if ($photoUrl === null && $accountId) {
 }
 ?>
 <div class="dashboard">
-    <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
+    <nav class="pt-2 d-flex justify-content-between align-items-center">
         <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
-        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#6b48e7 0%,#4a3dc4 100%);color:#fff;">
+        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;">
             <?php if (!empty($photoUrl)): ?>
-                <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <span class="avatar-sm" style="width:40px;height:40px;">
+                    <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar">
+                </span>
             <?php else: ?>
                 <i class="fas fa-user"></i>
             <?php endif; ?>
         </a>
     </nav>
+    <hr>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> <?= t('back') ?></a>
+            <span class="verification-tag"><i class="fas fa-shield-alt"></i> <?= t('verification_in_progress') ?></span>
+    </div>
 
     <style>
         .verify-section {
-            --primary-gradient: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --success-gradient: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);
             --danger-gradient: linear-gradient(135deg, #d93025 0%, #ea4335 100%);
             --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -77,17 +97,10 @@ if ($photoUrl === null && $accountId) {
             --glass-border: rgba(255, 255, 255, 0.4);
         }
 
-        .verify-section {
-            padding-top: 1.25rem;
-        }
-
         .verify-section .premium-header {
             background: var(--primary-gradient);
             color: #fff;
             padding: 2rem 1rem;
-            margin-top: 0;
-            margin-left: -16px;
-            margin-right: -16px;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
             box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
@@ -142,7 +155,7 @@ if ($photoUrl === null && $accountId) {
         }
 
         .step.active {
-            color: #6b48e7;
+            color: #667eea;
         }
 
         .step.active .step-number {
@@ -193,8 +206,8 @@ if ($photoUrl === null && $accountId) {
         }
 
         /* Ensure consistent site font and alert sizing */
-        body { font-family: 'Roboto', Arial, sans-serif; }
-        .alert-modern, .alert-premium { font-family: 'Roboto', Arial, sans-serif; }
+        body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        .alert-modern, .alert-premium { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
         .alert-title { font-size: 1.05rem; font-weight: 700; }
         .alert-message { font-size: 1.00rem; line-height: 1.5; font-weight: 500; }
 
@@ -320,25 +333,23 @@ if ($photoUrl === null && $accountId) {
         }
 
         .back-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 50px;
-            padding: 0.6rem 1.4rem;
-            color: #fff;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 0.6rem 1.2rem;
+            color: #64748b;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
         }
 
         .back-btn:hover {
-            color: #fff;
-            transform: translateX(-3px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+            color: #4f46e5;
+            border-color: #4f46e5;
+            transform: translateY(-2px);
         }
 
         .menu-icon {
@@ -380,8 +391,10 @@ if ($photoUrl === null && $accountId) {
             }
 
             .back-btn {
+                width: 100%;
+                justify-content: center;
                 font-size: 14px;
-                padding: 10px 20px;
+                padding: 12px 16px;
             }
 
             .stepper {
@@ -444,6 +457,8 @@ if ($photoUrl === null && $accountId) {
                 font-size: 16px;
                 padding: 16px;
             }
+        }
+            }
 
             .progress-bar-wrapper {
                 height: 44px;
@@ -504,6 +519,27 @@ if ($photoUrl === null && $accountId) {
             overflow: hidden;
             box-shadow: 0 24px 50px rgba(15, 23, 42, 0.25);
             background: #fff;
+        }
+
+        /* Limit modal visible height and make body scrollable to reduce modal length */
+        .modern-modal .modal-dialog,
+        .modern-modal .modal-dialog.modal-narrow {
+            max-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .modern-modal .modal-content {
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modern-modal .modal-body {
+            overflow: auto;
+            /* reserve space for header/footer (approx) */
+            max-height: calc(80vh - 180px);
         }
 
         .modern-modal .modal-header {
@@ -767,12 +803,8 @@ if ($photoUrl === null && $accountId) {
 
     <div class="verify-section">
         <div class="premium-header text-center animate-in">
-            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('virement_en_cours') ?></div>
+            <div class="balance-label">Montant du transfert</div>
             <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
-        </div>
-
-        <div class="text-center mb-2">
-            <span class="verification-tag"><i class="fas fa-shield-alt"></i> <?= t('verification_in_progress') ?></span>
         </div>
 
         <div class="stepper animate-in">
@@ -783,12 +815,12 @@ if ($photoUrl === null && $accountId) {
             <div class="step-connector"></div>
             <div class="step completed" id="step-confirmation">
                 <div class="step-number">2</div>
-                <span class="d-none d-md-inline"><?= t('step_confirmation') ?></span>
+                <span class="d-none d-md-inline">Confirmation</span>
             </div>
             <div class="step-connector"></div>
             <div class="step active" id="step-verification">
                 <div class="step-number">3</div>
-                <span class="d-none d-md-inline"><?= t('step_verification') ?></span>
+                <span class="d-none d-md-inline">Vérification</span>
             </div>
         </div>
 
@@ -796,38 +828,35 @@ if ($photoUrl === null && $accountId) {
             <div class="row g-4 justify-content-center">
                 <div class="col-12 col-lg-7 animate-in">
                     <div class="summary-card">
-                        <h2><i class="fas fa-check-circle text-success me-2"></i><?= t('card_alert_title') ?></h2>
-                        <p class="mb-4 text-secondary"><?= htmlspecialchars(t('transfer_verification_message'), ENT_QUOTES, 'UTF-8') ?></p>
+                        <h2><i class="fas fa-check-circle text-success me-2"></i>Félicitations !</h2>
+                        <p class="mb-4 text-secondary">La vérification d'identité est validée. Nous transférons vos fonds vers la banque indiquée, merci de patienter sans rafraîchir la page.</p>
                         <div class="summary-grid">
                             <div class="summary-item">
-                                <div class="summary-label"><?= t('beneficiary_name') ?></div>
+                                <div class="summary-label">Nom du bénéficiaire</div>
                                 <div class="summary-value"><?php echo $beneficiary_name !== '' ? $beneficiary_name : '—'; ?></div>
                             </div>
                             <div class="summary-item">
-                                <div class="summary-label"><?= t('bank_name') ?></div>
+                                <div class="summary-label"><?php echo $label_bank; ?></div>
                                 <div class="summary-value"><?php echo $bank_name !== '' ? $bank_name : '—'; ?></div>
                             </div>
                             <div class="summary-item">
-                                <div class="summary-label"><?= t('iban_label') ?></div>
+                                <div class="summary-label"><?php echo $label_iban; ?></div>
                                 <div class="summary-value"><?php echo $iban !== '' ? $iban : '—'; ?></div>
                             </div>
+                            <!-- Code opérateur / BIC intentionally removed from summary -->
                             <div class="summary-item">
-                                <div class="summary-label"><?= t('bic_label') ?></div>
-                                <div class="summary-value"><?php echo $bic !== '' ? $bic : '—'; ?></div>
-                            </div>
-                            <div class="summary-item">
-                                <div class="summary-label"><?= t('reason_label') ?></div>
+                                <div class="summary-label">Motif de transfert</div>
                                 <div class="summary-value"><?php echo $reason !== '' ? $reason : 'Non renseigné'; ?></div>
                             </div>
                             <div class="summary-item">
-                                <div class="summary-label"><?= t('amount_to_receive') ?></div>
+                                    <div class="balance-label">Montant du transfert</div>
                                 <div class="summary-value amount-highlight"><?php echo $formatted_balance . ' ' . $devise; ?></div>
                             </div>
                         </div>
                         <div class="text-end mt-4">
                             <a href="index.php?page=transfert" class="cta-soft" id="retry-transfer-button" style="display:none;">
                                 <i class="fas fa-rotate-right"></i>
-                                <span><?= t('perform_another_transfer') ?></span>
+                                    <span>Effectuer un autre transfert</span>
                             </a>
                         </div>
                     </div>
@@ -835,11 +864,11 @@ if ($photoUrl === null && $accountId) {
 
                 <div class="col-12 col-lg-5 animate-in">
                     <div class="progress-card">
-                        <h2><i class="fas fa-spinner me-2"></i><?= t('transfer_status') ?></h2>
+                        <h2><i class="fas fa-spinner me-2"></i>Statut du transfert</h2>
                         <div class="progress-bar-wrapper">
                             <div id="progress-bar" class="progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                         </div>
-                        <div id="transfer-status-message" class="status-message text-secondary mt-3"><?= t('transfer_in_progress') ?></div>
+                            <div id="transfer-status-message" class="status-message text-secondary mt-3">Transfert en cours, veuillez patienter...</div>
                     </div>
                 </div>
             </div>
@@ -856,47 +885,44 @@ if ($photoUrl === null && $accountId) {
                 <div class="modal-header-content">
                     <div class="modal-icon-bubble"><i class="fas fa-check"></i></div>
                     <div>
-                        <h3 class="modal-title" id="successModalLabel"><?= t('transfer_success_title') ?></h3>
-                        <p class="modal-subtitle"><?= htmlspecialchars(t('transfer_success_subtitle', array('amount' => $transfer_amount_display, 'currency' => $devise)), ENT_QUOTES, 'UTF-8') ?></p>
+                        <h3 class="modal-title" id="successModalLabel">Transfert envoyé avec succès</h3>
+                        <p class="modal-subtitle">Le transfert de <?php echo $transfer_amount_display; ?> <?php echo $devise; ?> a été validé et sera crédité sous peu.</p>
                     </div>
                 </div>
-                <button type="button" class="btn-close modern-close manual-modal-close" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>"></button>
+                <button type="button" class="btn-close modern-close manual-modal-close" aria-label="Fermer"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-info-grid">
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('beneficiary_name') ?></span>
+                        <span class="modal-info-label">Nom du bénéficiaire</span>
                         <span class="modal-info-value"><?php echo $beneficiary_name !== '' ? $beneficiary_name : '—'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('bank_name') ?></span>
+                        <span class="modal-info-label"><?php echo $label_bank; ?></span>
                         <span class="modal-info-value"><?php echo $bank_name !== '' ? $bank_name : '—'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('iban_label') ?></span>
+                        <span class="modal-info-label"><?php echo $label_iban; ?></span>
                         <span class="modal-info-value"><?php echo $iban !== '' ? $iban : '—'; ?></span>
                     </div>
+                    <!-- Code opérateur / BIC intentionally removed from success modal -->
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('bic_label') ?></span>
-                        <span class="modal-info-value"><?php echo $bic !== '' ? $bic : '—'; ?></span>
-                    </div>
-                    <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('amount_sent') ?></span>
+                        <span class="modal-info-label">Montant envoyé</span>
                         <span class="modal-info-value"><?php echo $transfer_amount_display; ?> <?php echo $devise; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= htmlspecialchars(t('reason'), ENT_QUOTES, 'UTF-8') ?></span>
+                        <span class="modal-info-label">Motif de transfert</span>
                         <span class="modal-info-value"><?php echo $reason !== '' ? $reason : 'Non renseigné'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('date_sent_label') ?></span>
+                        <span class="modal-info-label">Date et heure d'envoi</span>
                         <span class="modal-info-value"><?php echo $date_display; ?></span>
                     </div>
                 </div>
                 <div class="modal-status"><i class="fas fa-check-circle"></i> <?php echo $success_message_display; ?></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-modal-primary manual-modal-close"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>
+                <button type="button" class="btn-modal-primary manual-modal-close">Fermer</button>
             </div>
         </div>
     </div>
@@ -909,43 +935,44 @@ if ($photoUrl === null && $accountId) {
                 <div class="modal-header-content">
                     <div class="modal-icon-bubble"><i class="fas fa-exclamation-triangle"></i></div>
                     <div>
-                        <h3 class="modal-title" id="failureModalLabel"><?= t('transfer_failed') ?></h3>
-                        <p class="modal-subtitle"><?= htmlspecialchars(t('transfer_failed_subtitle'), ENT_QUOTES, 'UTF-8') ?></p>
+                        <h3 class="modal-title" id="failureModalLabel">Transfert échoué</h3>
+                        <p class="modal-subtitle">Le transfert n'a pas pu être finalisé. Vérifiez vos informations ou réessayez plus tard.</p>
                     </div>
                 </div>
-                <button type="button" class="btn-close modern-close manual-modal-close" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>"></button>
+                <button type="button" class="btn-close modern-close manual-modal-close" aria-label="Fermer"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-info-grid">
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('beneficiary_name') ?></span>
+                        <span class="modal-info-label">Nom du bénéficiaire</span>
                         <span class="modal-info-value"><?php echo $beneficiary_name !== '' ? $beneficiary_name : '—'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('bank_name') ?></span>
+                        <span class="modal-info-label"><?php echo $label_bank; ?></span>
                         <span class="modal-info-value"><?php echo $bank_name !== '' ? $bank_name : '—'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('iban_label') ?></span>
+                        <span class="modal-info-label"><?php echo $label_iban; ?></span>
                         <span class="modal-info-value"><?php echo $iban !== '' ? $iban : '—'; ?></span>
                     </div>
+                    <!-- Code opérateur / BIC intentionally removed from failure modal -->
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('bic_label') ?></span>
-                        <span class="modal-info-value"><?php echo $bic !== '' ? $bic : '—'; ?></span>
-                    </div>
-                    <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('amount_sent') ?></span>
+                        <span class="modal-info-label">Montant prévu</span>
                         <span class="modal-info-value"><?php echo $transfer_amount_display; ?> <?php echo $devise; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('date_sent_label') ?></span>
+                        <span class="modal-info-label">Motif de transfert</span>
+                        <span class="modal-info-value"><?php echo $reason !== '' ? $reason : 'Non renseigné'; ?></span>
+                    </div>
+                    <div class="modal-info-item">
+                        <span class="modal-info-label">Date et heure</span>
                         <span class="modal-info-value"><?php echo $date_display; ?></span>
                     </div>
                 </div>
-                <div class="modal-status"><i class="fas fa-exclamation-circle"></i> <?php echo $failure_message !== '' ? htmlspecialchars($failure_message, ENT_QUOTES, 'UTF-8') : htmlspecialchars(t('please_try_again'), ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="modal-status"><i class="fas fa-exclamation-circle"></i> <?php echo $failure_message !== '' ? htmlspecialchars($failure_message, ENT_QUOTES, 'UTF-8') : 'Transfert non abouti. Veuillez réessayer.'; ?></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-modal-primary manual-modal-close"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>
+                <button type="button" class="btn-modal-primary manual-modal-close">Fermer</button>
             </div>
         </div>
     </div>
@@ -958,31 +985,31 @@ if ($photoUrl === null && $accountId) {
                 <div class="modal-header-content">
                     <div class="modal-icon-bubble"><i class="fas fa-wallet"></i></div>
                     <div>
-                        <h3 class="modal-title" id="insuffitModalLabel"><?= t('insufficient_balance') ?></h3>
-                        <p class="modal-subtitle"><?= htmlspecialchars(t('insufficient_balance_message'), ENT_QUOTES, 'UTF-8') ?></p>
+                        <h3 class="modal-title" id="insuffitModalLabel">Solde insuffisant</h3>
+                        <p class="modal-subtitle">Votre solde actuel ne permet pas de finaliser ce transfert.</p>
                     </div>
                 </div>
-                <button type="button" class="btn-close modern-close manual-modal-close" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>"></button>
+                <button type="button" class="btn-close modern-close manual-modal-close" aria-label="Fermer"></button>
             </div>
             <div class="modal-body">
                 <div class="modal-info-grid">
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('beneficiary_name') ?></span>
+                        <span class="modal-info-label">Nom du bénéficiaire</span>
                         <span class="modal-info-value"><?php echo $beneficiary_name !== '' ? $beneficiary_name : '—'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('bank_name') ?></span>
+                        <span class="modal-info-label"><?php echo $label_bank; ?></span>
                         <span class="modal-info-value"><?php echo $bank_name !== '' ? $bank_name : '—'; ?></span>
                     </div>
                     <div class="modal-info-item">
-                        <span class="modal-info-label"><?= t('amount_sent') ?></span>
+                        <span class="modal-info-label">Montant prévu</span>
                         <span class="modal-info-value"><?php echo $transfer_amount_display; ?> <?php echo $devise; ?></span>
                     </div>
                 </div>
-                <div class="modal-status"><i class="fas fa-info-circle"></i> <?php echo htmlspecialchars(t('insufficient_balance_message'), ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="modal-status"><i class="fas fa-info-circle"></i> Le solde de votre compte est insuffisant pour effectuer ce transfert.</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn-modal-primary manual-modal-close"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>
+                <button type="button" class="btn-modal-primary manual-modal-close">Fermer</button>
             </div>
         </div>
     </div>
@@ -997,12 +1024,6 @@ if ($photoUrl === null && $accountId) {
     const retryButton = document.getElementById('retry-transfer-button');
     const stepVerification = document.getElementById('step-verification');
     const successMessageText = <?php echo json_encode($success_message_text_raw, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-
-    // Localized strings for client-side updates
-    const t_retry_another = <?php echo json_encode(t('perform_another_transfer'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-    const t_retry_try_again = <?php echo json_encode(t('please_try_again'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-    const t_insufficient_balance_status = <?php echo json_encode(t('insufficient_balance_message'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-    const t_transfer_failed_status = <?php echo json_encode(t('transfer_failed_status', []), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
 
         const startPercentage = parseInt('<?php echo (int)($utilisateur_connecte['start_percentage'] ?? 0); ?>', 10);
         const endPercentage = parseInt('<?php echo (int)($utilisateur_connecte['end_percentage'] ?? 100); ?>', 10);
@@ -1046,170 +1067,95 @@ if ($photoUrl === null && $accountId) {
             });
         });
 
-        function closeModalById(modalId) {
-            const element = document.getElementById(modalId);
-            if (!element) {
-                return;
-            }
-            if (typeof window.jQuery !== 'undefined' && typeof jQuery(element).modal === 'function') {
-                jQuery(element).modal('hide');
-            } else {
-                element.classList.remove('show');
-                element.setAttribute('aria-hidden', 'true');
-                element.style.display = 'none';
-                document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
-                document.body.classList.remove('modal-open');
-                document.body.style.removeProperty('padding-right');
-            }
-        }
+        let width = startPercentage;
+    updateVisualProgress(width);
 
-        function stopProgressSpinner() {
-            const spinner = document.querySelector('.progress-card h2 .fa-spinner');
-            if (spinner) {
-                spinner.classList.add('stopped');
-            }
-        }
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
 
-        function markTransferSuccessUI() {
-            stopProgressSpinner();
-            showModalById('successModal');
-            if (statusMessage) {
-                statusMessage.textContent = successMessageText;
-                statusMessage.classList.remove('text-secondary');
-                statusMessage.classList.remove('status-error');
-                statusMessage.classList.add('status-success');
-            }
-            if (progressBar) {
-                progressBar.classList.remove('failed');
-            }
-            const balanceDisplay = document.querySelector('.balance-display');
-            if (balanceDisplay) {
-                balanceDisplay.innerHTML = '0,00 <span style="font-size:1.2rem;font-weight:500;">' + <?php echo json_encode($devise, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?> + '</span>';
-            }
-            stepVerification.classList.remove('active');
-            stepVerification.classList.add('completed');
-            updateVisualProgress(100);
-            if (retryButton) {
-                retryButton.style.display = 'inline-flex';
-                retryButton.querySelector('span').textContent = t_retry_another;
-                retryButton.href = 'index.php?page=transfert';
-            }
-        }
+                if (accountBalance > 0) {
+                    const payload = {
+                        bic: <?php echo json_encode($rawBic); ?>,
+                        iban: <?php echo json_encode($rawIban); ?>,
+                        bank_name: <?php echo json_encode($rawBankName); ?>,
+                        beneficiary_name: <?php echo json_encode($rawBeneficiary); ?>,
+                        reason: <?php echo json_encode($rawReason); ?>,
+                        user_id: <?php echo json_encode($ownerUserId ?? ''); ?>,
+                        solidvire: <?php echo json_encode($account_balance); ?>,
+                        devise: <?php echo json_encode($utilisateur_connecte['devise'] ?? 'EUR'); ?>,
+                        token: <?php echo json_encode($utilisateur_connecte['token'] ?? ''); ?>,
+                        status: 'completed',
+                        created_at: <?php echo json_encode($date); ?>,
+                        updated_at: <?php echo json_encode($date); ?>
+                    };
 
-        function persistTransfer() {
-            const payload = {
-                bic: <?php echo json_encode($rawBic); ?>,
-                iban: <?php echo json_encode($rawIban); ?>,
-                bank_name: <?php echo json_encode($rawBankName); ?>,
-                beneficiary_name: <?php echo json_encode($rawBeneficiary); ?>,
-                reason: <?php echo json_encode($rawReason); ?>,
-                user_id: <?php echo json_encode($ownerUserId ?? ''); ?>,
-                solidvire: <?php echo json_encode($transfer_amount); ?>,
-                devise: <?php echo json_encode($utilisateur_connecte['devise'] ?? 'EUR'); ?>,
-                token: <?php echo json_encode($utilisateur_connecte['token'] ?? ''); ?>,
-                status: 'completed',
-                created_at: <?php echo json_encode($date); ?>,
-                updated_at: <?php echo json_encode($date); ?>
-            };
-
-            return fetch('insert_transfer.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(response => response.json());
-        }
-
-        const startDisplay = Math.max(0, Math.min(100, startPercentage));
-        const targetDisplay = Math.max(startDisplay, Math.min(100, endPercentage));
-        const PROGRESS_DURATION_PER_PERCENT_MS = 1000; // 1s per percentage point
-        const deltaPercent = Math.max(1, targetDisplay - startDisplay);
-        const totalDuration = deltaPercent * PROGRESS_DURATION_PER_PERCENT_MS;
-        let width = startDisplay;
-        updateVisualProgress(width);
-
-        const requestFrame = (window.requestAnimationFrame || function(cb) { return setTimeout(() => cb(Date.now()), 16); }).bind(window);
-        const cancelFrame = (window.cancelAnimationFrame || clearTimeout).bind(window);
-        let progressAnimationId = null;
-        let progressAnimationStart = null;
-        let progressComplete = false;
-
-        function cancelProgressAnimation() {
-            if (progressAnimationId !== null) {
-                cancelFrame(progressAnimationId);
-                progressAnimationId = null;
-            }
-        }
-
-        function finalizeProgressSuccess() {
-            if (progressComplete) {
-                return;
-            }
-            progressComplete = true;
-            cancelProgressAnimation();
-            if (accountBalance > 0) {
-                markTransferSuccessUI();
-                persistTransfer()
+                    fetch('insert_transfer.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    })
+                    .then(response => response.json())
                     .then(data => {
                         if (data && data.success) {
-                            fetch('deduct_balance.php', {
+                            // Arrêter l'animation du spinner
+                            const spinner = document.querySelector('.progress-card h2 .fa-spinner');
+                            if (spinner) spinner.classList.add('stopped');
+                            
+                            showModalById('successModal');
+                            statusMessage.textContent = successMessageText;
+                            statusMessage.classList.remove('text-secondary');
+                            statusMessage.classList.remove('status-error');
+                            statusMessage.classList.add('status-success');
+                            if (progressBar) {
+                                progressBar.classList.remove('failed');
+                            }
+                            const balanceDisplay = document.querySelector('.balance-display');
+                            if (balanceDisplay) {
+                                balanceDisplay.innerHTML = '0,00 <span style="font-size:1.2rem;font-weight:500;">' + <?php echo json_encode($devise, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?> + '</span>';
+                            }
+                            stepVerification.classList.remove('active');
+                            stepVerification.classList.add('completed');
+                            updateVisualProgress(100);
+
+                            fetch('update_balance_to_zero.php', {
                                 method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ amount: <?php echo json_encode($transfer_amount); ?> })
+                                headers: { 'Content-Type': 'application/json' }
                             }).catch(() => {});
+
+                            if (retryButton) {
+                                retryButton.style.display = 'inline-flex';
+                                retryButton.querySelector('span').textContent = 'Effectuer un autre transfert';
+                                retryButton.href = 'index.php?page=transfert';
+                            }
                         } else {
                             throw new Error(data && data.message ? data.message : 'Erreur inconnue');
                         }
                     })
                     .catch(error => {
-                        console.error('Erreur lors du virement:', error);
+                        console.error('Erreur lors du transfert:', error);
                         handleFailure();
                     });
-            } else {
-                handleFailure(true);
-            }
-        }
-
-        function animateProgress(timestamp) {
-            if (progressComplete) {
-                return;
-            }
-            if (!progressAnimationStart) {
-                progressAnimationStart = timestamp;
-            }
-
-            const elapsed = timestamp - progressAnimationStart;
-            const fraction = Math.min(1, elapsed / totalDuration);
-            if (targetDisplay > startDisplay) {
-                width = startDisplay + fraction * (targetDisplay - startDisplay);
-            } else {
-                width = startDisplay;
-            }
-            updateVisualProgress(width);
-
-            if (fraction >= 1) {
-                if (targetDisplay >= 100) {
-                    finalizeProgressSuccess();
                 } else {
-                    progressComplete = true;
-                    cancelProgressAnimation();
-                    handleFailure();
+                    handleFailure(true);
                 }
-                return;
+            } else if (width >= endPercentage) {
+                clearInterval(interval);
+                handleFailure();
+            } else {
+                width += 1;
+                updateVisualProgress(width);
             }
-
-            progressAnimationId = requestFrame(animateProgress);
-        }
-
-        progressAnimationId = requestFrame(animateProgress);
+        }, 1000);
 
         function handleFailure(insufficient = false) {
-            progressComplete = true;
-            cancelProgressAnimation();
-            stopProgressSpinner();
-            closeModalById('successModal');
+            // Arrêter l'animation du spinner
+            const spinner = document.querySelector('.progress-card h2 .fa-spinner');
+            if (spinner) spinner.classList.add('stopped');
+            
             showModalById(insufficient ? 'insuffitModal' : 'failureModal');
             if (statusMessage) {
-                statusMessage.textContent = insufficient ? t_insufficient_balance_status : (t_transfer_failed_status || 'Transfer failed');
+                statusMessage.textContent = insufficient ? 'Solde insuffisant pour finaliser le transfert.' : 'Échec du transfert.';
                 statusMessage.classList.remove('text-secondary');
                 statusMessage.classList.remove('status-success');
                 statusMessage.classList.add('status-error');
@@ -1219,7 +1165,7 @@ if ($photoUrl === null && $accountId) {
             }
             if (retryButton) {
                 retryButton.style.display = 'inline-flex';
-                retryButton.querySelector('span').textContent = t_retry_try_again;
+                retryButton.querySelector('span').textContent = 'Veuillez réessayer';
                 retryButton.href = 'index.php?page=transfert';
             }
         }

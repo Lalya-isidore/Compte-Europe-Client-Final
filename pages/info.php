@@ -22,7 +22,7 @@ if (!is_array($utilisateur_connecte)) {
 
 // Formater le montant du solde du compte
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $utilisateur_connecte['account_balance'] : 0;
-$formatted_balance = number_format($account_balance, 0, ',', ' ');
+$formatted_balance = number_format($account_balance, 2, ',', ' ');
 
 // Récupérer la devise pour l'affichage
 $devise = $utilisateur['devise'] ?? 'EUR';
@@ -156,9 +156,6 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
 
     .info-item span {
         overflow-wrap: anywhere;
-        color: #0f172a; /* darker, purer ink */
-        font-weight: 700; /* bolder for clarity */
-        font-size: 1.05rem; /* slightly larger for readability */
     }
 
     .status-badge {
@@ -212,12 +209,12 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
 
 /* Ensure premium alerts use site font and readable sizes */
 .alert-premium .alert-title {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 1.03rem;
     font-weight: 700;
 }
 .alert-premium .alert-message {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 1.00rem;
     line-height: 1.45;
     font-weight: 500;
@@ -271,9 +268,8 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
 }
 
 .info-item span {
-    color: #0f172a; /* darker, purer ink */
-    font-weight: 700; /* bolder for clarity */
-    font-size: 1.05rem; /* slightly larger for readability */
+    color: #2d3748;
+    font-weight: 600;
 }
 
 /* Badge de statut modernisé */
@@ -364,9 +360,8 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
     }
 
     .info-item span {
-        font-size: 1.05rem;
-        color: #0f172a;
-        font-weight: 700;
+        font-size: 16px;
+        color: #1a1a1a;
     }
 
     .status-badge {
@@ -521,7 +516,7 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
         </div>
         
         <div class="info-item">
-            <strong><i class="fas fa-hashtag"></i> <?= t('iban_label') ?></strong>
+            <strong><i class="fas fa-hashtag"></i> Numéro de compte</strong>
             <?php $ibanValue = trim((string)($utilisateur_connecte['iban'] ?? '')); ?>
             <?php if ($ibanValue !== ''): ?>
                 <span><?= htmlspecialchars($ibanValue, ENT_QUOTES, 'UTF-8') ?></span>

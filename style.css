@@ -1,31 +1,6 @@
-/* Global UI font and adjustments for better mobile readability
-   - Import Inter (UI font) and define --ui-font variable
-   - Apply to body and force on notifications/timeline to avoid thin rendering on some devices
-*/
-:root { --ui-font: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-
-html, body { font-family: var(--ui-font); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-
-/* Ensure consistent UI font on key components (notifications & timeline) */
-.alert-modern,
-.alert-modern .alert-title,
-.alert-modern .alert-message,
-.alert-body,
-.alert-icon,
-.timeline-card,
-.timeline-item,
-.timeline-title,
-.timeline-amount,
-.timeline-meta,
-.timeline-datetime {
-    font-family: var(--ui-font) !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* End global UI font rules */
-
 /* Centrage et marges latérales pour le formulaire de connexion */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 .login-container {
     position: fixed;
     left: 0;
@@ -100,140 +75,6 @@ html, body {
     margin: 10px 0 30px 0;
     font-size: 28px;
     font-weight: 800;
-}
-
-/* Improve contrast/weight for transaction meta (bank name, paypal, account numbers) */
-.timeline-meta,
-.timeline-submeta,
-.timeline-meta .meta-bank,
-.meta-email,
-.meta-bank,
-.meta-value,
-/* include anchors and email links (e.g. PayPal email) */
-.timeline-submeta a,
-.timeline-meta a,
-.meta-email a,
-.meta-bank a,
-.meta-value a {
-    color: #1f2937; /* darker slate */
-    font-weight: 400;
-}
-
-/* Slightly larger and more legible on small screens */
-@media (max-width: 420px) {
-    .timeline-meta,
-    .timeline-submeta,
-    .timeline-meta .meta-bank,
-    .meta-email,
-    .meta-bank,
-    .meta-value,
-    .timeline-submeta a,
-    .timeline-meta a,
-    .meta-email a,
-    .meta-bank a,
-    .meta-value a {
-        font-size: 0.95rem;
-        line-height: 1.25;
-    }
-
-/* Very small phones adjustments (narrow devices like ~320-360px) */
-@media (max-width: 360px) {
-    .show-wrapper { padding-bottom: 180px; }
-
-    .timeline-item {
-        padding: 10px 8px;
-        gap: 8px;
-        border-radius: 12px;
-    }
-
-    .timeline-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-
-    .timeline-title {
-        font-size: 0.88rem;
-    }
-
-    .timeline-amount {
-        font-size: 0.92rem;
-    }
-
-    .timeline-meta .meta-bank {
-        max-width: 58%;
-        white-space: normal;
-        overflow-wrap: anywhere;
-    }
-
-    /* keep the meta row on a single line so the datetime stays right-aligned (like image 2) */
-    .timeline-row {
-        flex-wrap: nowrap !important;
-        align-items: center !important;
-    }
-
-    /* Keep datetime on the same row, pinned to the right, don't force a full-width line */
-    .timeline-datetime {
-        font-size: 0.90rem !important;
-        flex: 0 0 auto !important;
-        margin-left: auto !important;
-        text-align: right !important;
-        margin-top: 0 !important;
-    }
-
-    /* Slightly reduce icon/text gap for the tiny screens and keep the icon + label together */
-    .timeline-meta, .timeline-submeta { gap: 4px !important; }
-    .timeline-submeta i { margin-right: 4px !important; }
-}
-
-    /* Allow bank/name to wrap so datetime can remain on the right for small screens */
-    .timeline-meta .meta-bank {
-        white-space: normal;
-        max-width: 68%;
-        overflow-wrap: anywhere;
-    }
-
-    /* Keep the datetime pinned to the right and prevent shrinking */
-    .timeline-datetime {
-        margin-left: auto;
-        flex-shrink: 0;
-    }
-
-    /* Ensure PayPal icon and email/label stay on the same line and are closer together */
-    .timeline-submeta {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px; /* small gap between icon and text */
-    }
-
-    /* For PayPal emails, prevent wrapping under the icon and truncate if needed */
-    .timeline-submeta .meta-email,
-    .timeline-submeta .meta-bank {
-        white-space: nowrap;
-        max-width: calc(100% - 40px);
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-}
-
-/* Dates and times in the timeline - increase contrast and readability */
-.timeline-datetime {
-    color: #374151; /* darker slate for better contrast */
-    font-weight: 400;
-    font-size: 0.9rem;
-}
-.timeline-datetime i {
-    color: #6b7280;
-    font-size: 0.85rem;
-}
-
-@media (max-width: 576px) {
-    .timeline-datetime {
-        font-size: 0.95rem;
-        line-height: 1.2;
-        font-weight: 400;
-    }
-    .timeline-datetime i { font-size: 0.85rem; }
 }
 
 .form {
@@ -353,7 +194,7 @@ html, body {
 
 
 * {
-    font-family: var(--ui-font);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .account-balance {
@@ -525,20 +366,38 @@ html, body {
     flex: 0 0 auto;
 }
 
-/* Use tabular numbers for monetary values so digits align vertically */
-.timeline-amount,
-.timeline-card .timeline-item .timeline-amount,
-.hero-balance,
-.timeline-card .timeline-row .timeline-amount {
-    font-variant-numeric: tabular-nums;
-    -webkit-font-feature-settings: "tnum" 1;
-    -moz-font-feature-settings: "tnum" 1;
-    font-feature-settings: "tnum" 1;
+.timeline-meta, .timeline-datetime {
+    /* adjusted per design: slightly smaller and medium weight */
+    font-size: 0.80rem !important;
+    color: #6b7280;
 }
 
-.timeline-meta, .timeline-datetime {
-    font-size: 0.95rem;
-    color: #6b7280;
+/* Make timeline labels (title, operator/number, datetime) pure black like the design */
+.timeline-card .timeline-item .timeline-title,
+.timeline-card .timeline-item .timeline-meta,
+.timeline-card .timeline-item .timeline-datetime {
+    color: #000000 !important;
+}
+
+/* Force date/time to pure black and slightly stronger weight to match reference */
+.timeline-card .timeline-item .timeline-datetime,
+.timeline-card .timeline-item .timeline-meta,
+span.timeline-datetime,
+span.timeline-meta {
+    color: #000000 !important;
+    font-weight: 600 !important;
+    font-size: 0.80rem !important;
+}
+
+/* Keep amount coloring intact (positive/negative), do not override .timeline-amount */
+
+/* Ensure operator logos and inline icons inside timeline meta are compact and aligned */
+.timeline-meta .operator-logo,
+.timeline-meta i.fab,
+.timeline-meta i.fas {
+    vertical-align: middle;
+    margin-right: 2px; /* tightened to bring number closer to logo */
+    display: inline-block;
 }
 
 @media (max-width: 768px) {
@@ -547,7 +406,8 @@ html, body {
         font-size: 1.24rem; /* noticeably larger on tablets/small screens */
     }
     .timeline-meta, .timeline-datetime {
-        font-size: 1.00rem;
+        /* tablet: keep consistent smaller size */
+        font-size: 0.80rem !important;
     }
     .timeline-icon { width:48px; height:48px; flex:0 0 48px; }
 }
@@ -578,7 +438,8 @@ html, body {
     }
 
     .timeline-meta, .timeline-datetime {
-        font-size: 1.02rem;
+        /* phone: keep consistent smaller size */
+        font-size: 0.80rem !important;
         color: #6b7280;
     }
 
@@ -604,7 +465,7 @@ html, body {
     }
 
     .timeline-meta, .timeline-datetime {
-        font-size: 1.03rem;
+        font-size: 0.80rem !important;
     }
 
     /* On very narrow screens ensure label and amount remain on a single row when possible */
@@ -641,10 +502,10 @@ html, body {
 
 /* Strong fallback to force perfectly circular icon backgrounds across all pages */
 .timeline-icon, .iconHist, .iconHist2, .iconHist3 {
-    width: 52px !important;
-    height: 52px !important;
-    min-width: 52px !important;
-    min-height: 52px !important;
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    min-height: 64px !important;
     padding: 0 !important;
     border-radius: 50% !important;
     overflow: hidden !important;
@@ -655,6 +516,20 @@ html, body {
 }
 .timeline-icon i { font-size: 1.3rem !important; line-height:1 !important; }
 .timeline-icon img { width: 62% !important; height: 62% !important; object-fit: contain !important; }
+
+/* FINAL OVERRIDES: ensure amount colors follow variant on all viewports.
+    This is appended last so it wins over earlier conflicting rules. */
+.timeline-card .timeline-item .timeline-amount { color: inherit !important; }
+.timeline-card .timeline-item .timeline-amount.variant-positive { color: #16a34a !important; }
+.timeline-card .timeline-item .timeline-amount.variant-refund { color: #16a34a !important; }
+.timeline-card .timeline-item .timeline-amount.variant-negative { color: #dc2626 !important; }
+.timeline-card .timeline-item .timeline-amount.variant-neutral { color: #000000 !important; }
+
+/* also accept bare classes outside timeline-card */
+.timeline-amount.variant-positive { color: #16a34a !important; }
+.timeline-amount.variant-refund { color: #16a34a !important; }
+.timeline-amount.variant-negative { color: #dc2626 !important; }
+.timeline-amount.variant-neutral { color: #000000 !important; }
 
 
 * {
@@ -713,6 +588,27 @@ i {
     justify-content: center;
 }
 
+/* Timeline icon variant backgrounds - couleurs pastel douces comme la référence */
+.timeline-icon.variant-positive {
+    background-color: #d1fae5 !important;
+    color: #059669 !important;
+}
+
+.timeline-icon.variant-negative {
+    background-color: #fecdd3 !important;
+    color: #dc2626 !important;
+}
+
+.timeline-icon.variant-refund {
+    background-color: #d1fae5 !important;
+    color: #059669 !important;
+}
+
+.timeline-icon.variant-neutral {
+    background-color: #e0e7ff !important;
+    color: #6366f1 !important;
+}
+
 .virement {
     font-size: .8rem;
 }
@@ -734,7 +630,7 @@ i {
     font-size: 1.8rem;
 } 
 * {
-    font-family: var(--ui-font);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .form-container {
@@ -922,7 +818,7 @@ footer a i {
 
 /* Footer typography: use site font and increase label/icon legibility */
 footer, footer a, footer a i {
-    font-family: var(--ui-font);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 footer a {
@@ -998,11 +894,6 @@ footer a.active {
 
 .footer-show a {
     color: #6f63ff;
-    flex: 1 1 0%;
-    min-width: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 /* Styles desktop pour footer-show */
@@ -1039,12 +930,11 @@ footer.footer-show {
         bottom: 10px;
         border-radius: 25px;
     }
-
+    
     footer.footer-show a {
         font-size: 0.75rem;
-        white-space: nowrap;
     }
-
+    
     footer.footer-show a i {
         font-size: 1.2rem;
     }
@@ -1056,43 +946,33 @@ i {
 
 .form-group {
     position: relative;
-    margin-top: 1rem; /* pousse chaque champ un peu vers le bas */
-    margin-bottom: 4.2rem; /* espace augmenté entre les champs */
+    margin-bottom: 1.5rem;
 }
 
-/* Ne pas ajouter d'espace supplémentaire avant le premier champ du formulaire */
-.form-group:first-child {
-    margin-top: 0;
-}
 .form-control {
     padding: 12px 12px 12px 36px;
 }
 
 .form-control:focus~label,
 .form-control:not(:placeholder-shown)~label {
-    top: -18px; /* remonte le label au-dessus du champ */
-    left: 18px;
-    font-size: 0.65rem; /* réduit en état flottant */
+    top: -10px;
+    left: 12px;
+    font-size: 0.75rem;
     color: #007bff;
-    background: transparent; /* removed white background */
-    padding: 0 6px;
+    background: white;
+    padding: 0 5px;
     z-index: 10;
-    border-radius: 0;
-    line-height: 1;
-    pointer-events: none;
+
 }
 
 label {
     position: absolute;
-    top: 6px; /* réduit la marge en haut */
+    top: 12px;
     left: 36px;
     color: #aaa;
-    font-size: 0.95rem; /* légèrement plus petit */
+    font-size: 1rem;
     transition: all 0.2s;
     pointer-events: none;
-    padding-top: 0;
-    padding-bottom: 0;
-    line-height: 1.1;
 }
 
 .d-grid {
@@ -1104,10 +984,6 @@ label {
 .dashboard nav {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-    padding-left: 4px;
-    padding-right: 4px;
 }
 
 .d-flex {
@@ -1325,62 +1201,6 @@ footer a i {
     vertical-align: middle;
 }
 
-/* Tiny-screen guarantee: keep icon + label on single line and truncate it so datetime remains visible (image 2 layout) */
-@media (max-width: 360px) {
-    .timeline-card .timeline-item .timeline-submeta {
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        min-width: 0 !important;
-        max-width: 60% !important; /* leave room for datetime on the right */
-        overflow: hidden !important;
-    }
-
-    .timeline-card .timeline-item .timeline-submeta .meta-email,
-    .timeline-card .timeline-item .timeline-submeta .meta-bank {
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        display: inline-block !important;
-        max-width: 100% !important;
-        vertical-align: middle !important;
-    }
-
-    /* ensure datetime stays pinned on the right */
-    .timeline-card .timeline-item .timeline-datetime {
-        flex: 0 0 auto !important;
-        margin-left: auto !important;
-        text-align: right !important;
-        min-width: 0 !important;
-    }
-}
-
-/* For very small phones (iPhone SE / iPhone 5 widths) stack time below date for readability */
-@media (max-width: 375px) {
-    .timeline-card .timeline-item .timeline-datetime {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-end !important; /* keep right-aligned */
-        gap: 2px !important;
-        white-space: nowrap !important;
-        min-width: 0 !important;
-    }
-
-    /* Make the time slightly smaller and muted for hierarchy */
-    .timeline-card .timeline-item .timeline-datetime .time,
-    .timeline-card .timeline-item .timeline-datetime span.time {
-        font-size: 0.88rem !important;
-        color: #6b7280 !important;
-    }
-
-    /* Ensure icon + meta on left still have space: reduce their max-width slightly */
-    .timeline-card .timeline-item .timeline-submeta,
-    .timeline-card .timeline-item .timeline-meta {
-        max-width: 58% !important;
-        overflow: hidden !important;
-    }
-}
-
 @media (max-width: 576px) {
     .btn-premium {
         width: 100% !important;
@@ -1429,8 +1249,8 @@ footer a i {
     /* Make form labels and inputs comfortable */
     label {
         left: 12px;
-        top: 8px;
-        font-size: 0.75rem; /* plus petit pour moins d'encombrement */
+        top: 10px;
+        font-size: 0.9rem;
     }
 
     .form-control {
@@ -1597,7 +1417,7 @@ footer a i {
 
     /* Header mobile clean */
     .dashboard nav {
-        padding: 12px 8px 8px 4px;
+        padding: 12px 0 8px;
         margin-bottom: 8px;
     }
 
@@ -1822,8 +1642,8 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 .timeline-card .timeline-item {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
-    padding: 10px 10px !important;
+    gap: 12px !important;
+    padding: 12px 12px !important;
     border-radius: 10px !important;
 }
 
@@ -1833,10 +1653,10 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 .timeline-card .timeline-item .iconHist2,
 .timeline-card .timeline-item .iconHist3,
 .timeline-card .timeline-item .avatar-sm {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-    min-height: 40px !important;
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
     padding: 0 !important;
     border-radius: 50% !important;
     display: inline-flex !important;
@@ -1868,7 +1688,7 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
     flex: 1 1 auto !important;
     min-width: 0 !important;
     margin: 0 !important;
-    font-size: 0.9rem !important;
+    font-size: 1.05rem !important;
     font-weight: 700 !important;
     line-height: 1.08 !important;
 }
@@ -1876,22 +1696,23 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 /* Amount stays on the right and does not wrap */
 .timeline-card .timeline-row .timeline-amount {
     flex: 0 0 auto !important;
-    margin-left: 8px !important;
-    font-size: 0.9rem !important;
-    font-weight: 700 !important;
+    margin-left: 12px !important;
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    color: #0b65d1 !important;
     text-align: right !important;
     white-space: nowrap !important;
 }
 
 /* Slightly smaller on very small screens but still single-line */
 @media (max-width: 576px) {
-    .timeline-card .timeline-item { padding: 7px 8px !important; }
-    .timeline-card .timeline-row .timeline-title { font-size: 0.85rem !important; }
-    .timeline-card .timeline-row .timeline-amount { font-size: 0.85rem !important; }
+    .timeline-card .timeline-item { padding: 9px 8px !important; }
+    .timeline-card .timeline-row .timeline-title { font-size: 1.00rem !important; }
+    .timeline-card .timeline-row .timeline-amount { font-size: 1.00rem !important; }
     .timeline-card .timeline-item .timeline-icon,
     .timeline-card .timeline-item .iconHist,
     .timeline-card .timeline-item .iconHist2,
-    .timeline-card .timeline-item .iconHist3 { width: 34px !important; height: 34px !important; min-width: 34px !important; }
+    .timeline-card .timeline-item .iconHist3 { width: 40px !important; height: 40px !important; min-width: 40px !important; }
 }
 
 /* Limit hover effects to pointer-capable devices and keep them subtle */
@@ -1905,31 +1726,14 @@ html, body { max-width: 100% !important; overflow-x: hidden !important; }
 
 /* Override overly-large final rule that was causing huge titles */
 .timeline-card .timeline-item .timeline-title {
-    font-size: 0.9rem !important;
+    font-size: 1.05rem !important;
     font-weight: 700 !important;
     line-height: 1.08 !important;
 }
 .timeline-card .timeline-item .timeline-amount {
-    font-size: 0.9rem !important;
-    font-weight: 700 !important;
-}
-.timeline-card .timeline-item .timeline-meta,
-.timeline-card .timeline-item .timeline-datetime {
-    font-size: 0.78rem !important;
-    color: #6b7280 !important;
-}
-.timeline-card .timeline-item .timeline-icon i,
-.timeline-card .timeline-item .iconHist i,
-.timeline-card .timeline-item .iconHist2 i,
-.timeline-card .timeline-item .iconHist3 i {
-    font-size: 1.0rem !important;
-    line-height: 1 !important;
-}
-@media (max-width: 576px) {
-    .timeline-card .timeline-item .timeline-meta,
-    .timeline-card .timeline-item .timeline-datetime { font-size: 0.72rem !important; }
-    .timeline-card .timeline-item .timeline-icon i,
-    .timeline-card .timeline-item .iconHist i { font-size: 0.9rem !important; }
+    font-size: 1.05rem !important;
+    font-weight: 800 !important;
+    color: #0b65d1 !important;
 }
 
 /* Small safety: prevent footer from growing too large accidentally */
@@ -2020,7 +1824,7 @@ footer a i { line-height: 1 !important; }
 }
 
 * {
-    font-family: var(--ui-font);
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .card-container {
@@ -2056,21 +1860,17 @@ footer a i { line-height: 1 !important; }
 
 }
 
-label {
-    position: absolute;
-    top: 2px;
-    left: 18px;
-    color: #888;
-    font-size: 0.85rem;
-    transition: all 0.2s;
-    pointer-events: none;
-    padding: 0 2px; /* keep compact spacing */
-    line-height: 1; /* ultra compact */
-    background: transparent; /* remove white bg behind small helper labels */
-    z-index: 2;
-    border-radius: 0;
-    margin-top: 0;
-    margin-bottom: 0;
+.loader {
+    border: 4px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 4px solid #007bff;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
 }
 
 
@@ -2234,7 +2034,7 @@ i {
 .alert-info,
 .alert-warning,
 .alert-stack {
-    font-family: var(--ui-font); /* ensure same 'police' as site */
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* ensure same 'police' as site */
 }
 
 .alert-modern .alert-title,
@@ -2291,7 +2091,7 @@ i {
 /* --------------------------------------------------------------------------- */
 @media (max-width: 576px) {
     footer, footer a, footer a div {
-        font-family: var(--ui-font) !important;
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
         -webkit-font-smoothing: antialiased !important;
         text-rendering: optimizeLegibility !important;
     }
@@ -2328,7 +2128,7 @@ i {
    ensure it overrides earlier more aggressive rules. */
 @media (max-width: 576px) {
     footer, footer a, footer a div {
-        font-family: var(--ui-font) !important;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
         -webkit-font-smoothing: antialiased !important;
         text-rendering: optimizeLegibility !important;
     }
@@ -2355,101 +2155,6 @@ i {
         padding: 6px 6px !important;
     }
 }
-
-/* ------------------------------------------------------------------ */
-/* PayPal email / refund label display tweaks                           */
-/* Ensure emails can show more characters and refund 'PayPal' is never  */
-/* truncated on small phones while preserving right-aligned datetime    */
-/* ------------------------------------------------------------------ */
-
-/* Base small-phone rule: allow more space for emails inside submeta */
-@media (max-width: 576px) {
-    .timeline-card .timeline-item .timeline-submeta .meta-email {
-        max-width: 72% !important; /* allow longer email like example@domai...com */
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-    }
-}
-
-/* Tighter for narrow phones but still allow reasonably long emails */
-@media (max-width: 420px) {
-    .timeline-card .timeline-item .timeline-submeta .meta-email {
-        max-width: 70% !important;
-    }
-}
-
-/* On very small phones, prefer showing the full literal "PayPal" for refunds */
-@media (max-width: 420px) {
-    .timeline-card .timeline-item.variant-refund .timeline-submeta .meta-bank,
-    .timeline-card .timeline-item.variant-refund .timeline-submeta .meta-email {
-        white-space: nowrap !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-        max-width: none !important;
-    }
-
-    /* If the platform prints 'PayPal' as meta-bank, keep it visible by giving
-       it a slight priority and preventing it from being shrunk by ellipsis */
-    .timeline-card .timeline-item.variant-refund .timeline-submeta .meta-bank {
-        font-weight: 600 !important;
-        color: #0f172a !important;
-    }
-}
-
-/* Very-narrow fallback: if the datetime needs space, reduce submeta width */
-@media (max-width: 375px) {
-    .timeline-card .timeline-item .timeline-submeta .meta-email {
-        max-width: 62% !important; /* make room for stacked date/time */
-    }
-}
-
-/* Strong rule: when JS marks an email as shortened, never wrap it and give it
-   enough horizontal room so the 'first...tld' form stays intact on tiny screens */
-@media (max-width: 420px) {
-    .timeline-card .timeline-item .meta-email.shortened {
-        white-space: nowrap !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        max-width: 72% !important; /* slightly larger to avoid forced breaks */
-        display: inline-block !important;
-    }
-}
-
-@media (max-width: 360px) {
-    .timeline-card .timeline-item .meta-email.shortened {
-        max-width: 68% !important;
-    }
-}
-
-/* Allow emails to wrap at logical break points on small screens so more of the
-   address is visible (e.g. show 'prenom.nom@domaine.com' across two lines).
-   We favor breaking after punctuation and the '@' sign rather than truncating. */
-@media (max-width: 420px) {
-    .timeline-card .timeline-item .timeline-submeta .meta-email {
-        white-space: normal !important; /* allow wrapping */
-        overflow-wrap: anywhere !important; /* break anywhere if needed */
-        word-break: break-word !important; /* fallback */
-        display: inline-block !important;
-        max-width: 72% !important; /* keep reasonable room for datetime */
-        text-overflow: clip !important;
-    }
-
-    /* If email breaks on two lines, ensure it doesn't push the datetime away */
-    .timeline-card .timeline-item .timeline-submeta {
-        flex: 0 1 auto !important;
-        min-width: 0 !important;
-    }
-}
-
-/* For the tiniest screens, allow wrapping but keep a safe max width */
-@media (max-width: 360px) {
-    .timeline-card .timeline-item .timeline-submeta .meta-email {
-        max-width: 60% !important;
-    }
-}
-
-/* End PayPal/refund display tweaks */
 
 /* Ensure footer labels do not wrap and can ellipsize if space is tight */
 @media (max-width: 576px) {
@@ -2480,121 +2185,48 @@ i {
     }
 }
 
-/* (removed duplicate PayPal override - now controlled in pages/show.php) */
-
-/* ------------------------------------------------------------------ */
-/* Highlight: Account balance — larger, bolder and more captivating   */
-/* Targets common balance/hero classes used across pages; responsive */
-/* ------------------------------------------------------------------ */
-.balance-card, .account-balance, .hero-balance, .account-summary {
-    display: block;
-    text-align: left;
+/* Strongest override for timeline date/time/number to ensure user-requested styles apply */
+html body .timeline-card .timeline-item span.timeline-datetime,
+html body .timeline-card .timeline-item span.timeline-meta,
+html body .timeline-card .timeline-item .timeline-datetime,
+html body .timeline-card .timeline-item .timeline-meta,
+html body span.timeline-datetime,
+html body span.timeline-meta {
+    font-weight: 600 !important;
+    font-size: 0.80rem !important;
+    color: inherit !important; /* keep color from other rules unless explicitly set inline */
 }
 
-.balance-card .balance-title,
-.account-balance .balance-title,
-.hero-balance .balance-title,
-.account-summary .balance-title {
-    font-size: 1.15rem !important; /* slightly larger label */
-    font-weight: 800 !important;
-    letter-spacing: 0.06em !important;
-    text-transform: uppercase !important;
-    color: inherit !important;
-    margin: 0 0 6px 0 !important;
+/* Extra: reduce icon size inside datetime to match smaller text */
+html body .timeline-card .timeline-item .timeline-datetime i,
+html body span.timeline-datetime i {
+    font-size: 0.75rem !important;
 }
 
-.balance-card .balance-amount,
-.account-balance .balance-amount,
-.hero-balance .balance-amount,
-.account-summary .balance-amount {
-    font-size: 4.2rem !important; /* increased further: make the numeric amount more prominent */
+/* APPENDED FINAL OVERRIDES: place at end so these win over any previous !important rules */
+/* Ensure variant-specific colors are applied on desktop and mobile */
+.timeline-card .timeline-item .timeline-amount { color: inherit !important; }
+.timeline-card .timeline-item .timeline-amount.variant-positive { color: #16a34a !important; }
+.timeline-card .timeline-item .timeline-amount.variant-refund { color: #16a34a !important; }
+.timeline-card .timeline-item .timeline-amount.variant-negative { color: #dc2626 !important; }
+.timeline-card .timeline-item .timeline-amount.variant-neutral { color: #000000 !important; }
+
+.timeline-amount.variant-positive { color: #16a34a !important; }
+.timeline-amount.variant-refund { color: #16a34a !important; }
+.timeline-amount.variant-negative { color: #dc2626 !important; }
+.timeline-amount.variant-neutral { color: #000000 !important; }
+
+/* Also ensure parent timeline-item doesn't force a single color to children */
+.timeline-card .timeline-item { color: inherit !important; }
+
+/* Ensure timeline titles (Remboursement, Paiement...) are as heavy as amounts */
+.timeline-card .timeline-item .timeline-title,
+.timeline-row .timeline-title,
+.timeline-title {
     font-weight: 900 !important;
-    line-height: 1 !important;
-    color: #ffffff !important; /* assume placed on colored card; override if needed */
-    text-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
-
-/* If the amount appears inside a light card, use primary color instead */
-.balance-card.light .balance-amount,
-.account-balance.light .balance-amount {
-    color: #0b65d1 !important;
-    text-shadow: none !important;
-}
-
-/* Responsive scaling for small screens */
-@media (max-width: 768px) {
-    .balance-card .balance-title,
-    .account-balance .balance-title {
-        font-size: 1.0rem !important;
-    }
-    .balance-card .balance-amount,
-    .account-balance .balance-amount {
-        font-size: 3.4rem !important; /* responsive reduced size for smaller viewports */
-    }
-}
-
-@media (max-width: 420px) {
-    .balance-card .balance-title,
-    .account-balance .balance-title {
-        font-size: 0.95rem !important;
-    }
-    .balance-card .balance-amount,
-    .account-balance .balance-amount {
-        font-size: 2.6rem !important; /* mobile-friendly size */
-    }
-}
-
-/* FINAL FORCE: cover alternative markup and ensure balance numbers stay large
-   This is appended last so it overrides earlier conflicting rules. */
-@media all {
-    body .balance-card .balance-amount,
-    body .account-balance .balance-amount,
-    body .hero-balance .balance-amount,
-    body .account-summary .balance-amount,
-    body .account-balance .amount,
-    body .hero .amount,
-    body .hero .balance,
-    body .balance .amount,
-    body [class*="balance"] .amount {
-        font-size: 4.6rem !important; /* stronger final override for desktop */
-        font-weight: 900 !important;
-        line-height: 1 !important;
-        color: #ffffff !important;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.14) !important;
-    }
-
-    @media (max-width: 768px) {
-        body .balance-card .balance-amount,
-        body .account-balance .balance-amount,
-        body .account-balance .amount,
-        body .hero .amount,
-        body [class*="balance"] .amount {
-            font-size: 3.8rem !important;
-        }
-    }
-
-    @media (max-width: 520px) {
-        body .balance-card .balance-amount,
-        body .account-balance .balance-amount,
-        body .account-balance .amount,
-        body .hero .amount,
-        body [class*="balance"] .amount {
-            font-size: 3.2rem !important; /* bumped for mid-size mobile */
-        }
-    }
-
-    @media (max-width: 420px) {
-        body .balance-card .balance-amount,
-        body .account-balance .balance-amount,
-        body .account-balance .amount,
-        body .hero .amount,
-        body [class*="balance"] .amount {
-            font-size: 2.8rem !important;
-        }
-    }
-}
-
-
 
 
 

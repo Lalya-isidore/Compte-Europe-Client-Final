@@ -40,7 +40,7 @@ if (!empty($created_at)) {
 
 // Formater le solde pour le modal insuffisant
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $utilisateur_connecte['account_balance'] : 0;
-$formatted_balance = number_format($account_balance, 0, ',', ' ');
+$formatted_balance = number_format($account_balance, 2, ',', ' ');
 $devise = $utilisateur['devise'] ?? 'EUR';
 
 ?>
@@ -432,20 +432,19 @@ $devise = $utilisateur['devise'] ?? 'EUR';
 }
 
 /* Animation au chargement */
-@-webkit-keyframes fadeInUp {
-    from { opacity: 0; -webkit-transform: translateY(30px); transform: translateY(30px); }
-    to   { opacity: 1; -webkit-transform: translateY(0);    transform: translateY(0); }
-}
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .animate-in {
-    -webkit-animation: fadeInUp 0.6s ease-out both;
-    animation: fadeInUp 0.6s ease-out both;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
+    animation: fadeInUp 0.6s ease-out;
 }
 
 /* Responsive */

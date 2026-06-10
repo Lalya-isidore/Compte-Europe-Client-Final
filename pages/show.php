@@ -314,6 +314,21 @@ foreach ($sortedTransactions as $transaction) {
         ];
     }
 }
+
+// Notifications admin envoyées directement dans le compte client
+$adminNotifications = [];
+try {
+    $dbNotif = connexion_db();
+    if ($dbNotif && $accountId) {
+        $stmtNotif = $dbNotif->prepare(
+            "SELECT id, titre, message, created_at FROM compte_notifications WHERE compte_id = :cid AND is_read = 0 ORDER BY created_at DESC LIMIT 10"
+        );
+        $stmtNotif->execute([':cid' => $accountId]);
+        $adminNotifications = $stmtNotif->fetchAll(PDO::FETCH_ASSOC);
+    }
+} catch (Exception $e) {
+    // ignore, notifications non critiques
+}
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -1495,6 +1510,7 @@ foreach ($sortedTransactions as $transaction) {
                     $notifCount = count($transactionAlerts ?? []);
                     if ($transferSuccess) $notifCount++;
                     if ($showBalanceAlert) $notifCount++;
+                    $notifCount += count($adminNotifications ?? []);
                     ?>
                     <?php if ($notifCount > 0): ?>
                     <span id="notif-badge" style="position:absolute;top:-6px;right:-8px;background:#ef4444;color:#fff;font-size:0.65rem;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;"><?= $notifCount ?></span>
@@ -1518,7 +1534,7 @@ foreach ($sortedTransactions as $transaction) {
                     <strong style="font-size:1.05rem;">Notifications</strong>
                     <button onclick="toggleNotifPanel(event)" style="background:none;border:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;">&times;</button>
                 </div>
-                <?php if (!$transferSuccess && !$showBalanceAlert && empty($transactionAlerts)): ?>
+                <?php if (!$transferSuccess && !$showBalanceAlert && empty($transactionAlerts) && empty($adminNotifications)): ?>
                     <p style="text-align:center;color:#9ca3af;padding:24px 0;">Aucune notification</p>
                 <?php else: ?>
                 <div class="alert-stack">
@@ -1556,6 +1572,19 @@ foreach ($sortedTransactions as $transaction) {
                                 <p class="alert-message"><?= $alert['message']; ?></p>
                             </div>
                             <button type="button" class="btn-close dismiss-transaction-alert" data-alert-id="<?= htmlspecialchars($alert['id'], ENT_QUOTES, 'UTF-8'); ?>" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endforeach; ?>
+
+                    <?php foreach ($adminNotifications as $notif): ?>
+                        <div class="alert-modern variant-info admin-notif-alert" role="alert" data-notif-id="<?= (int)$notif['id']; ?>">
+                            <div class="alert-icon variant-info"><i class="fas fa-bell"></i></div>
+                            <div class="alert-body">
+                                <p class="alert-title"><?= htmlspecialchars($notif['titre'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p class="alert-message"><?= nl2br(htmlspecialchars($notif['message'], ENT_QUOTES, 'UTF-8')); ?></p>
+                            </div>
+                            <button type="button" class="btn-close dismiss-admin-notif" data-notif-id="<?= (int)$notif['id']; ?>" aria-label="Fermer">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -1969,8 +1998,41 @@ foreach ($sortedTransactions as $transaction) {
                 if (alertId) {
                     persistDismiss('transaction', alertId);
                 }
+                updateNotifBadge();
             });
         });
+
+        document.querySelectorAll('.dismiss-admin-notif').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const notifId = this.getAttribute('data-notif-id');
+                const alertEl = this.closest('.alert-modern');
+                if (alertEl) {
+                    alertEl.style.opacity = '0';
+                    setTimeout(() => alertEl.remove(), 150);
+                }
+                if (notifId) {
+                    fetch('dismiss_alert.php', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ alert: 'admin_notif', notif_id: notifId })
+                    }).catch(() => {});
+                }
+                updateNotifBadge();
+            });
+        });
+
+        function updateNotifBadge() {
+            const remaining = document.querySelectorAll('#notif-panel .alert-modern').length;
+            const badge = document.getElementById('notif-badge');
+            if (badge) {
+                if (remaining > 0) {
+                    badge.textContent = remaining;
+                } else {
+                    badge.remove();
+                }
+            }
+        }
     </script>
     <!-- Truncation JS removed: showing full emails by default -->
     <script>

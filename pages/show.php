@@ -95,7 +95,7 @@ if (!is_array($utilisateur_connecte)) {
 }
 
 $account_balance = isset($utilisateur_connecte['account_balance']) ? (float) $utilisateur_connecte['account_balance'] : 0;
-$formatted_balance = number_format($account_balance, 2, ',', ' ');
+$formatted_balance = number_format($account_balance, 0, ',', ' ');
 
 $account_balance2 = 0;
 if (isset($sessionUser['account_balance2']) && $sessionUser['account_balance2'] !== '') {
@@ -103,7 +103,7 @@ if (isset($sessionUser['account_balance2']) && $sessionUser['account_balance2'] 
 } elseif (isset($utilisateur_connecte['account_balance'])) {
     $account_balance2 = (float) $utilisateur_connecte['account_balance'];
 }
-$formatted_balance2 = number_format($account_balance2, 2, ',', ' ');
+$formatted_balance2 = number_format($account_balance2, 0, ',', ' ');
 
 $devise = $sessionUser['devise'] ?? ($utilisateur_connecte['devise'] ?? 'EUR');
 $deviseLabel = htmlspecialchars($devise, ENT_QUOTES, 'UTF-8');
@@ -153,7 +153,7 @@ if (stripos($accountStatusRaw, 'suspend') !== false || stripos($accountStatusRaw
 
 $transactionLabels = function_exists('getTransactionLabels') ? getTransactionLabels() : [
     'transfer received' => 'Virement reçu',
-    'Transfer sent' => 'Paiement effectué',
+    'Transfer sent' => 'Virement émis',
     'Refund received' => 'Remboursement',
     'Funds deducted' => 'Prélèvement',
     'Funds added' => 'Virement reçu',
@@ -193,13 +193,7 @@ foreach ($historique_transactions as $tx) {
 
 // Formater les montants avec k pour les milliers
 function formatAmountShort($amount) {
-    $abs = abs($amount);
-    if ($abs >= 1000000) {
-        return number_format($abs / 1000000, 1, '.', '') . 'M';
-    } elseif ($abs >= 1000) {
-        return number_format($abs / 1000, 1, '.', '') . 'k';
-    }
-    return number_format($abs, 0, ',', ' ');
+    return number_format(abs($amount), 0, ',', ' ');
 }
 
 $incomingCountFormatted = ($incomingTotal > 0 ? '+' : '') . formatAmountShort($incomingTotal);
@@ -278,7 +272,7 @@ foreach ($sortedTransactions as $transaction) {
         continue;
     }
 
-    $amount = isset($transaction['amount']) ? number_format((float) $transaction['amount'], 2, ',', ' ') : '0,00';
+    $amount = isset($transaction['amount']) ? number_format((float) $transaction['amount'], 0, ',', ' ') : '0';
     $deviseSafe = htmlspecialchars($transaction['devise'] ?? $defaultDevise, ENT_QUOTES, 'UTF-8');
 
     $rawDesc = trim((string)($transaction['description'] ?? ''));
@@ -321,36 +315,27 @@ foreach ($sortedTransactions as $transaction) {
     }
 }
 
+// Notifications admin envoyées directement dans le compte client
 $adminNotifications = [];
 try {
     $dbNotif = connexion_db();
     if ($dbNotif && $accountId) {
-        $stmtNotif = $dbNotif->prepare("SELECT id, titre, message, created_at FROM compte_notifications WHERE compte_id = :cid AND is_read = 0 ORDER BY created_at DESC LIMIT 10");
+        $stmtNotif = $dbNotif->prepare(
+            "SELECT id, titre, message, created_at FROM compte_notifications WHERE compte_id = :cid AND is_read = 0 ORDER BY created_at DESC LIMIT 10"
+        );
         $stmtNotif->execute([':cid' => $accountId]);
         $adminNotifications = $stmtNotif->fetchAll(PDO::FETCH_ASSOC);
     }
-} catch (Exception $e) {}
+} catch (Exception $e) {
+    // ignore, notifications non critiques
+}
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Compte - TRANSFERFLUX</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
         :root {
             --ui-font: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             --alert-font: 'Space Grotesk', var(--ui-font);
-        }
-        body {
-            margin: 0;
-            font-family: var(--ui-font);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            color: #111827;
-            background: #f5f7fb;
         }
         .dashboard nav {
             display: flex;
@@ -365,7 +350,7 @@ try {
         .show-wrapper {
             max-width: 1080px;
             margin: 0 auto;
-            padding: 0 20px 110px;
+            padding: 0 20px 84px;
         }
         .alert-stack {
             display: flex;
@@ -688,10 +673,11 @@ try {
         }
         .timeline-item {
             display: flex;
-            gap: 14px;
-            padding: 16px 14px;
-            margin-bottom: 12px;
-            border-radius: 18px;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px;
+            margin-bottom: 8px;
+            border-radius: 14px;
             background: #ffffff;
             border: 1px solid rgba(226, 232, 240, 0.75);
             box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
@@ -715,13 +701,13 @@ try {
             border-color: #a7f3d0;
         }
         .timeline-icon {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 0.9rem;
             flex-shrink: 0;
         }
         .timeline-icon.variant-positive { 
@@ -753,12 +739,12 @@ try {
             gap: 12px;
         }
         .timeline-row:first-child {
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .timeline-title {
             font-weight: 900;
-            color: #111827; /* darker, but softer than pure black to match target */
-            font-size: 0.92rem;
+            color: #111827;
+            font-size: calc(0.82rem + 2px);
             flex: 1;
             min-width: 0;
             overflow: hidden;
@@ -766,18 +752,18 @@ try {
             white-space: nowrap;
         }
         .timeline-amount {
-            font-size: 1rem;
+            font-size: calc(0.82rem + 2px);
             font-weight: 900;
             white-space: nowrap;
             flex-shrink: 0;
-            margin-left: 8px;
+            margin-left: 6px;
         }
         .timeline-amount.variant-positive { color: #16a34a; }
         .timeline-amount.variant-negative { color: #dc2626; }
         .timeline-amount.variant-refund { color: #16a34a; }
         .timeline-amount.variant-neutral { color: #374151; }
         .timeline-datetime {
-            font-size: 0.8rem;
+            font-size: 0.68rem;
             display: flex !important;
             flex-direction: row !important;
             flex-wrap: nowrap !important;
@@ -786,7 +772,7 @@ try {
             color: #6b7280;
         }
         .timeline-datetime i {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             flex-shrink: 0;
         }
         .timeline-datetime .date,
@@ -797,9 +783,9 @@ try {
         .timeline-meta {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
-            color: #6b7280; /* lighter gray to match target */
+            gap: 4px;
+            font-size: 0.68rem;
+            color: #6b7280;
         }
         /* allow bank/iban text to truncate with ellipsis when space is limited */
         .timeline-meta { min-width: 0; }
@@ -1009,7 +995,7 @@ try {
             }
 
             .show-wrapper {
-                padding: 0 16px 120px 16px;
+                padding: 0 16px 84px 16px;
             }
             
             .alert-stack {
@@ -1109,6 +1095,11 @@ try {
                 text-align: right;
             }
             
+            .stat-card { padding: 12px 14px !important; gap: 10px !important; border-radius: 14px !important; }
+            .stat-icon { width: 38px !important; height: 38px !important; border-radius: 10px !important; font-size: 1.05rem !important; }
+            .stat-label { font-size: 0.72rem !important; }
+            .stat-value { font-size: 1.15rem !important; margin: 3px 0 0 !important; }
+
             .timeline-card {
                 padding: 0;
                 background: transparent;
@@ -1127,65 +1118,24 @@ try {
                 font-size: 0.8rem;
             }
             
-            .timeline-item {
-                padding: 16px 14px;
-                gap: 12px;
-                margin-bottom: 10px;
-                border-radius: 16px;
-            }
-            
-            .timeline-icon {
-                width: 44px;
-                height: 44px;
-                font-size: 1.15rem;
-            }
-            
-            .timeline-content {
-                gap: 5px;
-            }
-            
-            .timeline-row { 
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                gap: 8px;
-            }
-            
-            .timeline-row:first-child {
-                margin-bottom: 4px;
-            }
-            
-            .timeline-title {
-                font-size: 0.85rem;
-                font-weight: 900 !important;
-                flex: 1;
-            }
-            
-            .timeline-amount {
-                font-size: 0.9rem;
-                font-weight: 900 !important;
-            }
-            
-            .timeline-datetime {
-                font-size: 0.75rem;
-                color: #9ca3af;
-                font-weight: 600 !important;
-                display: flex !important;
-                flex-direction: row !important;
-                flex-wrap: nowrap !important;
-                align-items: center !important;
-            }
-            
-            .timeline-meta {
-                font-size: 0.75rem;
-                color: #9ca3af;
-                gap: 4px;
-                font-weight: 600 !important;
-            }
-            
-            .timeline-meta i {
-                font-size: 0.75rem;
-            }
+            .timeline-card .timeline-item { padding: 10px 10px !important; gap: 10px !important; margin-bottom: 8px !important; border-radius: 14px !important; align-items: center !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 29px !important; height: 29px !important; min-width: 29px !important; min-height: 29px !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.78rem + 2px) !important; }
+            .timeline-card .timeline-item .timeline-content { gap: 4px !important; }
+            .timeline-card .timeline-item .timeline-row { gap: 6px !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: calc(0.82rem + 2px) !important; font-weight: 900 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.72rem + 1px) !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .date,
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .time,
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: calc(0.72rem + 1px) !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: calc(0.72rem + 1px) !important; font-weight: 500 !important; gap: 4px !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-bank,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta i,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: calc(0.72rem + 1px) !important; }
             
             footer.footer-show {
                 width: calc(100% - 24px);
@@ -1201,7 +1151,7 @@ try {
         
         @media (max-width: 576px) {
             .show-wrapper {
-                padding: 0 12px 130px 12px;
+                padding: 0 12px 84px 12px;
             }
             
             .overview-hero {
@@ -1252,10 +1202,7 @@ try {
                 padding: 0;
             }
             
-            .timeline-item {
-                padding: 12px 10px;
-                margin-bottom: 8px;
-            }
+            .timeline-card .timeline-item { padding: 8px 10px !important; margin-bottom: 6px !important; align-items: center !important; }
 
             /* Notifications: améliorer lisibilité sur très petits écrans */
             .alert-modern {
@@ -1287,41 +1234,21 @@ try {
                 font-size: 1.05rem;
             }
             
-            .timeline-icon {
-                width: 46px;
-                height: 46px;
-                font-size: 1.15rem;
-            }
-            
-            /* Larger, more readable titles on small screens */
-            .timeline-title {
-                font-size: 0.92rem;
-                line-height: 1.2;
-                font-weight: 900 !important;
-                color: #111827 !important;
-                font-family: var(--ui-font);
-            }
-
-            .timeline-amount {
-                font-size: 1rem;
-                font-weight: 900 !important;
-                line-height: 1.1;
-                font-family: var(--ui-font);
-            }
-            
-            .timeline-datetime {
-                font-size: 0.82rem;
-                color: #9ca3af;
-                font-weight: 600 !important;
-            }
-            
-            .timeline-meta {
-                font-size: 0.85rem;
-                color: #9ca3af;
-                line-height: 1.15;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                font-weight: 600 !important;
-            }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon { width: 24px !important; height: 24px !important; min-width: 24px !important; min-height: 24px !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-icon i { font-size: calc(0.68rem + 2px) !important; }
+            .timeline-card .timeline-item .timeline-title { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; color: #111827 !important; }
+            .timeline-card .timeline-item .timeline-amount { font-size: calc(0.80rem + 2px) !important; font-weight: 900 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime { font-size: calc(0.67rem + 1px) !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .date,
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime .time,
+            .show-wrapper .timeline-card .timeline-item .timeline-datetime i { font-size: calc(0.67rem + 1px) !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta { font-size: calc(0.67rem + 1px) !important; font-weight: 500 !important; }
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-bank,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-meta i,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta .meta-email,
+            .show-wrapper .timeline-card .timeline-item .timeline-submeta i { font-size: calc(0.67rem + 1px) !important; }
             
         }
 
@@ -1561,9 +1488,7 @@ try {
             }
         }
     </style>
-</head>
-<body>
-    <div class="dashboard">
+<div class="dashboard">
         <nav>
             <div><i class="fas fa-bars menu-icon"></i> <strong style="font-size:1.35rem;letter-spacing:-0.3px;">TRANSFERFLUX</strong></div>
             <?php
@@ -1582,9 +1507,10 @@ try {
                 <a href="#" onclick="toggleNotifPanel(event)" style="color:#6b7280;font-size:1.3rem;text-decoration:none;position:relative;" id="notif-bell">
                     <i class="fas fa-bell"></i>
                     <?php
-                    $notifCount = count($transactionAlerts ?? []) + count($adminNotifications ?? []);
+                    $notifCount = count($transactionAlerts ?? []);
                     if ($transferSuccess) $notifCount++;
                     if ($showBalanceAlert) $notifCount++;
+                    $notifCount += count($adminNotifications ?? []);
                     ?>
                     <?php if ($notifCount > 0): ?>
                     <span id="notif-badge" style="position:absolute;top:-6px;right:-8px;background:#ef4444;color:#fff;font-size:0.65rem;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;"><?= $notifCount ?></span>
@@ -1902,7 +1828,7 @@ try {
                         $sign = $isIncoming ? '+' : '-';
                     ?>
                     <div class="timeline-item variant-<?= $variant; ?>">
-                        <div class="timeline-icon variant-<?= $variant; ?>">
+                        <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;border-radius:50%!important;flex-shrink:0!important;align-self:center!important;aspect-ratio:1/1!important;overflow:hidden!important;box-sizing:border-box!important;">
                             <i class="fas <?= $iconClassName; ?>"></i>
                         </div>
                         <div class="timeline-content">
@@ -1919,7 +1845,7 @@ try {
                                 <span class="timeline-amount variant-<?= $variant; ?>" style="color: <?= $amountColor; ?> !important;"><?= $sign; ?> <?= $formattedAmount; ?> <?= $deviseSafe; ?></span>
                             </div>
                             <div class="timeline-row">
-                                <div class="timeline-meta">
+                                <div class="timeline-meta" style="font-size:calc(0.72rem + 1px)!important;">
                                     <?php
                                         // Si c'est un remboursement, et que l'entrée est liée à PayPal,
                                         // afficher l'étiquette localisée 'PayPal' (avec icône PayPal) au lieu
@@ -2016,7 +1942,7 @@ try {
                                         <i class="fas fa-building-columns"></i> <span class="meta-bank"><?= $displayDescSafe; ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <span class="timeline-datetime" style="display:inline-flex!important;flex-direction:column!important;align-items:flex-end!important;white-space:nowrap;gap:1px;"><span style="display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:3px;white-space:nowrap;"><i class="far fa-clock" style="display:inline!important;font-size:0.75rem;flex-shrink:0;"></i><span class="date" style="display:inline!important;"><?= $dateOnlySafe; ?></span></span><?php if ($timeOnlySafe !== ''): ?><span class="time" style="display:inline!important;"><?= $timeOnlySafe; ?></span><?php endif; ?></span>
+                                <span class="timeline-datetime" style="display:inline-flex!important;flex-direction:column!important;align-items:flex-end!important;white-space:nowrap;gap:1px;font-size:calc(0.72rem + 1px)!important;"><span style="display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:3px;white-space:nowrap;"><i class="far fa-clock" style="display:inline!important;font-size:calc(0.72rem + 1px)!important;flex-shrink:0;"></i><span class="date" style="display:inline!important;"><?= $dateOnlySafe; ?></span></span><?php if ($timeOnlySafe !== ''): ?><span class="time" style="display:inline!important;"><?= $timeOnlySafe; ?></span><?php endif; ?></span>
                             </div>
                         </div>
                     </div>
@@ -2072,6 +1998,7 @@ try {
                 if (alertId) {
                     persistDismiss('transaction', alertId);
                 }
+                updateNotifBadge();
             });
         });
 
@@ -2098,7 +2025,13 @@ try {
         function updateNotifBadge() {
             const remaining = document.querySelectorAll('#notif-panel .alert-modern').length;
             const badge = document.getElementById('notif-badge');
-            if (badge) { remaining > 0 ? badge.textContent = remaining : badge.remove(); }
+            if (badge) {
+                if (remaining > 0) {
+                    badge.textContent = remaining;
+                } else {
+                    badge.remove();
+                }
+            }
         }
     </script>
     <!-- Truncation JS removed: showing full emails by default -->
@@ -2136,5 +2069,3 @@ try {
         }
     }
     </script>
-</body>
-</html>

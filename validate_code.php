@@ -1,51 +1,160 @@
 <?php
-// Démarrer la session
-session_start();
+// public_html/validate_code.php
 
-// Inclure le fichier de fonctions
-require_once(__DIR__ . '/fonction.php');
-
-// Définir le type de contenu comme JSON
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+require_once('fonction.php');
 header('Content-Type: application/json');
 
-// Initialiser la réponse par défaut
-$response = ['success' => false];
-$db=connexion_db();
-// Vérifier si la base de données est connectée et si le code de virement est envoyé
-if ($db = connexion_db() && isset($_POST['codeVirement'])) {
-    // Récupérer le code de virement depuis le POST
-    $codeVirement = $_POST['codeVirement'];
+$response = ['success' => false, 'error' => ''];
 
-    // Vérifier si l'utilisateur est connecté
-    if (isset($_SESSION['utilisateur_connecter']['id'])) {
-        $id_utilisateur_connecte = $_SESSION['utilisateur_connecter']['id'];
-        $db=connexion_db();
-        // Préparer la requête SQL pour vérifier le code de virement
-        $requeteSql = 'SELECT code_virement FROM comptes WHERE id=:id';
-        $requete = $db->prepare($requeteSql);
-
-        try {
-            // Exécuter la requête
-            $requete->execute(['id' => $id_utilisateur_connecte]);
-            $result = $requete->fetch(PDO::FETCH_ASSOC);
-
-            // Vérifier si le code de virement correspond
-            if ($result && $result['code_virement'] === $codeVirement) {
-                $response['success'] = true;
+// Vérifier SESSION correcte — récupérer compte_id depuis l'email si absent
+if (!isset($_SESSION['utilisateur_connecter']['compte_id'])) {
+    $email = $_SESSION['utilisateur_connecter']['email'] ?? '';
+    if ($email) {
+        $dbFallback = connexion_db();
+        if (is_object($dbFallback)) {
+            $stmtFb = $dbFallback->prepare("SELECT id FROM comptes WHERE email = ? LIMIT 1");
+            $stmtFb->execute([$email]);
+            $rowFb = $stmtFb->fetch(PDO::FETCH_ASSOC);
+            if ($rowFb) {
+                $_SESSION['utilisateur_connecter']['compte_id'] = $rowFb['id'];
             }
-        } catch (Exception $e) {
-            // En cas d'erreur, ajouter le message d'erreur à la réponse
-            $response['error'] = "Erreur lors de la vérification du code de sécurité : " . $e->getMessage();
         }
-    } else {
-        // Si l'utilisateur n'est pas connecté, ajouter un message d'erreur
-        $response['error'] = "Utilisateur non connecté.";
     }
-} else {
-    // Si la connexion à la base de données a échoué ou si le code de virement n'est pas défini, ajouter un message d'erreur
-    $response['error'] = "Connexion à la base de données échouée ou code de virement non fourni.";
+    if (!isset($_SESSION['utilisateur_connecter']['compte_id'])) {
+        $response['error'] = 'Session invalide - veuillez vous reconnecter';
+        echo json_encode($response);
+        exit;
+    }
 }
 
-// Retourner la réponse en JSON
+$compte_id = $_SESSION['utilisateur_connecter']['compte_id'];
+$code_soumis = $_POST['codeVirement'] ?? '';
+
+if (empty($code_soumis)) {
+    $response['error'] = 'Code non fourni';
+    echo json_encode($response);
+    exit;
+}
+
+// Connexion DB
+$db = connexion_db();
+if (!is_object($db)) {
+    $response['error'] = 'Erreur connexion DB';
+    echo json_encode($response);
+    exit;
+}
+
+// Récupérer code et montant ACTUELS depuis la base
+try {
+    $stmt = $db->prepare("SELECT code_virement, account_balance, token, email FROM comptes WHERE id = ?");
+    $stmt->execute([$compte_id]);
+    $compte = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$compte) {
+        $response['error'] = 'Compte introuvable en base';
+        echo json_encode($response);
+        exit;
+    }
+
+    // Détecter si c'est un compte test
+    $isTestCompte = false;
+    $stmtTest = $db->prepare("SELECT numerocompte FROM comptes WHERE id = ?");
+    $stmtTest->execute([$compte_id]);
+    $compteRow = $stmtTest->fetch(PDO::FETCH_ASSOC);
+    if ($compteRow && strpos($compteRow['numerocompte'], 'test_') === 0) {
+        $isTestCompte = true;
+    }
+
+    $isTestFailureCode = $isTestCompte && $code_soumis === '000000';
+
+    // Comparaison EXACTE (ou code d'échec test)
+    if ($compte['code_virement'] === $code_soumis || $isTestFailureCode) {
+        // Comptes test : ajuster end_percentage en base ET en session selon le code utilisé
+        if ($isTestCompte) {
+            $newEnd = ($code_soumis === '000000') ? 50 : 100;
+            $stmtUp = $db->prepare("UPDATE comptes SET end_percentage = ? WHERE id = ?");
+            $stmtUp->execute([$newEnd, $compte_id]);
+            if (isset($_SESSION['utilisateur_connecter'])) {
+                $_SESSION['utilisateur_connecter']['end_percentage'] = $newEnd;
+            }
+        }
+        $response = [
+            'success' => true,
+            'montant' => $compte['account_balance']
+        ];
+
+        // Marquer le code comme utilisé dans unlock_codes
+        try {
+            $stmtUnlock = $db->prepare("INSERT INTO unlock_codes (compte_id, code, used_at, created_at, updated_at) VALUES (?, ?, NOW(), NOW(), NOW())");
+            $stmtUnlock->execute([$compte_id, $code_soumis]);
+        } catch (Exception $e) {
+            // Table peut ne pas exister ou doublon, ignorer
+        }
+
+        $accountToken = $compte['token'] ?? ($_SESSION['utilisateur_connecter']['token'] ?? null);
+        $accountEmail = $compte['email'] ?? ($_SESSION['utilisateur_connecter']['email'] ?? null);
+        $unlockEndpoint = resolveEnvValue('UNLOCK_CODES_ENDPOINT') ?: 'https://ton-backend/api/unlock-codes/consume';
+        $unlockApiKey = resolveEnvValue('UNLOCK_CODES_API_KEY') ?: 'XXX';
+
+        if (!empty($unlockEndpoint) && function_exists('curl_init')) {
+            $payload = [
+                'compte_token' => $accountToken ?: '',
+                'compte_id' => $compte_id,
+                'code' => $code_soumis,
+                'api_key' => $unlockApiKey,
+            ];
+            if (!empty($accountEmail)) {
+                $payload['email'] = $accountEmail;
+            }
+
+            $ch = curl_init($unlockEndpoint);
+            curl_setopt_array($ch, [
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => http_build_query($payload),
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 10,
+            ]);
+            $apiResponse = curl_exec($ch);
+            $apiStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $apiError = $apiResponse === false ? curl_error($ch) : '';
+            curl_close($ch);
+
+            $logDir = __DIR__ . '/logs';
+            if (!is_dir($logDir)) {
+                @mkdir($logDir, 0755, true);
+            }
+            $logFile = $logDir . '/unlock_code_sync.log';
+            $ts = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+            $logPayload = json_encode([
+                'compte_id' => $compte_id,
+                'compte_token' => $accountToken,
+                'status' => $apiStatus,
+                'error' => $apiError,
+                'body' => is_string($apiResponse) ? substr($apiResponse, 0, 500) : null,
+            ]);
+            @file_put_contents($logFile, "[{$ts}] unlock-sync {$logPayload}\n", FILE_APPEND | LOCK_EX);
+
+            if ($apiStatus !== 200 && empty($response['sync_warning'])) {
+                $response['sync_warning'] = 'unlock_sync_failed';
+            }
+        } else {
+            $logDir = __DIR__ . '/logs';
+            if (!is_dir($logDir)) {
+                @mkdir($logDir, 0755, true);
+            }
+            $logFile = $logDir . '/unlock_code_sync.log';
+            $reason = empty($unlockEndpoint) ? 'missing_endpoint' : 'curl_extension_missing';
+            $ts = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+            @file_put_contents($logFile, "[{$ts}] unlock-sync skipped reason={$reason} compte_id={$compte_id}\n", FILE_APPEND | LOCK_EX);
+        }
+    } else {
+        $response['error'] = 'Code incorrect';
+    }
+} catch (Exception $e) {
+    $response['error'] = 'Erreur SQL : ' . $e->getMessage();
+}
+
 echo json_encode($response);
-?>

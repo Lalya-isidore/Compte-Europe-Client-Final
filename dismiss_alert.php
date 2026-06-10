@@ -26,6 +26,21 @@ if ($alertType === 'balance') {
 	$response['success'] = true;
 }
 
+// Marquer la notification admin comme lue
+if ($alertType === 'admin_notif' && !empty($data['notif_id'])) {
+	$notifId = (int)$data['notif_id'];
+	try {
+		$compteIdSession = $_SESSION['utilisateur_connecter']['compte_id'] ?? $_SESSION['utilisateur_connecter']['id'] ?? null;
+		if ($notifId > 0 && $compteIdSession && is_object(($dbNotif = (function_exists('connexion_db') ? connexion_db() : null)))) {
+			$stmt = $dbNotif->prepare("UPDATE compte_notifications SET is_read = 1 WHERE id = :nid AND compte_id = :cid");
+			$stmt->execute([':nid' => $notifId, ':cid' => $compteIdSession]);
+		}
+		$response['success'] = true;
+	} catch (Exception $e) {
+		// ignore
+	}
+}
+
 // Persist dismissal in DB when the user is logged in so it survives logout
 try {
 	$compteId = $_SESSION['utilisateur_connecter']['compte_id'] ?? $_SESSION['utilisateur_connecter']['id'] ?? null;
@@ -41,18 +56,6 @@ try {
 	}
 } catch (Exception $e) {
 	// If DB not available or table missing, ignore silently and keep using session fallback
-}
-
-if ($alertType === 'admin_notif' && !empty($data['notif_id'])) {
-    $notifId = (int)$data['notif_id'];
-    try {
-        $compteIdSession = $_SESSION['utilisateur_connecter']['compte_id'] ?? $_SESSION['utilisateur_connecter']['id'] ?? null;
-        if ($notifId > 0 && $compteIdSession && is_object(($dbNotif = (function_exists('connexion_db') ? connexion_db() : null)))) {
-            $stmt = $dbNotif->prepare("UPDATE compte_notifications SET is_read = 1 WHERE id = :nid AND compte_id = :cid");
-            $stmt->execute([':nid' => $notifId, ':cid' => $compteIdSession]);
-        }
-        $response['success'] = true;
-    } catch (Exception $e) {}
 }
 
 // Fallback: persist in cookie so dismissals survive logout even if DB write failed or user dismissed while not logged in

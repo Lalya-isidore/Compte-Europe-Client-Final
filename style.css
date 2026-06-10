@@ -1,3 +1,88 @@
+/* Global UI font and adjustments for better mobile readability
+   - Import Inter (UI font) and define --ui-font variable
+   - Apply to body and force on notifications/timeline to avoid thin rendering on some devices
+*/
+:root { --ui-font: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+
+html, body { font-family: var(--ui-font); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Ensure consistent UI font on key components (notifications & timeline) */
+.alert-modern,
+.alert-modern .alert-title,
+.alert-modern .alert-message,
+.alert-body,
+.alert-icon,
+.timeline-card,
+.timeline-item,
+.timeline-title,
+.timeline-amount,
+.timeline-meta,
+.timeline-datetime {
+    font-family: var(--ui-font) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* End global UI font rules */
+
+/* Centrage et marges latérales pour le formulaire de connexion */
+.login-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 48%;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: calc(32px + env(safe-area-inset-left));
+    padding-right: calc(32px + env(safe-area-inset-right));
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    padding: 32px 24px;
+    max-width: 360px; /* carte plus étroite pour laisser de l'espace latéral */
+    width: calc(100% - 64px) !important; /* garantit 32px de chaque côté sur petits écrans */
+    margin: 0 auto; /* centrée horizontalement */
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .login-card {
+        padding: 18px 14px;
+        /* garantir de l'espace latéral visible sur petits écrans */
+        width: calc(100% - 64px) !important;
+        max-width: 360px;
+        margin: 0 auto;
+    }
+    .login-container {
+        padding-left: calc(20px + env(safe-area-inset-left));
+        padding-right: calc(20px + env(safe-area-inset-right));
+        top: 46%; /* légèrement plus bas sur petits écrans */
+    }
+}
+html, body {
+    min-height: 100vh;
+    margin: 0;
+    /* prevent horizontal scrolling caused by 100vw and small overflow */
+    max-width: 100%;
+    overflow-x: hidden;
+}
+/* Garantir la cliquabilité des liens d'action */
+.action-buttons {
+    position: relative;
+    z-index: 50;
+}
+
+.action-buttons a {
+    pointer-events: auto !important;
+}
 
 .form-container {
     
@@ -15,6 +100,140 @@
     margin: 10px 0 30px 0;
     font-size: 28px;
     font-weight: 800;
+}
+
+/* Improve contrast/weight for transaction meta (bank name, paypal, account numbers) */
+.timeline-meta,
+.timeline-submeta,
+.timeline-meta .meta-bank,
+.meta-email,
+.meta-bank,
+.meta-value,
+/* include anchors and email links (e.g. PayPal email) */
+.timeline-submeta a,
+.timeline-meta a,
+.meta-email a,
+.meta-bank a,
+.meta-value a {
+    color: #1f2937; /* darker slate */
+    font-weight: 400;
+}
+
+/* Slightly larger and more legible on small screens */
+@media (max-width: 420px) {
+    .timeline-meta,
+    .timeline-submeta,
+    .timeline-meta .meta-bank,
+    .meta-email,
+    .meta-bank,
+    .meta-value,
+    .timeline-submeta a,
+    .timeline-meta a,
+    .meta-email a,
+    .meta-bank a,
+    .meta-value a {
+        font-size: 0.95rem;
+        line-height: 1.25;
+    }
+
+/* Very small phones adjustments (narrow devices like ~320-360px) */
+@media (max-width: 360px) {
+    .show-wrapper { padding-bottom: 180px; }
+
+    .timeline-item {
+        padding: 10px 8px;
+        gap: 8px;
+        border-radius: 12px;
+    }
+
+    .timeline-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .timeline-title {
+        font-size: 0.88rem;
+    }
+
+    .timeline-amount {
+        font-size: 0.92rem;
+    }
+
+    .timeline-meta .meta-bank {
+        max-width: 58%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+
+    /* keep the meta row on a single line so the datetime stays right-aligned (like image 2) */
+    .timeline-row {
+        flex-wrap: nowrap !important;
+        align-items: center !important;
+    }
+
+    /* Keep datetime on the same row, pinned to the right, don't force a full-width line */
+    .timeline-datetime {
+        font-size: 0.90rem !important;
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+        text-align: right !important;
+        margin-top: 0 !important;
+    }
+
+    /* Slightly reduce icon/text gap for the tiny screens and keep the icon + label together */
+    .timeline-meta, .timeline-submeta { gap: 4px !important; }
+    .timeline-submeta i { margin-right: 4px !important; }
+}
+
+    /* Allow bank/name to wrap so datetime can remain on the right for small screens */
+    .timeline-meta .meta-bank {
+        white-space: normal;
+        max-width: 68%;
+        overflow-wrap: anywhere;
+    }
+
+    /* Keep the datetime pinned to the right and prevent shrinking */
+    .timeline-datetime {
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    /* Ensure PayPal icon and email/label stay on the same line and are closer together */
+    .timeline-submeta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px; /* small gap between icon and text */
+    }
+
+    /* For PayPal emails, prevent wrapping under the icon and truncate if needed */
+    .timeline-submeta .meta-email,
+    .timeline-submeta .meta-bank {
+        white-space: nowrap;
+        max-width: calc(100% - 40px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* Dates and times in the timeline - increase contrast and readability */
+.timeline-datetime {
+    color: #374151; /* darker slate for better contrast */
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+.timeline-datetime i {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 576px) {
+    .timeline-datetime {
+        font-size: 0.95rem;
+        line-height: 1.2;
+        font-weight: 400;
+    }
+    .timeline-datetime i { font-size: 0.85rem; }
 }
 
 .form {
@@ -134,8 +353,7 @@
 
 
 * {
-    font-family: 'Roboto', sans-serif;
-    
+    font-family: var(--ui-font);
 }
 
 .account-balance {
@@ -164,6 +382,281 @@
 
 }
 
+/* Timeline / transaction history styles */
+.timeline-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+    margin-bottom: 18px;
+}
+
+.timeline-header h4 {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem; /* slightly larger for header */
+    font-weight: 700;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 8px;
+    align-items: center;
+    border-radius: 8px;
+    transition: background 120ms ease;
+}
+.timeline-item + .timeline-item {
+    margin-top: 8px;
+}
+.timeline-item:hover {
+    background: rgba(11,101,209,0.03); /* subtle default for older browsers */
+}
+
+/* Apply enhanced hover (lift + subtle bg) only on devices that support hover */
+@media (hover: hover) and (pointer: fine) {
+    .timeline-item {
+        transition: background 120ms ease, transform 120ms ease;
+    }
+    .timeline-item:hover {
+        background: rgba(11,101,209,0.04);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(11,101,209,0.04);
+    }
+}
+.timeline-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 44px;
+}
+
+/* Ensure the inner icon glyph or image fits the circular container */
+.timeline-icon i {
+    font-size: 1.15rem;
+    line-height: 1;
+}
+.timeline-icon img {
+    width: 60%;
+
+/* Ensure transfert page uses same photo rendering as show page */
+.transfer-section .avatar-sm img,
+.dashboard nav .avatar-sm img,
+.transfer-section .image1,
+.transfer-section .image1 img,
+.transfer-section .image,
+.transfer-section .image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    border-radius: 50% !important;
+    display: block !important;
+    height: 60%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Ensure icon containers are perfectly square and center their content */
+.timeline-icon i,
+.iconHist, .iconHist2, .iconHist3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Replace padding-based circular icons with fixed-size boxes to avoid deformation */
+.iconHist, .iconHist2, .iconHist3 {
+    width: 44px;
+    height: 44px;
+    padding: 0; /* remove variable padding that caused ovals */
+    border-radius: 50%;
+    font-size: 1.1rem; /* scale icon glyph */
+    margin-right: 12px;
+}
+
+.timeline-content {
+    flex: 1 1 auto;
+}
+
+.timeline-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Prevent title wrapping and keep amount on the right with ellipsis for long titles */
+.timeline-row .timeline-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important; /* allow flex shrink inside overflow:hidden parent */
+}
+.timeline-row .timeline-amount {
+    flex: 0 0 auto !important;
+    margin-left: 12px !important;
+}
+
+@media (max-width: 420px) {
+    /* On very small screens, slightly reduce amount size to avoid overflow */
+    .timeline-row .timeline-amount {
+        font-size: 1.22rem !important;
+    }
+    .timeline-row .timeline-title {
+        font-size: 1.26rem !important;
+    }
+}
+
+.timeline-title {
+    font-size: 1.18rem; /* larger for better readability */
+    font-weight: 700;
+    color: #111827;
+}
+
+.timeline-amount {
+    font-size: 1.18rem; /* match title */
+    font-weight: 900;
+    color: #0b65d1;
+    white-space: nowrap; /* prevent wrapping */
+    text-align: right;
+    flex: 0 0 auto;
+}
+
+/* Use tabular numbers for monetary values so digits align vertically */
+.timeline-amount,
+.timeline-card .timeline-item .timeline-amount,
+.hero-balance,
+.timeline-card .timeline-row .timeline-amount {
+    font-variant-numeric: tabular-nums;
+    -webkit-font-feature-settings: "tnum" 1;
+    -moz-font-feature-settings: "tnum" 1;
+    font-feature-settings: "tnum" 1;
+}
+
+.timeline-meta, .timeline-datetime {
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+@media (max-width: 768px) {
+    .timeline-title,
+    .timeline-amount {
+        font-size: 1.24rem; /* noticeably larger on tablets/small screens */
+    }
+    .timeline-meta, .timeline-datetime {
+        font-size: 1.00rem;
+    }
+    .timeline-icon { width:48px; height:48px; flex:0 0 48px; }
+}
+
+/* Mobile-specific tweaks for transaction history (phones) */
+@media (max-width: 576px) {
+    .timeline-item {
+        padding: 12px 10px;
+        gap: 10px;
+        border-radius: 10px;
+    }
+
+    .timeline-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .timeline-title,
+    .timeline-amount {
+        font-size: 1.36rem; /* larger on phones */
+        line-height: 1.15;
+    }
+
+    .timeline-amount {
+        font-weight: 900;
+    }
+
+    .timeline-meta, .timeline-datetime {
+        font-size: 1.02rem;
+        color: #6b7280;
+    }
+
+    .timeline-icon {
+        width: 52px;
+        height: 52px;
+        flex: 0 0 52px;
+    }
+
+    .timeline-icon i { font-size: 1.3rem; }
+    .timeline-icon img { width: 62%; height: 62%; }
+
+    .iconHist, .iconHist2, .iconHist3 { width:52px; height:52px; font-size:1.15rem; margin-right:12px; }
+
+    .timeline-title { word-break: break-word; }
+}
+
+/* Very small phones — keep legible but avoid wrapping issues */
+@media (max-width: 420px) {
+    .timeline-title,
+    .timeline-amount {
+        font-size: 1.44rem;
+    }
+
+    .timeline-meta, .timeline-datetime {
+        font-size: 1.03rem;
+    }
+
+    /* On very narrow screens ensure label and amount remain on a single row when possible */
+    .timeline-row { gap: 6px; }
+}
+
+/* Strong override: ensure timeline titles and amounts are larger (high specificity) */
+.timeline-card .timeline-item .timeline-title {
+    font-size: 1.36rem !important;
+    font-weight: 800 !important;
+    line-height: 1.08 !important;
+}
+.timeline-card .timeline-item .timeline-amount {
+    font-size: 1.36rem !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    text-align: right !important;
+    color: #0b65d1 !important;
+}
+
+@media (max-width: 576px) {
+    .timeline-card .timeline-item .timeline-title,
+    .timeline-card .timeline-item .timeline-amount {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 420px) {
+    .timeline-card .timeline-item .timeline-title,
+    .timeline-card .timeline-item .timeline-amount {
+        font-size: 1.6rem !important;
+    }
+}
+
+/* Strong fallback to force perfectly circular icon backgrounds across all pages */
+.timeline-icon, .iconHist, .iconHist2, .iconHist3 {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    min-height: 52px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.timeline-icon i { font-size: 1.3rem !important; line-height:1 !important; }
+.timeline-icon img { width: 62% !important; height: 62% !important; object-fit: contain !important; }
+
+
 * {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
@@ -180,32 +673,44 @@ i {
 
 
 .iconHist {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: #ccebf5;
     border-radius: 50%;
-    font-size: 1.8rem;
-    margin-right: 5px;
-    object-fit: cover;
+    font-size: 1.1rem;
+    margin-right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconHist2 {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: red;
     border-radius: 50%;
-    font-size: 1.8rem;
-    margin-right: 5px;
+    font-size: 1.1rem;
+    margin-right: 12px;
     color: #f0f0f0;
-    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconHist3 {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: green;
     border-radius: 50%;
-    font-size: 1.8rem;
-    margin-right: 5px;
+    font-size: 1.1rem;
+    margin-right: 12px;
     color: white;
-    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .virement {
@@ -229,7 +734,7 @@ i {
     font-size: 1.8rem;
 } 
 * {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--ui-font);
 }
 
 .form-container {
@@ -238,17 +743,25 @@ i {
     text-align: center;
 }
 
-.form-container h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-}
-
-.form-container .form-group {
-    text-align: left;
+.form-container {
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px 30px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 .alert-info {
     display: flex;
+    body {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
     align-items: center;
 }
 
@@ -265,49 +778,183 @@ i {
     position: relative;
     background-color: white;
     max-width: 900px;
+    width: 100%;
     min-height: 100vh;
     margin: auto;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, .2);
     overflow: auto;
-    padding: 10px 30px 150px 30px;
+    padding: 10px 30px 150px 30px; /* default desktop padding */
     transition: all 200ms linear;
 }
 
 footer {
     position: fixed;
-    display: -webkit-box-flex;
-    display: -ms-flex;
     display: flex;
-    -ms-flex-wrap: nowrap;
     flex-wrap: nowrap;
-    width: 810px;
-    height: 67px;
-    border-radius: 30px;
-    box-shadow: 0 0 12px 0 rgba(0, 0, 0, .2);
-    border: 1px solid #cfe2ff;
-    bottom: 20px;
+    max-width: 840px; /* match .dashboard visual width (900 - horizontal padding) */
+    width: calc(100% - 80px); /* leave larger horizontal margin on very wide screens */
+    left: 50%;
+    transform: translateX(-50%);
+    height: 64px; /* standard height optimized for fs-4 icons */
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .06);
+    border: 1px solid #e9f2ff;
+    bottom: 16px;
     overflow: hidden;
     background-color: white;
     z-index: 1000;
+    padding: 0 12px;
+    box-sizing: border-box;
+    /* keep footer visually narrower than main dashboard content for desktop */
 }
 
+/* On small viewports prefer fixed offsets instead of translate centering to avoid rounding/overflow issues */
 @media screen and (max-width: 800px) {
     footer {
-        width: 85%;
-        left: 10%;
+        left: 20px;
+        right: 20px;
+        transform: none;
+        width: auto;
+        border-radius: 16px;
+        bottom: 14px;
+    }
+}
+
+/* Optimized footer for tablets and phones */
+@media screen and (max-width: 768px) {
+    footer {
+        width: calc(100% - 24px);
+        max-width: 100%;
+        left: 12px;
+        right: 12px;
+        transform: none;
+        bottom: 12px;
+        padding: 10px 8px;
+        border-radius: 24px;
+        height: auto;
+    }
+    
+    footer a {
+        padding: 8px 6px;
+        font-size: 1.05rem; /* slightly larger for better legibility on tablets/large phones */
+        font-weight: 700; /* make labels bold for readability */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    footer a i {
+        font-size: 1.6rem; /* increased icon size for better tap targets */
+        height: auto;
+        margin-bottom: 4px;
+        line-height: 1;
+    }
+}
+
+/* Slightly bigger on smaller phones */
+@media screen and (max-width: 480px) {
+    footer a {
+        font-size: 1.1rem;
+        padding: 10px 6px;
+    }
+
+    footer a i {
+        font-size: 1.8rem;
+        margin-bottom: 6px;
+    }
+}
+
+/* Optimized footer for mobile */
+@media screen and (max-width: 576px) {
+    footer {
+        padding: 8px 6px;
+        bottom: 10px;
+        border-radius: 20px;
+    }
+    
+    footer a {
+        font-size: 0.88rem; /* slightly larger on small phones for readability */
+        padding: 8px 6px;
+        line-height: 1.1;
+        white-space: normal; /* allow wrapping if label is long */
+        font-weight: 700; /* bold labels under icons */
+    }
+    
+    footer a i {
+        font-size: 1.35rem;
+    }
+    
+    footer a.active {
+        border-bottom-width: 2.5px;
+    }
+}
+
+@media screen and (min-width: 901px) {
+    footer {
+        width: min(840px, calc(100% - 80px));
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+/* Ensure there's enough bottom space on small screens so fixed footer doesn't cover buttons */
+@media (max-width: 480px) {
+    .dashboard {
+        padding-bottom: 240px; /* leave space for footer and safe tap area */
+    }
+
+    /* Make sure primary CTA buttons are above overlays (if any) */
+    .balance-card, .action-buttons a.btn-premium {
+        position: relative;
+        z-index: 2;
     }
 }
 
 footer a i {
-    display: flex;
-    justify-content: center;
-    color: white;
-    padding-bottom: .5rem;
-    position: relative;
-    top: 4px;
-    color: var(--bs-link-color);
+    display: block;
+    color: #007bff; /* match the blue color from the card page */
+    margin-bottom: 6px; /* space between icon and label */
+    font-size: 1.5rem; /* match Bootstrap fs-4 size */
+    line-height: 1;
+    height: 26px; /* proportional height for fs-4 size */
 }
 
+/* Footer typography: use site font and increase label/icon legibility */
+footer, footer a, footer a i {
+    font-family: var(--ui-font);
+}
+
+footer a {
+    font-weight: 700; /* bolder labels for legibility */
+}
+
+/* Slightly larger footer labels and icons on tablet/mobile for better tap targets */
+@media screen and (max-width: 768px) {
+    footer a {
+        font-size: 1.12rem;
+    }
+    footer a i {
+        font-size: 1.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    footer a {
+        font-size: 1.16rem;
+    }
+    footer a i {
+        font-size: 2.0rem;
+        margin-bottom: 8px;
+    }
+}
+
+/* Page-specific override to match the 'carte' footer exactly on the show page */
+.footer-show a i {
+    font-size: 1.9rem; /* slightly larger on show page */
+    height: 34px;
+    color: #6f63ff;
+}
 /* footer a i:hover {
     display: flex;
     justify-content: center;
@@ -318,8 +965,12 @@ footer a i {
     color: white;
 } */
 
+/* footer links: center icon above label and vertically center content inside the pill */
 footer a {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 footer a:hover {
@@ -335,9 +986,68 @@ footer a {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 6px;
-    transition: all 100ms ease;
-    color: var(--bs-link-color);
+    padding: 11px 6px; /* optimal spacing for fs-4 sized icons */
+    transition: all 120ms ease;
+    color: #1f2937;
+    position: relative;
+}
+
+footer a.active {
+    border-bottom: 3px solid #6f63ff;
+}
+
+.footer-show a {
+    color: #6f63ff;
+    flex: 1 1 0%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Styles desktop pour footer-show */
+footer.footer-show {
+    max-width: 780px;
+    width: min(780px, calc(100% - 120px));
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 12px;
+}
+
+@media (max-width: 800px) {
+    footer.footer-show {
+        left: 20px;
+        right: 20px;
+        transform: none;
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    footer.footer-show {
+        width: calc(100% - 24px);
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        border-radius: 25px;
+    }
+}
+
+@media (max-width: 576px) {
+    footer.footer-show {
+        padding: 8px 6px;
+        bottom: 10px;
+        border-radius: 25px;
+    }
+
+    footer.footer-show a {
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    footer.footer-show a i {
+        font-size: 1.2rem;
+    }
 }
 
 i {
@@ -346,33 +1056,43 @@ i {
 
 .form-group {
     position: relative;
-    margin-bottom: 1.5rem;
+    margin-top: 1rem; /* pousse chaque champ un peu vers le bas */
+    margin-bottom: 4.2rem; /* espace augmenté entre les champs */
 }
 
+/* Ne pas ajouter d'espace supplémentaire avant le premier champ du formulaire */
+.form-group:first-child {
+    margin-top: 0;
+}
 .form-control {
     padding: 12px 12px 12px 36px;
 }
 
 .form-control:focus~label,
 .form-control:not(:placeholder-shown)~label {
-    top: -10px;
-    left: 12px;
-    font-size: 0.75rem;
+    top: -18px; /* remonte le label au-dessus du champ */
+    left: 18px;
+    font-size: 0.65rem; /* réduit en état flottant */
     color: #007bff;
-    background: white;
-    padding: 0 5px;
+    background: transparent; /* removed white background */
+    padding: 0 6px;
     z-index: 10;
-
+    border-radius: 0;
+    line-height: 1;
+    pointer-events: none;
 }
 
 label {
     position: absolute;
-    top: 12px;
+    top: 6px; /* réduit la marge en haut */
     left: 36px;
     color: #aaa;
-    font-size: 1rem;
+    font-size: 0.95rem; /* légèrement plus petit */
     transition: all 0.2s;
     pointer-events: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    line-height: 1.1;
 }
 
 .d-grid {
@@ -384,6 +1104,10 @@ label {
 .dashboard nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 .d-flex {
@@ -406,6 +1130,337 @@ label {
     cursor: pointer;
 }
 
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .dashboard {
+        padding: 10px 16px 120px 16px;
+        max-width: 100%;
+        box-shadow: none;
+    }
+
+    .form-container {
+        margin: 20px 12px;
+        max-width: 100%;
+        padding: 18px;
+    }
+
+    footer {
+        width: calc(100% - 24px);
+        left: 12px;
+        height: 64px;
+        border-radius: 18px;
+    }
+
+    .account-balance h2 {
+        font-size: 1.6em;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .form-btn {
+        font-size: 14px;
+    }
+}
+
+/* Helpful defaults for images & buttons on small screens */
+img, .image, .image1 {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Small circular avatar used in headers/navigation. Use a wrapper to avoid global img rules overriding dimensions. */
+.avatar-sm {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    flex: 0 0 auto;
+}
+.avatar-sm img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* consistent subtle border for header avatars */
+.avatar-sm {
+    border: 2px solid rgba(0,0,0,0.06);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Force circular rendering for header/logo images to match avatar style */
+.icon-circle img,
+.avatar-sm img,
+.card-logo-zone img,
+.header-logo img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+}
+
+/* If a page shows a larger square branding image, scale it down to avoid layout imbalance on mobile */
+.card-logo-zone img.large,
+.header-logo img.large {
+    width: 72px;
+    height: 72px;
+}
+
+/* Strong final override for alert typography to ensure legibility across pages */
+.alert-modern .alert-title,
+.alert-premium .alert-title,
+.alert-info .alert-title,
+.balance-credit-alert .alert-title {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+}
+
+.alert-modern .alert-message,
+.alert-premium .alert-message,
+.alert-info .alert-message,
+.balance-credit-alert .alert-message {
+    font-size: 1.08rem !important;
+    line-height: 1.6 !important;
+    font-weight: 400 !important; /* keep body text regular weight */
+}
+
+/* Make only the semantic pieces bold: title, amount, and source/bank names */
+.alert-modern .alert-title,
+.alert-premium .alert-title,
+.alert-info .alert-title,
+.balance-credit-alert .alert-title {
+    font-weight: 800 !important;
+}
+
+/* Bold inline strong/b elements inside alert messages (amounts or emphasized parts) */
+.alert-modern .alert-message strong,
+.alert-premium .alert-message strong,
+.alert-info .alert-message strong,
+.alert-modern .alert-message b,
+.alert-premium .alert-message b,
+.alert-info .alert-message b {
+    font-weight: 800 !important;
+}
+
+/* Common classes for amount/source if present in markup */
+.alert-modern .alert-amount,
+.alert-premium .alert-amount,
+.alert-info .alert-amount,
+.alert-modern .alert-source,
+.alert-premium .alert-source,
+.alert-info .alert-source {
+    font-weight: 800 !important;
+}
+
+@media (max-width: 768px) {
+    .alert-modern .alert-title,
+    .alert-premium .alert-title,
+    .alert-info .alert-title {
+        font-size: 1.08rem !important;
+    }
+    .alert-modern .alert-message,
+    .alert-premium .alert-message,
+    .alert-info .alert-message {
+        font-size: 1.03rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .alert-modern .alert-title,
+    .alert-premium .alert-title,
+    .alert-info .alert-title {
+        font-size: 1.03rem !important;
+    }
+    .alert-modern .alert-message,
+    .alert-premium .alert-message,
+    .alert-info .alert-message {
+        font-size: 1.00rem !important;
+    }
+}
+
+/* Make input placeholders bold and fully opaque for better legibility */
+input::placeholder,
+textarea::placeholder,
+.form-control::placeholder {
+    font-weight: 700;
+    opacity: 1; /* override browsers that dim placeholders */
+    color: #6b7280;
+}
+
+/* Vendor-prefixed placeholders for broader browser support */
+:-ms-input-placeholder { /* IE 10+ */
+    font-weight: 700;
+    opacity: 1;
+}
+::-ms-input-placeholder { /* Microsoft Edge */
+    font-weight: 700;
+    opacity: 1;
+}
+::-webkit-input-placeholder { /* Chrome/Safari/Opera */
+    font-weight: 700;
+    opacity: 1;
+}
+/* (no moz-specific rules required here) */
+
+/* Make inline icons (labels, inputs, cards) visually bolder */
+label i,
+.form-floating label i,
+.transfer-card .transfer-icon i,
+.transfer-icon i,
+footer a i {
+    font-weight: 700;
+    /* slightly increase size so icons read as 'bolder' */
+    font-size: 1.05em;
+    line-height: 1;
+}
+
+/* Specific: ensure icon inside input labels keeps good spacing */
+.form-floating label i {
+    margin-right: 0.35rem;
+    vertical-align: middle;
+}
+
+/* Tiny-screen guarantee: keep icon + label on single line and truncate it so datetime remains visible (image 2 layout) */
+@media (max-width: 360px) {
+    .timeline-card .timeline-item .timeline-submeta {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+        min-width: 0 !important;
+        max-width: 60% !important; /* leave room for datetime on the right */
+        overflow: hidden !important;
+    }
+
+    .timeline-card .timeline-item .timeline-submeta .meta-email,
+    .timeline-card .timeline-item .timeline-submeta .meta-bank {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        display: inline-block !important;
+        max-width: 100% !important;
+        vertical-align: middle !important;
+    }
+
+    /* ensure datetime stays pinned on the right */
+    .timeline-card .timeline-item .timeline-datetime {
+        flex: 0 0 auto !important;
+        margin-left: auto !important;
+        text-align: right !important;
+        min-width: 0 !important;
+    }
+}
+
+/* For very small phones (iPhone SE / iPhone 5 widths) stack time below date for readability */
+@media (max-width: 375px) {
+    .timeline-card .timeline-item .timeline-datetime {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-end !important; /* keep right-aligned */
+        gap: 2px !important;
+        white-space: nowrap !important;
+        min-width: 0 !important;
+    }
+
+    /* Make the time slightly smaller and muted for hierarchy */
+    .timeline-card .timeline-item .timeline-datetime .time,
+    .timeline-card .timeline-item .timeline-datetime span.time {
+        font-size: 0.88rem !important;
+        color: #6b7280 !important;
+    }
+
+    /* Ensure icon + meta on left still have space: reduce their max-width slightly */
+    .timeline-card .timeline-item .timeline-submeta,
+    .timeline-card .timeline-item .timeline-meta {
+        max-width: 58% !important;
+        overflow: hidden !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-premium {
+        width: 100% !important;
+    }
+
+    .transaction-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .transaction-amount {
+        align-self: flex-end;
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Make modals nearly full-screen on small devices */
+    .modal-dialog {
+        max-width: 94% !important;
+        margin: 12px auto;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    /* Progress bar full width and comfortable padding */
+    .custom-progress {
+        margin-left: 8px;
+        margin-right: 8px;
+        height: 48px; /* keep the new height */
+    }
+
+    .custom-progress-bar {
+        line-height: 48px;
+        font-size: 0.9rem;
+    }
+
+    footer {
+        width: calc(100% - 20px);
+        left: 10px;
+        bottom: 12px;
+    }
+
+    /* Make form labels and inputs comfortable */
+    label {
+        left: 12px;
+        top: 8px;
+        font-size: 0.75rem; /* plus petit pour moins d'encombrement */
+    }
+
+    .form-control {
+        padding: 10px 10px 10px 40px;
+        font-size: 0.95rem;
+    }
+
+    .status-title, .success-modal-title, .failure-modal-title {
+        font-size: 1.25rem;
+    }
+
+    .success-modal-body, .failure-modal-body {
+        padding: 18px;
+    }
+
+    /* Stack footer links and increase tap targets */
+    footer a {
+        width: 25%;
+        padding: 8px 6px;
+    }
+}
+
+/* Small tweak for very small phones */
+@media (max-width: 360px) {
+    .custom-progress {
+        height: 44px;
+    }
+    .custom-progress-bar { line-height: 44px; }
+}
+
 @media (max-width: 768px) {
     .image {
         width: 60px;
@@ -413,32 +1468,44 @@ label {
     }
     
 .iconHist {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: #ccebf5;
     border-radius: 50%;
-    font-size: 1.5rem;
-    margin-right: 5px;
-    object-fit: cover;
+    font-size: 1.1rem;
+    margin-right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconHist2 {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: red;
     border-radius: 50%;
-    font-size: 1.5rem;
-    margin-right: 5px;
+    font-size: 1.1rem;
+    margin-right: 12px;
     color: #f0f0f0;
-    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconHist3 {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: green;
     border-radius: 50%;
-    font-size: 1.5rem;
-    margin-right: 5px;
+    font-size: 1.1rem;
+    margin-right: 12px;
     color: white;
-    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 }
 
@@ -452,32 +1519,44 @@ label {
     }
       
 .iconHist {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: #ccebf5;
     border-radius: 50%;
-    font-size: 1.5rem;
-    margin-right: 5px;
-    object-fit: cover;
+    font-size: 1.1rem;
+    margin-right: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconHist2 {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: red;
     border-radius: 50%;
-    font-size: 1.5rem;
-    margin-right: 5px;
+    font-size: 1.1rem;
+    margin-right: 12px;
     color: #f0f0f0;
-    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .iconHist3 {
-    padding: 1rem;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     background-color: green;
     border-radius: 50%;
-    font-size: 1.5rem;
-    margin-right: 5px;
+    font-size: 1.1rem;
+    margin-right: 12px;
     color: white;
-    object-fit: cover;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 }
 
@@ -491,6 +1570,230 @@ label {
     margin: 5px;
     cursor: pointer;
 }
+
+/* --- MOBILE-FIRST RESPONSIVE DESIGN --- */
+
+/* Base mobile styles (320px+) */
+@media screen and (max-width: 768px) {
+    body {
+        background: #f8fafc;
+        font-size: 15px;
+    }
+
+    .container {
+        padding: 0;
+        max-width: 100%;
+    }
+
+    .dashboard {
+        max-width: 100%;
+        margin: 0;
+        padding: 16px 16px 100px 16px;
+        border-radius: 0;
+        box-shadow: none;
+        background: #f8fafc;
+        min-height: 100vh;
+    }
+
+    /* Header mobile clean */
+    .dashboard nav {
+        padding: 12px 8px 8px 4px;
+        margin-bottom: 8px;
+    }
+
+    .dashboard nav .menu-icon {
+        font-size: 18px;
+        margin-right: 8px;
+    }
+
+    .dashboard nav strong {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .dashboard hr {
+        margin: 12px 0 16px;
+        border-color: #e2e8f0;
+    }
+
+    /* Cards mobiles style iOS */
+    .card-modern,
+    .info-card,
+    .transfer-card,
+    .confirm-card,
+    .summary-card,
+    .progress-card,
+    .alert-modern {
+        background: #fff;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+        border: none;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    /* Alerts style mobile */
+    .alert-premium,
+    .alert-modern {
+        background: #fff;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        border-left: 4px solid #3b82f6;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .alert-modern .btn-close {
+        margin-left: auto;
+        padding: 4px;
+    }
+
+    /* Boutons mobile */
+    .btn-premium,
+    .btn-deconnexion,
+    .cta-soft,
+    .primary-btn,
+    .ghost-btn {
+        width: 100%;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    /* Footer mobile fixe style iOS */
+    footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 80px;
+        background: #fff;
+        border-top: 1px solid #e5e7eb;
+        border-radius: 0;
+        box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+        padding: 8px 0 20px 0;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    footer a {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        color: #6b7280;
+        text-decoration: none;
+        padding: 8px 4px;
+        font-size: 12px;
+        font-weight: 700; /* make footer labels bold on mobile (override earlier rules) */
+        transition: color 0.2s;
+    }
+
+    footer a i {
+        font-size: 22px;
+        margin-bottom: 4px;
+    }
+
+    footer a:hover,
+    footer a.active {
+        color: #3b82f6;
+    }
+
+    /* Layout mobile spécifique */
+    .row {
+        margin: 0 -8px;
+    }
+
+    .col-md-6,
+    .col-lg-6,
+    .col-12 {
+        padding: 0 8px;
+        width: 100%;
+    }
+
+    /* Typography mobile */
+    h1, h2, h3, h4, h5 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        line-height: 1.3;
+    }
+
+    /* Forms mobile */
+    .form-floating input,
+    .form-floating textarea,
+    .form-control {
+        font-size: 16px;
+        padding: 16px 12px;
+        border-radius: 8px;
+    }
+
+    .form-floating label {
+        font-size: 14px;
+    }
+
+    /* Modals mobile */
+    .modal-dialog {
+        margin: 20px 16px;
+        max-width: none;
+    }
+
+    .modal-content {
+        border-radius: 16px;
+    }
+}
+
+/* Très petits écrans (iPhone SE, etc.) */
+@media screen and (max-width: 375px) {
+    .dashboard {
+        padding: 12px 12px 100px 12px;
+    }
+
+    .card-modern,
+    .info-card,
+    .transfer-card,
+    .confirm-card,
+    .summary-card,
+    .progress-card {
+        padding: 16px;
+    }
+
+    footer {
+        height: 75px;
+        padding: 6px 0 18px 0;
+    }
+
+    footer a i {
+        font-size: 20px;
+    }
+
+    footer a {
+        font-size: 11px;
+    }
+}
+
+/* Final override: ensure timeline labels and amounts are visibly larger regardless of previous rules */
+@media all {
+    .timeline-card .timeline-item .timeline-title {
+        font-size: 1.9rem !important;
+        font-weight: 800 !important;
+    }
+    .timeline-card .timeline-item .timeline-amount {
+        font-size: 1.9rem !important;
+        font-weight: 900 !important;
+        color: #0b65d1 !important;
+    }
+}
+
 
 @media (max-width: 768px) {
     .image1 {
@@ -506,6 +1809,147 @@ label {
     margin-right: 5px;
     object-fit: cover;
 }
+
+/* -------------------------------------------------------------------------- */
+/* HOTFIX — Consolidated overrides to restore consistent timeline / avatar sizes */
+/* Appended last to override earlier conflicting rules that caused deformation */
+/* -------------------------------------------------------------------------- */
+
+/* Ensure page doesn't scroll horizontally (reinforce) */
+html, body { max-width: 100% !important; overflow-x: hidden !important; }
+
+/* Canonical timeline item sizing and layout */
+.timeline-card .timeline-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 10px 10px !important;
+    border-radius: 10px !important;
+}
+
+/* Canonical circular icon box for all icon classes used across pages */
+.timeline-card .timeline-item .timeline-icon,
+.timeline-card .timeline-item .iconHist,
+.timeline-card .timeline-item .iconHist2,
+.timeline-card .timeline-item .iconHist3,
+.timeline-card .timeline-item .avatar-sm {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Make sure any image or glyph fits its circular container */
+.timeline-card .timeline-item .timeline-icon img,
+.timeline-card .timeline-item .iconHist img,
+.timeline-card .timeline-item .avatar-sm img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.timeline-card .timeline-content { min-width: 0 !important; }
+
+.timeline-card .timeline-row { display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 12px !important; }
+
+/* Single-line title with ellipsis, fixed moderate size to avoid overflow */
+.timeline-card .timeline-row .timeline-title {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    line-height: 1.08 !important;
+}
+
+/* Amount stays on the right and does not wrap */
+.timeline-card .timeline-row .timeline-amount {
+    flex: 0 0 auto !important;
+    margin-left: 8px !important;
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+}
+
+/* Slightly smaller on very small screens but still single-line */
+@media (max-width: 576px) {
+    .timeline-card .timeline-item { padding: 7px 8px !important; }
+    .timeline-card .timeline-row .timeline-title { font-size: 0.85rem !important; }
+    .timeline-card .timeline-row .timeline-amount { font-size: 0.85rem !important; }
+    .timeline-card .timeline-item .timeline-icon,
+    .timeline-card .timeline-item .iconHist,
+    .timeline-card .timeline-item .iconHist2,
+    .timeline-card .timeline-item .iconHist3 { width: 34px !important; height: 34px !important; min-width: 34px !important; }
+}
+
+/* Limit hover effects to pointer-capable devices and keep them subtle */
+@media (hover: hover) and (pointer: fine) {
+    .timeline-card .timeline-item:hover {
+        background: rgba(11,101,209,0.03) !important;
+        transform: none !important; /* avoid lift which caused layout shifts */
+        box-shadow: none !important;
+    }
+}
+
+/* Override overly-large final rule that was causing huge titles */
+.timeline-card .timeline-item .timeline-title {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+    line-height: 1.08 !important;
+}
+.timeline-card .timeline-item .timeline-amount {
+    font-size: 0.9rem !important;
+    font-weight: 700 !important;
+}
+.timeline-card .timeline-item .timeline-meta,
+.timeline-card .timeline-item .timeline-datetime {
+    font-size: 0.78rem !important;
+    color: #6b7280 !important;
+}
+.timeline-card .timeline-item .timeline-icon i,
+.timeline-card .timeline-item .iconHist i,
+.timeline-card .timeline-item .iconHist2 i,
+.timeline-card .timeline-item .iconHist3 i {
+    font-size: 1.0rem !important;
+    line-height: 1 !important;
+}
+@media (max-width: 576px) {
+    .timeline-card .timeline-item .timeline-meta,
+    .timeline-card .timeline-item .timeline-datetime { font-size: 0.72rem !important; }
+    .timeline-card .timeline-item .timeline-icon i,
+    .timeline-card .timeline-item .iconHist i { font-size: 0.9rem !important; }
+}
+
+/* Small safety: prevent footer from growing too large accidentally */
+footer a i { line-height: 1 !important; }
+
+/* End HOTFIX */
+
+/* Variant-specific amount colors (force priority over global blue) */
+.timeline-card .timeline-item .timeline-amount.variant-positive { color: #16a34a !important; }
+.timeline-card .timeline-item .timeline-amount.variant-refund { color: #16a34a !important; }
+.timeline-card .timeline-item .timeline-amount.variant-negative { color: #dc2626 !important; }
+.timeline-card .timeline-item .timeline-amount.variant-neutral { color: #374151 !important; }
+
+/* Also accept bare classes (outside timeline-card) */
+.timeline-amount.variant-positive { color: #16a34a !important; }
+.timeline-amount.variant-refund { color: #16a34a !important; }
+.timeline-amount.variant-negative { color: #dc2626 !important; }
+.timeline-amount.variant-neutral { color: #374151 !important; }
+
+
 
 .iconHist2 {
     padding: 1rem;
@@ -576,7 +2020,7 @@ label {
 }
 
 * {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--ui-font);
 }
 
 .card-container {
@@ -612,17 +2056,21 @@ label {
 
 }
 
-.loader {
-    border: 4px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 4px solid #007bff;
-    width: 30px;
-    height: 30px;
-    animation: spin 2s linear infinite;
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-
+label {
+    position: absolute;
+    top: 2px;
+    left: 18px;
+    color: #888;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    pointer-events: none;
+    padding: 0 2px; /* keep compact spacing */
+    line-height: 1; /* ultra compact */
+    background: transparent; /* remove white bg behind small helper labels */
+    z-index: 2;
+    border-radius: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 
@@ -749,6 +2197,406 @@ i {
         margin-right: 10px;
     }
 }
+
+/* Forcer la couleur verte sur la notification solde crédité */
+.balance-credit-alert.variant-success {
+    border-left: 4px solid #10b981 !important;
+}
+.balance-credit-alert .alert-icon.variant-success {
+    background: rgba(16, 185, 129, 0.12) !important;
+    color: #047857 !important;
+}
+.balance-credit-alert .alert-title {
+    color: #047857 !important;
+}
+
+/* Correction forcée pour notification solde crédité */
+.alert-modern.balance-credit-alert.variant-success {
+    border-left: 4px solid #10b981 !important;
+    box-shadow: 0 0 0 2px #10b98122 !important;
+}
+.alert-modern.balance-credit-alert .alert-icon.variant-success {
+    background: rgba(16, 185, 129, 0.18) !important;
+    color: #047857 !important;
+    border: 2px solid #10b981 !important;
+}
+.alert-modern.balance-credit-alert .alert-title {
+    color: #047857 !important;
+}
+.alert-modern.balance-credit-alert .btn-close {
+    color: #047857 !important;
+}
+
+/* Notifications: increase font sizes and use site's main font for better legibility */
+.alert-modern,
+.alert-premium,
+.balance-credit-alert,
+.alert-info,
+.alert-warning,
+.alert-stack {
+    font-family: var(--ui-font); /* ensure same 'police' as site */
+}
+
+.alert-modern .alert-title,
+.alert-premium .alert-title,
+.balance-credit-alert .alert-title,
+.alert-info .alert-title {
+    font-size: 1.05rem; /* slightly larger for headings */
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.alert-modern .alert-message,
+.alert-premium .alert-message,
+.balance-credit-alert .alert-message,
+.alert-info .alert-message {
+    font-size: 1.00rem; /* make body message readable on mobile */
+    line-height: 1.5;
+    color: #374151;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .alert-modern .alert-title,
+    .alert-premium .alert-title,
+    .alert-info .alert-title {
+        font-size: 1.03rem;
+    }
+    .alert-modern .alert-message,
+    .alert-premium .alert-message,
+    .alert-info .alert-message {
+        font-size: 0.98rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .alert-modern .alert-title,
+    .alert-premium .alert-title,
+    .alert-info .alert-title {
+        font-size: 1.00rem;
+    }
+    .alert-modern .alert-message,
+    .alert-premium .alert-message,
+    .alert-info .alert-message {
+        font-size: 0.95rem;
+    }
+}
+
+
+
+
+/* --------------------------------------------------------------------------- */
+/* Footer mobile typography fixes: increase label size and weight on small viewports */
+/* Ensures the site's font and weight are used so labels read larger on phones */
+/* --------------------------------------------------------------------------- */
+@media (max-width: 576px) {
+    footer, footer a, footer a div {
+        font-family: var(--ui-font) !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+    }
+
+    /* Make footer labels larger and bolder for better legibility */
+    footer a {
+        font-size: 1.05rem !important; /* ~16.8px */
+        font-weight: 800 !important;
+        line-height: 1 !important;
+        padding: 10px 6px !important;
+    }
+
+    /* Ensure the label text inside the anchor is visible and not truncated */
+    footer a div {
+        font-size: 0.98rem !important;
+        font-weight: 800 !important;
+        white-space: normal !important;
+    }
+
+    /* Slightly increase icon size to match the label weight */
+    footer a i {
+        font-size: 1.9rem !important;
+    }
+
+    /* Reduce footer pill height so labels fit without wrapping */
+    footer {
+        height: auto !important;
+        padding: 8px 6px !important;
+    }
+}
+
+/* FINAL OVERRIDE: reduce footer font-size and use system font on very small screens
+   This lowers visual weight while keeping labels legible; uses !important to
+   ensure it overrides earlier more aggressive rules. */
+@media (max-width: 576px) {
+    footer, footer a, footer a div {
+        font-family: var(--ui-font) !important;
+        -webkit-font-smoothing: antialiased !important;
+        text-rendering: optimizeLegibility !important;
+    }
+
+    footer a {
+        font-size: 0.95rem !important; /* slightly smaller */
+        font-weight: 700 !important;  /* keep readable but less heavy */
+        padding: 8px 6px !important;
+    }
+
+    footer a div {
+        font-size: 0.85rem !important; /* label text slightly smaller than anchor */
+        font-weight: 700 !important;
+        white-space: normal !important;
+    }
+
+    footer a i {
+        font-size: 1.6rem !important; /* reduce icon size to fit */
+        line-height: 1 !important;
+    }
+
+    footer {
+        height: auto !important;
+        padding: 6px 6px !important;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* PayPal email / refund label display tweaks                           */
+/* Ensure emails can show more characters and refund 'PayPal' is never  */
+/* truncated on small phones while preserving right-aligned datetime    */
+/* ------------------------------------------------------------------ */
+
+/* Base small-phone rule: allow more space for emails inside submeta */
+@media (max-width: 576px) {
+    .timeline-card .timeline-item .timeline-submeta .meta-email {
+        max-width: 72% !important; /* allow longer email like example@domai...com */
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+}
+
+/* Tighter for narrow phones but still allow reasonably long emails */
+@media (max-width: 420px) {
+    .timeline-card .timeline-item .timeline-submeta .meta-email {
+        max-width: 70% !important;
+    }
+}
+
+/* On very small phones, prefer showing the full literal "PayPal" for refunds */
+@media (max-width: 420px) {
+    .timeline-card .timeline-item.variant-refund .timeline-submeta .meta-bank,
+    .timeline-card .timeline-item.variant-refund .timeline-submeta .meta-email {
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        max-width: none !important;
+    }
+
+    /* If the platform prints 'PayPal' as meta-bank, keep it visible by giving
+       it a slight priority and preventing it from being shrunk by ellipsis */
+    .timeline-card .timeline-item.variant-refund .timeline-submeta .meta-bank {
+        font-weight: 600 !important;
+        color: #0f172a !important;
+    }
+}
+
+/* Very-narrow fallback: if the datetime needs space, reduce submeta width */
+@media (max-width: 375px) {
+    .timeline-card .timeline-item .timeline-submeta .meta-email {
+        max-width: 62% !important; /* make room for stacked date/time */
+    }
+}
+
+/* Strong rule: when JS marks an email as shortened, never wrap it and give it
+   enough horizontal room so the 'first...tld' form stays intact on tiny screens */
+@media (max-width: 420px) {
+    .timeline-card .timeline-item .meta-email.shortened {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 72% !important; /* slightly larger to avoid forced breaks */
+        display: inline-block !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .timeline-card .timeline-item .meta-email.shortened {
+        max-width: 68% !important;
+    }
+}
+
+/* Allow emails to wrap at logical break points on small screens so more of the
+   address is visible (e.g. show 'prenom.nom@domaine.com' across two lines).
+   We favor breaking after punctuation and the '@' sign rather than truncating. */
+@media (max-width: 420px) {
+    .timeline-card .timeline-item .timeline-submeta .meta-email {
+        white-space: normal !important; /* allow wrapping */
+        overflow-wrap: anywhere !important; /* break anywhere if needed */
+        word-break: break-word !important; /* fallback */
+        display: inline-block !important;
+        max-width: 72% !important; /* keep reasonable room for datetime */
+        text-overflow: clip !important;
+    }
+
+    /* If email breaks on two lines, ensure it doesn't push the datetime away */
+    .timeline-card .timeline-item .timeline-submeta {
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+    }
+}
+
+/* For the tiniest screens, allow wrapping but keep a safe max width */
+@media (max-width: 360px) {
+    .timeline-card .timeline-item .timeline-submeta .meta-email {
+        max-width: 60% !important;
+    }
+}
+
+/* End PayPal/refund display tweaks */
+
+/* Ensure footer labels do not wrap and can ellipsize if space is tight */
+@media (max-width: 576px) {
+    footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 6px;
+    }
+
+    footer a {
+        flex: 1 1 auto !important;
+        min-width: 0 !important; /* allow flex items to shrink */
+        display: inline-flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 6px 4px !important;
+    }
+
+    /* Prevent label from breaking into two lines */
+    footer a div {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        max-width: 100% !important;
+        display: block !important;
+    }
+}
+
+/* (removed duplicate PayPal override - now controlled in pages/show.php) */
+
+/* ------------------------------------------------------------------ */
+/* Highlight: Account balance — larger, bolder and more captivating   */
+/* Targets common balance/hero classes used across pages; responsive */
+/* ------------------------------------------------------------------ */
+.balance-card, .account-balance, .hero-balance, .account-summary {
+    display: block;
+    text-align: left;
+}
+
+.balance-card .balance-title,
+.account-balance .balance-title,
+.hero-balance .balance-title,
+.account-summary .balance-title {
+    font-size: 1.15rem !important; /* slightly larger label */
+    font-weight: 800 !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    color: inherit !important;
+    margin: 0 0 6px 0 !important;
+}
+
+.balance-card .balance-amount,
+.account-balance .balance-amount,
+.hero-balance .balance-amount,
+.account-summary .balance-amount {
+    font-size: 4.2rem !important; /* increased further: make the numeric amount more prominent */
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    color: #ffffff !important; /* assume placed on colored card; override if needed */
+    text-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
+
+/* If the amount appears inside a light card, use primary color instead */
+.balance-card.light .balance-amount,
+.account-balance.light .balance-amount {
+    color: #0b65d1 !important;
+    text-shadow: none !important;
+}
+
+/* Responsive scaling for small screens */
+@media (max-width: 768px) {
+    .balance-card .balance-title,
+    .account-balance .balance-title {
+        font-size: 1.0rem !important;
+    }
+    .balance-card .balance-amount,
+    .account-balance .balance-amount {
+        font-size: 3.4rem !important; /* responsive reduced size for smaller viewports */
+    }
+}
+
+@media (max-width: 420px) {
+    .balance-card .balance-title,
+    .account-balance .balance-title {
+        font-size: 0.95rem !important;
+    }
+    .balance-card .balance-amount,
+    .account-balance .balance-amount {
+        font-size: 2.6rem !important; /* mobile-friendly size */
+    }
+}
+
+/* FINAL FORCE: cover alternative markup and ensure balance numbers stay large
+   This is appended last so it overrides earlier conflicting rules. */
+@media all {
+    body .balance-card .balance-amount,
+    body .account-balance .balance-amount,
+    body .hero-balance .balance-amount,
+    body .account-summary .balance-amount,
+    body .account-balance .amount,
+    body .hero .amount,
+    body .hero .balance,
+    body .balance .amount,
+    body [class*="balance"] .amount {
+        font-size: 4.6rem !important; /* stronger final override for desktop */
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        color: #ffffff !important;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.14) !important;
+    }
+
+    @media (max-width: 768px) {
+        body .balance-card .balance-amount,
+        body .account-balance .balance-amount,
+        body .account-balance .amount,
+        body .hero .amount,
+        body [class*="balance"] .amount {
+            font-size: 3.8rem !important;
+        }
+    }
+
+    @media (max-width: 520px) {
+        body .balance-card .balance-amount,
+        body .account-balance .balance-amount,
+        body .account-balance .amount,
+        body .hero .amount,
+        body [class*="balance"] .amount {
+            font-size: 3.2rem !important; /* bumped for mid-size mobile */
+        }
+    }
+
+    @media (max-width: 420px) {
+        body .balance-card .balance-amount,
+        body .account-balance .balance-amount,
+        body .account-balance .amount,
+        body .hero .amount,
+        body [class*="balance"] .amount {
+            font-size: 2.8rem !important;
+        }
+    }
+}
+
+
+
+
 
 
 

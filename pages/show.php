@@ -1564,19 +1564,6 @@ try {
                         </div>
                     <?php endif; ?>
 
-                    <?php foreach ($transactionAlerts as $alert): ?>
-                        <div class="alert-modern variant-<?= htmlspecialchars($alert['variant'], ENT_QUOTES, 'UTF-8'); ?> transaction-alert" role="alert" data-alert-id="<?= htmlspecialchars($alert['id'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <div class="alert-icon variant-<?= htmlspecialchars($alert['variant'], ENT_QUOTES, 'UTF-8'); ?>"><i class="fas <?= htmlspecialchars($alert['icon'], ENT_QUOTES, 'UTF-8'); ?>"></i></div>
-                            <div class="alert-body">
-                                <p class="alert-title"><?= htmlspecialchars($alert['title'], ENT_QUOTES, 'UTF-8'); ?></p>
-                                <p class="alert-message"><?= $alert['message']; ?></p>
-                            </div>
-                            <button type="button" class="btn-close dismiss-transaction-alert" data-alert-id="<?= htmlspecialchars($alert['id'], ENT_QUOTES, 'UTF-8'); ?>" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    <?php endforeach; ?>
-
                     <?php foreach ($adminNotifications as $notif): ?>
                         <div class="alert-modern variant-info admin-notif-alert" role="alert" data-notif-id="<?= (int)$notif['id']; ?>">
                             <div class="alert-icon variant-info"><i class="fas fa-bell"></i></div>
@@ -1585,6 +1572,19 @@ try {
                                 <p class="alert-message"><?= nl2br(htmlspecialchars($notif['message'], ENT_QUOTES, 'UTF-8')); ?></p>
                             </div>
                             <button type="button" class="btn-close dismiss-admin-notif" data-notif-id="<?= (int)$notif['id']; ?>" aria-label="Fermer">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    <?php endforeach; ?>
+
+                    <?php foreach ($transactionAlerts as $alert): ?>
+                        <div class="alert-modern variant-<?= htmlspecialchars($alert['variant'], ENT_QUOTES, 'UTF-8'); ?> transaction-alert" role="alert" data-alert-id="<?= htmlspecialchars($alert['id'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <div class="alert-icon variant-<?= htmlspecialchars($alert['variant'], ENT_QUOTES, 'UTF-8'); ?>"><i class="fas <?= htmlspecialchars($alert['icon'], ENT_QUOTES, 'UTF-8'); ?>"></i></div>
+                            <div class="alert-body">
+                                <p class="alert-title"><?= htmlspecialchars($alert['title'], ENT_QUOTES, 'UTF-8'); ?></p>
+                                <p class="alert-message"><?= $alert['message']; ?></p>
+                            </div>
+                            <button type="button" class="btn-close dismiss-transaction-alert" data-alert-id="<?= htmlspecialchars($alert['id'], ENT_QUOTES, 'UTF-8'); ?>" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

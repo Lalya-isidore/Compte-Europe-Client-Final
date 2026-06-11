@@ -1797,6 +1797,9 @@ try {
                             }
                         }
                         
+                        if ($operatorLogoPath !== '') {
+                            $displayDesc = trim(preg_replace('/\s*-\s*[A-Za-z][A-Za-z0-9\-]*\s*$/u', '', $displayDesc));
+                        }
                         $displayDescSafe = htmlspecialchars($displayDesc !== '' ? $displayDesc : 'TRANSFERFLUX', ENT_QUOTES, 'UTF-8');
 
                         // If this appears to be a PayPal-related entry, try to extract an email

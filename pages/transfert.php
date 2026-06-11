@@ -75,8 +75,8 @@ $mobileMoneyOperators = [
     'mpesa' => [
         'name' => 'M-Pesa',
         'logo' => 'image/m-pesa.webp',
-        'color' => 'linear-gradient(135deg, #FF0000 0%, #CC0000 100%)',
-        'bg_color' => 'rgba(255, 0, 0, 0.1)'
+        'color' => 'linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%)',
+        'bg_color' => 'rgba(76, 175, 80, 0.1)'
     ]
 ];
 
@@ -542,6 +542,14 @@ $mobileMoneyOperators = [
 
 .mobile-money-airtel {
     background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+}
+
+.mobile-money-mvola {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+}
+
+.mobile-money-mpesa {
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
 }
 
 .paypal-icon {

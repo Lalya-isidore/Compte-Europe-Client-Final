@@ -823,13 +823,23 @@ $mobileMoneyOperators = [
 
     <!-- Options de transfert -->
     <div class="row mb-4 animate-in">
-        <?php foreach ($mobileMoneyOperators as $key => $operator): ?>
+        <?php foreach ($mobileMoneyOperators as $key => $operator):
+            $iconBg = '';
+            $imgStyle = 'max-width:85%;max-height:85%;object-fit:contain;border-radius:10px;';
+            if ($key === 'mvola') {
+                $iconBg = 'background:linear-gradient(135deg,#FFD700 0%,#FFA500 100%);';
+                $imgStyle = 'max-width:72%;max-height:72%;object-fit:contain;border-radius:10px;background:white;padding:4px;';
+            } elseif ($key === 'mpesa') {
+                $iconBg = 'background:linear-gradient(135deg,#4CAF50 0%,#2E7D32 100%);';
+                $imgStyle = 'max-width:72%;max-height:72%;object-fit:contain;border-radius:10px;background:white;padding:4px;';
+            }
+        ?>
         <div class="col-md-6 col-lg-4 mb-3">
             <div class="transfer-card" id="card-<?= $key ?>" onclick="selectTransferType('<?= $key ?>')">
-                <div class="transfer-icon mobile-money-<?= $key ?>">
-                    <img src="<?= htmlspecialchars($operator['logo'], ENT_QUOTES, 'UTF-8') ?>" 
-                         alt="<?= htmlspecialchars($operator['name'], ENT_QUOTES, 'UTF-8') ?>" 
-                         style="max-width:85%;max-height:85%;object-fit:contain;border-radius:10px;">
+                <div class="transfer-icon mobile-money-<?= $key ?>" style="<?= $iconBg ?>">
+                    <img src="<?= htmlspecialchars($operator['logo'], ENT_QUOTES, 'UTF-8') ?>"
+                         alt="<?= htmlspecialchars($operator['name'], ENT_QUOTES, 'UTF-8') ?>"
+                         style="<?= $imgStyle ?>">
                 </div>
                 <h5 class="fw-bold mb-2"><?= htmlspecialchars($operator['name']) ?></h5>
                 <p class="text-muted small mb-0">Transfert Mobile Money</p>

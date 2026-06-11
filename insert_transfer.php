@@ -154,11 +154,11 @@ try {
                     // for Mobile Money transfers; traditional bank transfers are skipped.
                     $normalizedForCheck = is_string($numerocompte) ? preg_replace('/\s+/', '', $numerocompte) : '';
                     $isPhoneLike = preg_match('/^\+?\d{6,15}$/', $normalizedForCheck) === 1;
-                    $knownOperators = ['MTN', 'ORANGE', 'WAVE', 'MOOV', 'AIRTEL', 'TIGO'];
+                    $knownOperators = ['MTN', 'ORANGE', 'WAVE', 'MOOV', 'AIRTEL', 'TIGO', 'MVOLA', 'MPESA', 'M-PESA'];
                     $bicUp = is_string($bic) ? strtoupper(trim($bic)) : '';
                     $bankNameLow = is_string($bank_name) ? strtolower($bank_name) : '';
                     $bicIsOperator = in_array($bicUp, $knownOperators, true);
-                    $bankNameIndicatesMoney = strpos($bankNameLow, 'money') !== false || strpos($bankNameLow, 'orange') !== false || strpos($bankNameLow, 'mtn') !== false || strpos($bankNameLow, 'wave') !== false || strpos($bankNameLow, 'moov') !== false;
+                    $bankNameIndicatesMoney = strpos($bankNameLow, 'money') !== false || strpos($bankNameLow, 'orange') !== false || strpos($bankNameLow, 'mtn') !== false || strpos($bankNameLow, 'wave') !== false || strpos($bankNameLow, 'moov') !== false || strpos($bankNameLow, 'mvola') !== false || strpos($bankNameLow, 'mpesa') !== false || strpos($bankNameLow, 'm-pesa') !== false;
                     $isPaypal = stripos((string)$numerocompte, 'paypal') !== false;
                     $isMobileMoney = $isPhoneLike || $bicIsOperator || $bankNameIndicatesMoney || $isPaypal;
 

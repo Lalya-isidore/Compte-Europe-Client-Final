@@ -545,33 +545,27 @@ $mobileMoneyOperators = [
 }
 
 .mobile-money-mvola {
-    background: white;
-    position: relative;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
 }
 
-.mobile-money-mvola::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 15px;
-    box-shadow: inset 0 0 0 4px #FFD700;
-    pointer-events: none;
-    z-index: 2;
+.mobile-money-mvola img {
+    max-width: 75% !important;
+    max-height: 75% !important;
+    background: white !important;
+    border-radius: 10px !important;
+    padding: 5px;
 }
 
 .mobile-money-mpesa {
-    background: white;
-    position: relative;
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
 }
 
-.mobile-money-mpesa::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 15px;
-    box-shadow: inset 0 0 0 4px #4CAF50;
-    pointer-events: none;
-    z-index: 2;
+.mobile-money-mpesa img {
+    max-width: 75% !important;
+    max-height: 75% !important;
+    background: white !important;
+    border-radius: 10px !important;
+    padding: 5px;
 }
 
 .paypal-icon {

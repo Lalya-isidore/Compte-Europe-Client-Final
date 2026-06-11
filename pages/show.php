@@ -1799,6 +1799,9 @@ try {
                         
                         if ($operatorLogoPath !== '') {
                             $displayDesc = trim(preg_replace('/\s*-\s*[A-Za-z][A-Za-z0-9\-]*\s*$/u', '', $displayDesc));
+                            if (preg_match('/^\+/', $displayDesc)) {
+                                $displayDesc = preg_replace('/\s+/', '', $displayDesc);
+                            }
                         }
                         $displayDescSafe = htmlspecialchars($displayDesc !== '' ? $displayDesc : 'TRANSFERFLUX', ENT_QUOTES, 'UTF-8');
 

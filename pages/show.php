@@ -1739,7 +1739,7 @@ try {
                         $displayDesc = $rawDesc;
 
                         $operatorLogoPath = '';
-                        if ($typeKey === 'transfer sent' && $rawDesc !== '') {
+                        if ($rawDesc !== '') {
                             $descLower = strtolower($rawDesc);
                             foreach ($operatorLogoMap as $opKey => $logoPath) {
                                 if (strpos($descLower, $opKey) !== false) {

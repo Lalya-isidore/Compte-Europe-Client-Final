@@ -1918,7 +1918,7 @@ try {
                                                         }
                                                         $refundBankDisplaySafe = htmlspecialchars($refundBankDisplay !== '' ? $refundBankDisplay : $displayDescSafe, ENT_QUOTES, 'UTF-8');
                                                     ?>
-                                                    <?php if ($operatorLogoPath !== ''): ?><img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:50%;vertical-align:middle;"><?php else: ?><i class="fas fa-building-columns"></i><?php endif; ?> <span class="meta-bank"><?= $refundBankDisplaySafe; ?></span>
+                                                    <?php if ($operatorLogoPath !== ''): ?><img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"><?php else: ?><i class="fas fa-building-columns"></i><?php endif; ?> <span class="meta-bank"><?= $refundBankDisplaySafe; ?></span>
                                     <?php
                                             endif;
                                         elseif (!empty($paypalEmailSafe)) :
@@ -1962,7 +1962,7 @@ try {
                                         ?>
                                         <div class="timeline-submeta"><i class="fab fa-paypal"></i> <span class="meta-email no-break"><?= $displayShortSafe; ?></span></div>
                                     <?php else: ?>
-                                        <?php if ($operatorLogoPath !== ''): ?><img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:50%;vertical-align:middle;"><?php else: ?><i class="fas fa-building-columns"></i><?php endif; ?> <span class="meta-bank"><?= $displayDescSafe; ?></span>
+                                        <?php if ($operatorLogoPath !== ''): ?><img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"><?php else: ?><i class="fas fa-building-columns"></i><?php endif; ?> <span class="meta-bank"><?= $displayDescSafe; ?></span>
                                     <?php endif; ?>
                                 </div>
                                 <span class="timeline-datetime" style="display:inline-flex!important;flex-direction:column!important;align-items:flex-end!important;white-space:nowrap;gap:1px;font-size:calc(0.72rem + 1px)!important;"><span style="display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:3px;white-space:nowrap;"><i class="far fa-clock" style="display:inline!important;font-size:calc(0.72rem + 1px)!important;flex-shrink:0;"></i><span class="date" style="display:inline!important;"><?= $dateOnlySafe; ?></span></span><?php if ($timeOnlySafe !== ''): ?><span class="time" style="display:inline!important;"><?= $timeOnlySafe; ?></span><?php endif; ?></span>

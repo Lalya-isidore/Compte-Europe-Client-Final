@@ -33,6 +33,14 @@ $mobileMoneyOperators = [
     'airtel' => [
         'name' => 'Airtel Money',
         'code' => 'AIRTEL'
+    ],
+    'mvola' => [
+        'name' => 'MVola',
+        'code' => 'MVOLA'
+    ],
+    'mpesa' => [
+        'name' => 'M-Pesa',
+        'code' => 'MPESA'
     ]
 ];
 

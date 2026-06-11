@@ -546,22 +546,28 @@ $mobileMoneyOperators = [
 
 .mobile-money-mvola {
     background: white;
-    border: 3px solid #FFD700;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.35);
 }
 
 .mobile-money-mvola img {
     background: transparent;
+    border: 4px solid #FFD700;
+    border-radius: 14px;
+    padding: 4px;
+    max-width: 80%;
+    max-height: 80%;
 }
 
 .mobile-money-mpesa {
     background: white;
-    border: 3px solid #4CAF50;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.35);
 }
 
 .mobile-money-mpesa img {
     background: transparent;
+    border: 4px solid #4CAF50;
+    border-radius: 14px;
+    padding: 4px;
+    max-width: 80%;
+    max-height: 80%;
 }
 
 .paypal-icon {

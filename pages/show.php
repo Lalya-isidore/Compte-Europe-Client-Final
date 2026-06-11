@@ -1852,11 +1852,7 @@ try {
                     ?>
                     <div class="timeline-item variant-<?= $variant; ?>">
                         <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;border-radius:50%!important;flex-shrink:0!important;align-self:center!important;aspect-ratio:1/1!important;overflow:hidden!important;box-sizing:border-box!important;">
-                            <?php if ($operatorLogoPath !== ''): ?>
-                                <img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
-                            <?php else: ?>
-                                <i class="fas <?= $iconClassName; ?>"></i>
-                            <?php endif; ?>
+                            <i class="fas <?= $iconClassName; ?>"></i>
                         </div>
                         <div class="timeline-content">
                             <div class="timeline-row">

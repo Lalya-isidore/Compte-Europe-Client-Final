@@ -46,7 +46,7 @@ $mobileMoneyOperators = [
 
 // Si c'est un transfert Mobile Money
 if ($transfer_method === 'mobilemoney') {
-    $operator_key = trim((string)($_POST['operator'] ?? ''));
+    $operator_key = strtolower(trim((string)($_POST['operator'] ?? '')));
     $nom = trim((string)($_POST['nom'] ?? ''));
     $prenom = trim((string)($_POST['prenom'] ?? ''));
     $mobile_number = trim((string)($_POST['mobile_number'] ?? ''));

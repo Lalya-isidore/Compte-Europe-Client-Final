@@ -1686,6 +1686,18 @@ try {
                         </div>
 
                 <?php if (!empty($historique_transactions)) : ?>
+                    <?php
+                    $operatorLogoMap = [
+                        'mvola'  => 'image/MVola.webp',
+                        'mpesa'  => 'image/m-pesa.webp',
+                        'm-pesa' => 'image/m-pesa.webp',
+                        'mtn'    => 'image/MTN.jpg',
+                        'moov'   => 'image/Moov.jpg',
+                        'orange' => 'image/Orange.jpg',
+                        'wave'   => 'image/Wave.jpg',
+                        'airtel' => 'image/Airtel.jpg',
+                    ];
+                    ?>
                     <?php foreach ($sortedTransactions as $transaction) :
                         $amount = (float)($transaction['amount'] ?? 0);
                         $formattedAmount = number_format($amount, 2, ',', ' ');
@@ -1725,6 +1737,16 @@ try {
 
                         $rawDesc = trim((string)($transaction['description'] ?? ''));
                         $displayDesc = $rawDesc;
+
+                        $operatorLogoPath = '';
+                        if ($typeKey === 'transfer sent' && $rawDesc !== '') {
+                            if (preg_match('/-\s*([A-Za-z][A-Za-z0-9\-]*)\s*$/u', $rawDesc, $mOp)) {
+                                $opKey = strtolower(trim($mOp[1]));
+                                if (isset($operatorLogoMap[$opKey])) {
+                                    $operatorLogoPath = $operatorLogoMap[$opKey];
+                                }
+                            }
+                        }
 
                         // Preferer IBAN/numero de compte à la place du BIC/SWIFT
                         $ibanField = trim((string)($transaction['iban'] ?? ''));
@@ -1829,7 +1851,11 @@ try {
                     ?>
                     <div class="timeline-item variant-<?= $variant; ?>">
                         <div class="timeline-icon variant-<?= $variant; ?>" style="width:30px!important;height:30px!important;min-width:30px!important;min-height:30px!important;max-width:30px!important;max-height:30px!important;border-radius:50%!important;flex-shrink:0!important;align-self:center!important;aspect-ratio:1/1!important;overflow:hidden!important;box-sizing:border-box!important;">
-                            <i class="fas <?= $iconClassName; ?>"></i>
+                            <?php if ($operatorLogoPath !== ''): ?>
+                                <img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+                            <?php else: ?>
+                                <i class="fas <?= $iconClassName; ?>"></i>
+                            <?php endif; ?>
                         </div>
                         <div class="timeline-content">
                             <div class="timeline-row">

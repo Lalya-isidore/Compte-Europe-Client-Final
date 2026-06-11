@@ -1798,7 +1798,10 @@ try {
                         }
                         
                         if ($operatorLogoPath !== '') {
-                            $displayDesc = trim(preg_replace('/\s*-\s*[A-Za-z][A-Za-z0-9\-]*\s*$/u', '', $displayDesc));
+                            $lastDash = strrpos($displayDesc, ' - ');
+                            if ($lastDash !== false) {
+                                $displayDesc = trim(substr($displayDesc, 0, $lastDash));
+                            }
                             if (preg_match('/^\+/', $displayDesc)) {
                                 $displayDesc = preg_replace('/\s+/', '', $displayDesc);
                             }

@@ -1740,10 +1740,11 @@ try {
 
                         $operatorLogoPath = '';
                         if ($typeKey === 'transfer sent' && $rawDesc !== '') {
-                            if (preg_match('/-\s*([A-Za-z][A-Za-z0-9\-]*)\s*$/u', $rawDesc, $mOp)) {
-                                $opKey = strtolower(trim($mOp[1]));
-                                if (isset($operatorLogoMap[$opKey])) {
-                                    $operatorLogoPath = $operatorLogoMap[$opKey];
+                            $descLower = strtolower($rawDesc);
+                            foreach ($operatorLogoMap as $opKey => $logoPath) {
+                                if (strpos($descLower, $opKey) !== false) {
+                                    $operatorLogoPath = $logoPath;
+                                    break;
                                 }
                             }
                         }

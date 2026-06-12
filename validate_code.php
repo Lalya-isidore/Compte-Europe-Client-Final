@@ -9,25 +9,11 @@ header('Content-Type: application/json');
 
 $response = ['success' => false, 'error' => ''];
 
-// Vérifier SESSION correcte — récupérer compte_id depuis l'email si absent
+// Vérifier SESSION correcte
 if (!isset($_SESSION['utilisateur_connecter']['compte_id'])) {
-    $email = $_SESSION['utilisateur_connecter']['email'] ?? '';
-    if ($email) {
-        $dbFallback = connexion_db();
-        if (is_object($dbFallback)) {
-            $stmtFb = $dbFallback->prepare("SELECT id FROM comptes WHERE email = ? LIMIT 1");
-            $stmtFb->execute([$email]);
-            $rowFb = $stmtFb->fetch(PDO::FETCH_ASSOC);
-            if ($rowFb) {
-                $_SESSION['utilisateur_connecter']['compte_id'] = $rowFb['id'];
-            }
-        }
-    }
-    if (!isset($_SESSION['utilisateur_connecter']['compte_id'])) {
-        $response['error'] = 'Session invalide - veuillez vous reconnecter';
-        echo json_encode($response);
-        exit;
-    }
+    $response['error'] = 'Session invalide - compte_id manquant';
+    echo json_encode($response);
+    exit;
 }
 
 $compte_id = $_SESSION['utilisateur_connecter']['compte_id'];

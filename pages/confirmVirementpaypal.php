@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $rawPaypalEmail = trim((string)($_POST['paypalEmail'] ?? ''));
 $rawReasonPaypal = trim((string)($_POST['reasonPaypal'] ?? ''));
-$rawAmount = trim((string)($_POST['amount'] ?? ''));
 
 $compte_id = $_SESSION['utilisateur_connecter']['compte_id'] ?? null;
 if (!$compte_id) {
@@ -30,13 +29,8 @@ if (!$compte) {
 }
 
 $account_balance = isset($compte['account_balance']) ? (float)$compte['account_balance'] : 0.0;
+$formatted_balance = number_format($account_balance, 2, ',', ' ');
 $devise = htmlspecialchars($compte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
-
-$requestedAmount = $rawAmount !== '' ? (float)$rawAmount : null;
-$transfer_amount = ($requestedAmount !== null && $requestedAmount > 0 && $requestedAmount <= $account_balance)
-    ? $requestedAmount
-    : $account_balance;
-$formatted_balance = number_format($transfer_amount, 0, ',', ' ');
 $paypalEmailDisplay = $rawPaypalEmail !== '' ? htmlspecialchars($rawPaypalEmail, ENT_QUOTES, 'UTF-8') : '—';
 $reasonPaypalDisplay = $rawReasonPaypal !== '' ? htmlspecialchars($rawReasonPaypal, ENT_QUOTES, 'UTF-8') : t('not_provided');
 
@@ -53,11 +47,11 @@ if ($photoUrl === null && $compte_id) {
 }
 ?>
 <div class="dashboard">
-    <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
+    <nav class="pt-2 d-flex justify-content-between align-items-center">
         <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
-        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--primary-color);color:#fff;">
+        <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0070ba 0%,#003087 100%);color:#fff;">
             <?php if (!empty($photoUrl)): ?>
-                <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.06);">
             <?php else: ?>
                 <i class="fas fa-user"></i>
             <?php endif; ?>
@@ -75,15 +69,13 @@ if ($photoUrl === null && $compte_id) {
         }
 
         .paypal-confirm-section .premium-header {
-            background: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
+            background: var(--primary-color);
             color: #fff;
             padding: 1.5rem 1rem;
-            margin-top: 8px;
-            margin-left: -16px;
-            margin-right: -16px;
+            margin-top: 0;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 20px rgba(107, 72, 231, 0.3);
+            box-shadow: 0 10px 30px rgba(107, 72, 231, 0.2);
         }
 
         .paypal-confirm-section .balance-label {
@@ -210,8 +202,8 @@ if ($photoUrl === null && $compte_id) {
         }
 
         /* Ensure consistent site font and alert sizing */
-        body { font-family: 'Roboto', Arial, sans-serif; }
-        .alert-modern, .alert-premium { font-family: 'Roboto', Arial, sans-serif; }
+        body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        .alert-modern, .alert-premium { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
         .alert-title { font-size: 1.05rem; font-weight: 700; }
         .alert-message { font-size: 1.00rem; line-height: 1.5; font-weight: 500; }
 
@@ -301,7 +293,7 @@ if ($photoUrl === null && $compte_id) {
             box-shadow: 0 6px 18px rgba(107, 72, 231, 0.35);
             transition: all 0.3s ease;
         }
-        
+
         .btn-paypal:hover {
             transform: translateY(-2px);
             background: #5b39c9 !important;
@@ -441,13 +433,14 @@ if ($photoUrl === null && $compte_id) {
     </style>
 
     <div class="paypal-confirm-section">
-        <div class="premium-header text-center animate-in">
-            <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?= t('amount_to_receive') ?></div>
-            <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
+        <div class="header-row">
+            <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> Retour</a>
+            <span class="paypal-tag"><i class="fab fa-paypal"></i> Paiement PayPal</span>
         </div>
 
-        <div class="text-center mb-3">
-            <span class="paypal-tag"><i class="fab fa-paypal"></i> <?= t('paypal') ?></span>
+        <div class="premium-header text-center animate-in">
+            <div class="balance-label">Montant à transférer</div>
+            <h1 class="balance-display"><?php echo $formatted_balance; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
         </div>
 
         <div class="stepper animate-in">
@@ -463,7 +456,7 @@ if ($photoUrl === null && $compte_id) {
             <div class="step-connector"></div>
             <div class="step">
                 <div class="step-number">3</div>
-                <span class="d-none d-md-inline"><?= t('step_verification') ?></span>
+                <span class="d-none d-md-inline">Vérification</span>
             </div>
         </div>
 
@@ -474,19 +467,19 @@ if ($photoUrl === null && $compte_id) {
                         <h2 class="card-title"><?= t('details_transfer_paypal') ?></h2>
                         <ul class="detail-list">
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-envelope"></i> <?= t('email_label') ?></span>
+                                <span class="detail-label"><i class="fas fa-envelope"></i> Email PayPal</span>
                                 <span class="detail-value"><?php echo $paypalEmailDisplay; ?></span>
                             </li>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-comment"></i> <?= t('reason_label') ?></span>
+                                <span class="detail-label"><i class="fas fa-comment"></i> Motif</span>
                                 <span class="detail-value"><?php echo $reasonPaypalDisplay; ?></span>
                             </li>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fab fa-paypal"></i> <?= t('platform_label') ?></span>
-                                <span class="detail-value"><?php echo t('paypal'); ?></span>
+                                <span class="detail-label"><i class="fab fa-paypal"></i> Plateforme</span>
+                                <span class="detail-value">PayPal</span>
                             </li>
                             <li class="detail-item">
-                                <span class="detail-label"><i class="fas fa-coins"></i> <?= t('amount_label') ?></span>
+                                <span class="detail-label"><i class="fas fa-coins"></i> Montant</span>
                                 <span class="detail-value amount-highlight"><?php echo $formatted_balance . ' ' . $devise; ?></span>
                             </li>
                         </ul>
@@ -495,11 +488,11 @@ if ($photoUrl === null && $compte_id) {
 
                 <div class="col-12 col-lg-5 animate-in">
                     <div class="confirm-card">
-                        <h2 class="card-title"><?= t('security_code_title') ?></h2>
-                        <p class="code-intro"><?= t('security_code_intro') ?></p>
+                        <h2 class="card-title">Code de sécurité</h2>
+                        <p class="code-intro">Saisissez votre code de vérification pour valider le transfert PayPal.</p>
                         <form id="paypal-virement-form" action="index.php?page=virementDetailpaypal" method="post" novalidate>
                             <input type="hidden" name="paypalEmail" value="<?php echo htmlspecialchars($rawPaypalEmail, ENT_QUOTES, 'UTF-8'); ?>">
-                            <input type="hidden" name="montant" value="<?php echo htmlspecialchars((string)$transfer_amount, ENT_QUOTES, 'UTF-8'); ?>">
+                            <input type="hidden" name="montant" value="<?php echo htmlspecialchars((string)$account_balance, ENT_QUOTES, 'UTF-8'); ?>">
                             <input type="hidden" name="compte_id" value="<?php echo htmlspecialchars((string)$compte_id, ENT_QUOTES, 'UTF-8'); ?>">
                             <input type="hidden" name="reasonPaypal" value="<?php echo htmlspecialchars($rawReasonPaypal, ENT_QUOTES, 'UTF-8'); ?>">
 
@@ -507,7 +500,7 @@ if ($photoUrl === null && $compte_id) {
 
                             <button type="submit" class="btn-paypal mt-4">
                                 <i class="fas fa-check-circle"></i>
-                                <?= t('confirm_transfer_paypal') ?>
+                                Confirmer le transfert PayPal
                             </button>
 
                             <div id="error-message" class="error-banner" role="alert"></div>
@@ -567,10 +560,10 @@ if ($photoUrl === null && $compte_id) {
                 if (payload.success) {
                     form.submit();
                 } else {
-                    showError(payload.error || <?php echo json_encode(t('incorrect_code'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>);
+                    showError(payload.error || 'Code incorrect.');
                 }
             } catch (error) {
-                showError(<?php echo json_encode(t('network_error'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>);
+                showError('Erreur réseau. Veuillez réessayer.');
             }
         });
     });

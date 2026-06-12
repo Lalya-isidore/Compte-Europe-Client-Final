@@ -42,20 +42,16 @@ try {
         $updated_at = $data['updated_at'];
 
         // Préparation de la requête SQL pour insérer les données de transfert PayPal
-    $sql = "INSERT INTO transfers (user_id, compte_id, numerocompte, name_servieur, beneficiary_name, reason, solidvire, devise, token, status, created_at, updated_at)
-        VALUES (:user_id, :compte_id, :numerocompte, :name_servieur, :beneficiary_name, :reasonPaypal, :solidvire, :devise, :token, :status, :created_at, :updated_at)";
+    $sql = "INSERT INTO transfers (user_id, numerocompte, name_servieur, beneficiary_name, reason, solidvire, devise, token, status, created_at, updated_at) 
+        VALUES (:user_id, :numerocompte, :name_servieur, :beneficiary_name, :reasonPaypal, :solidvire, :devise, :token, :status, :created_at, :updated_at)";
         $stmt = $db->prepare($sql);
 
-    $numerocompte = 'PayPal';
-    $name_servieur = $paypalEmail;
+    // Store the PayPal email as numerocompte so it can be displayed like other transfers
+    $numerocompte = $paypalEmail;
+    $name_servieur = 'PayPal';
     $beneficiaryLabel = 'PayPal - ' . $paypalEmail;
 
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-    if ($accountId === null) {
-        $stmt->bindValue(':compte_id', null, PDO::PARAM_NULL);
-    } else {
-        $stmt->bindValue(':compte_id', (int)$accountId, PDO::PARAM_INT);
-    }
     $stmt->bindParam(':numerocompte', $numerocompte);
     $stmt->bindParam(':name_servieur', $name_servieur);
     $stmt->bindParam(':beneficiary_name', $beneficiaryLabel);
@@ -67,127 +63,78 @@ try {
         $stmt->bindParam(':created_at', $created_at);
         $stmt->bindParam(':updated_at', $updated_at);
 
-        // Begin an explicit DB transaction so we update transfer + history + account balance atomically
-        $db->beginTransaction();
-        try {
-            if (! $stmt->execute()) {
-                $errorInfo = $stmt->errorInfo();
-                $db->rollBack();
-                if (ob_get_length() !== false) { ob_clean(); }
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Erreur lors de l\'insertion des données de transfert.',
-                    'details' => $errorInfo[2] ?? null
-                ]);
-                exit;
-            }
-
-            // capture the inserted transfers id for linkage
+        if ($stmt->execute()) {
+            // capture the inserted transfer id so we can link it to the transaction history
             $transferId = (int)$db->lastInsertId();
             // Préparation de la requête SQL pour insérer les données de l'historique des transactions
-            $transaction_type = 'Transfer sent';
-            $description = "PayPal";
+                $transaction_type = 'Transfer sent';
+                $description = "PayPal";
             $date = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
             $amount = $solidvire; // Utilisez le montant du transfert pour l'historique
+                // Insert into transaction_histories and store transfer_id and mobile_number for PayPal
+                $sql = "INSERT INTO transaction_histories (user_id, compte_id, transaction_type, amount, devise, description, transfer_id, mobile_number, created_at, updated_at) 
+                    VALUES (:user_id, :compte_id, :transaction_type, :amount, :devise, :description, :transfer_id, :mobile_number, :created_at, :updated_at)";
 
-            $sql = "INSERT INTO transaction_histories (user_id, compte_id, transaction_type, amount, devise, description, transfer_id, created_at, updated_at) 
-                    VALUES (:user_id, :compte_id, :transaction_type, :amount, :devise, :description, :transfer_id, :created_at, :updated_at)";
-
-            $stmt2 = $db->prepare($sql);
-            $stmt2->bindParam(':user_id', $user_id);
+                $stmt = $db->prepare($sql);
+            $stmt->bindParam(':user_id', $user_id);
             if ($accountId === null) {
-                $stmt2->bindValue(':compte_id', null, PDO::PARAM_NULL);
+                $stmt->bindValue(':compte_id', null, PDO::PARAM_NULL);
             } else {
-                $stmt2->bindValue(':compte_id', (int)$accountId, PDO::PARAM_INT);
+                $stmt->bindValue(':compte_id', (int)$accountId, PDO::PARAM_INT);
             }
-            $stmt2->bindParam(':transaction_type', $transaction_type);
-            $stmt2->bindParam(':amount', $amount);
-            $stmt2->bindParam(':devise', $devise);
-            $stmt2->bindParam(':description', $description);
-            $stmt2->bindValue(':transfer_id', $transferId, PDO::PARAM_INT);
-            $stmt2->bindParam(':created_at', $date);
-            $stmt2->bindParam(':updated_at', $date);
+            $stmt->bindParam(':transaction_type', $transaction_type);
+            $stmt->bindParam(':amount', $amount);
+            $stmt->bindParam(':devise', $devise);
+            $stmt->bindParam(':description', $description);
+            // store the transfer id and the paypal email as mobile_number
+            $stmt->bindValue(':transfer_id', isset($transferId) ? (int)$transferId : null, is_null($transferId) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+            $stmt->bindValue(':mobile_number', $paypalEmail !== '' ? $paypalEmail : null, $paypalEmail === '' ? PDO::PARAM_NULL : PDO::PARAM_STR);
+            $stmt->bindParam(':created_at', $date);
+            $stmt->bindParam(':updated_at', $date);
 
-            if (! $stmt2->execute()) {
-                $errorInfo = $stmt2->errorInfo();
-                $db->rollBack();
+            if ($stmt->execute()) {
+                // Envoi du bordereau moderne à l'email PayPal saisi
+                require_once __DIR__ . '/lib/bordereau.php';
+                $logDir = __DIR__ . '/logs';
+                if (!is_dir($logDir)) { @mkdir($logDir, 0755, true); }
+                $logFile = $logDir . '/email.log';
+                $ts = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+                @file_put_contents($logFile, "[{$ts}] Invoking sendTransferBordereau to PayPal {$paypalEmail} for transfer (PayPal)\n", FILE_APPEND | LOCK_EX);
+                // Pour PayPal, IBAN/BIC/bankName sont vides ou 'PayPal', motif = $reasonPaypal
+                sendTransferBordereau(
+                    $paypalEmail,
+                    $beneficiaryLabel,
+                    '', // IBAN
+                    '', // BIC
+                    'PayPal', // Banque
+                    $solidvire,
+                    $devise,
+                    $reasonPaypal,
+                    null, // pas de transferId classique
+                    $sessionUser
+                );
+                if (ob_get_length() !== false) { ob_clean(); }
+                echo json_encode(['success' => true]);
+                exit; // Sortie immédiate après l'envoi du JSON
+            } else {
+                $errorInfo = $stmt->errorInfo();
                 if (ob_get_length() !== false) { ob_clean(); }
                 echo json_encode([
                     'success' => false,
                     'message' => 'Erreur lors de l\'insertion de l\'historique des transactions.',
                     'details' => $errorInfo[2] ?? null
                 ]);
-                exit;
+                exit; // Sortie immédiate en cas d'erreur
             }
-
-            // If the transfer status indicates completion, debit the compte balance
-            if (is_string($status) && strtolower($status) === 'completed' && $accountId !== null) {
-                $updateSql = "UPDATE comptes SET account_balance = account_balance - :amount WHERE id = :id";
-                $uStmt = $db->prepare($updateSql);
-                $uStmt->bindValue(':amount', $amount);
-                $uStmt->bindValue(':id', (int)$accountId, PDO::PARAM_INT);
-                if (! $uStmt->execute()) {
-                    $err = $uStmt->errorInfo();
-                    $db->rollBack();
-                    if (ob_get_length() !== false) { ob_clean(); }
-                    echo json_encode(['success' => false, 'message' => 'Erreur lors de la mise à jour du solde.', 'details' => $err[2] ?? null]);
-                    exit;
-                }
-                // refresh session balance if present
-                try {
-                    $r = $db->prepare("SELECT account_balance FROM comptes WHERE id = :id");
-                    $r->bindValue(':id', (int)$accountId, PDO::PARAM_INT);
-                    $r->execute();
-                    $row = $r->fetch(PDO::FETCH_ASSOC);
-                    if ($row) {
-                        if (session_status() === PHP_SESSION_NONE) { session_start(); }
-                        $_SESSION['utilisateur_connecter']['account_balance'] = (float)$row['account_balance'];
-                    }
-                } catch (Exception $e) {
-                    // non-fatal: continue but log
-                    error_log('Warning: unable to refresh session balance: ' . $e->getMessage());
-                }
-            }
-
-            // commit the transaction now that all DB work succeeded
-            $db->commit();
-
-            // Envoi du bordereau moderne à l'email PayPal saisi (après commit)
-            require_once __DIR__ . '/lib/bordereau.php';
-            $logDir = __DIR__ . '/logs';
-            if (!is_dir($logDir)) { @mkdir($logDir, 0755, true); }
-            $logFile = $logDir . '/transfer.log';
-            $ts = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
-            @file_put_contents($logFile, "[{$ts}] PayPal transfer created transferId={$transferId} user={$user_id} amount={$amount} status={$status}\n", FILE_APPEND | LOCK_EX);
-            // keep email.log entry for compatibility
-            $emailLog = $logDir . '/email.log';
-            @file_put_contents($emailLog, "[{$ts}] Invoking sendTransferBordereau to PayPal {$paypalEmail} for transferId={$transferId}\n", FILE_APPEND | LOCK_EX);
-
-            // Pour PayPal, IBAN/BIC/bankName sont vides ou 'PayPal', motif = $reasonPaypal
-            sendTransferBordereau(
-                $paypalEmail,
-                $beneficiaryLabel,
-                '', // IBAN
-                '', // BIC
-                'PayPal', // Banque
-                $solidvire,
-                $devise,
-                $reasonPaypal,
-                $transferId,
-                $sessionUser
-            );
-
+        } else {
+            $errorInfo = $stmt->errorInfo();
             if (ob_get_length() !== false) { ob_clean(); }
-            echo json_encode(['success' => true]);
-            exit; // Sortie immédiate après l'envoi du JSON
-
-        } catch (Exception $e) {
-            // Ensure rollback on any exception
-            try { if ($db && $db->inTransaction()) { $db->rollBack(); } } catch (Exception $__) {}
-            error_log('Exception insert_paypal_transfer transaction: ' . $e->getMessage());
-            if (ob_get_length() !== false) { ob_clean(); }
-            echo json_encode(['success' => false, 'message' => 'Erreur interne pendant le traitement du transfert']);
-            exit;
+            echo json_encode([
+                'success' => false,
+                'message' => 'Erreur lors de l\'insertion des données de transfert.',
+                'details' => $errorInfo[2] ?? null
+            ]);
+            exit; // Sortie immédiate en cas d'erreur
         }
     } else {
         if (ob_get_length() !== false) { ob_clean(); }

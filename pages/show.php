@@ -1686,6 +1686,18 @@ try {
                         </div>
 
                 <?php if (!empty($historique_transactions)) : ?>
+                    <?php
+                    $operatorLogoMap = [
+                        'mvola'  => 'image/MVola.webp',
+                        'mpesa'  => 'image/m-pesa.webp',
+                        'm-pesa' => 'image/m-pesa.webp',
+                        'mtn'    => 'image/MTN.jpg',
+                        'moov'   => 'image/Moov.jpg',
+                        'orange' => 'image/Orange.jpg',
+                        'wave'   => 'image/Wave.jpg',
+                        'airtel' => 'image/Airtel.jpg',
+                    ];
+                    ?>
                     <?php foreach ($sortedTransactions as $transaction) :
                         $amount = (float)($transaction['amount'] ?? 0);
                         $formattedAmount = number_format($amount, 2, ',', ' ');
@@ -1725,6 +1737,17 @@ try {
 
                         $rawDesc = trim((string)($transaction['description'] ?? ''));
                         $displayDesc = $rawDesc;
+
+                        $operatorLogoPath = '';
+                        if ($rawDesc !== '') {
+                            $descLower = strtolower($rawDesc);
+                            foreach ($operatorLogoMap as $opKey => $logoPath) {
+                                if (strpos($descLower, $opKey) !== false) {
+                                    $operatorLogoPath = $logoPath;
+                                    break;
+                                }
+                            }
+                        }
 
                         // Preferer IBAN/numero de compte à la place du BIC/SWIFT
                         $ibanField = trim((string)($transaction['iban'] ?? ''));
@@ -1774,6 +1797,16 @@ try {
                             }
                         }
                         
+                        if ($operatorLogoPath !== '') {
+                            $cutPos = strrpos($displayDesc, ' - ');
+                            if ($cutPos === false) { $cutPos = strrpos($displayDesc, '-'); }
+                            if ($cutPos !== false) {
+                                $displayDesc = trim(substr($displayDesc, 0, $cutPos));
+                            }
+                            if (preg_match('/^\+/', $displayDesc)) {
+                                $displayDesc = preg_replace('/\s+/', '', $displayDesc);
+                            }
+                        }
                         $displayDescSafe = htmlspecialchars($displayDesc !== '' ? $displayDesc : 'TRANSFERFLUX', ENT_QUOTES, 'UTF-8');
 
                         // If this appears to be a PayPal-related entry, try to extract an email
@@ -1895,7 +1928,7 @@ try {
                                                         }
                                                         $refundBankDisplaySafe = htmlspecialchars($refundBankDisplay !== '' ? $refundBankDisplay : $displayDescSafe, ENT_QUOTES, 'UTF-8');
                                                     ?>
-                                                    <i class="fas fa-building-columns"></i> <span class="meta-bank"><?= $refundBankDisplaySafe; ?></span>
+                                                    <?php if ($operatorLogoPath !== ''): ?><img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"><?php else: ?><i class="fas fa-building-columns"></i><?php endif; ?> <span class="meta-bank"><?= $refundBankDisplaySafe; ?></span>
                                     <?php
                                             endif;
                                         elseif (!empty($paypalEmailSafe)) :
@@ -1939,7 +1972,7 @@ try {
                                         ?>
                                         <div class="timeline-submeta"><i class="fab fa-paypal"></i> <span class="meta-email no-break"><?= $displayShortSafe; ?></span></div>
                                     <?php else: ?>
-                                        <i class="fas fa-building-columns"></i> <span class="meta-bank"><?= $displayDescSafe; ?></span>
+                                        <?php if ($operatorLogoPath !== ''): ?><img src="<?= htmlspecialchars($operatorLogoPath, ENT_QUOTES, 'UTF-8') ?>" alt="" style="width:16px;height:16px;object-fit:cover;border-radius:3px;vertical-align:middle;"><?php else: ?><i class="fas fa-building-columns"></i><?php endif; ?> <span class="meta-bank"><?= $displayDescSafe; ?></span>
                                     <?php endif; ?>
                                 </div>
                                 <span class="timeline-datetime" style="display:inline-flex!important;flex-direction:column!important;align-items:flex-end!important;white-space:nowrap;gap:1px;font-size:calc(0.72rem + 1px)!important;"><span style="display:inline-flex!important;flex-direction:row!important;align-items:center!important;flex-wrap:nowrap!important;gap:3px;white-space:nowrap;"><i class="far fa-clock" style="display:inline!important;font-size:calc(0.72rem + 1px)!important;flex-shrink:0;"></i><span class="date" style="display:inline!important;"><?= $dateOnlySafe; ?></span></span><?php if ($timeOnlySafe !== ''): ?><span class="time" style="display:inline!important;"><?= $timeOnlySafe; ?></span><?php endif; ?></span>

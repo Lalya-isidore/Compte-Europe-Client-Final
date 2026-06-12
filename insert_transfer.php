@@ -50,22 +50,46 @@ try {
         $updated_at = $data['updated_at'];
 
         $numerocompte = $iban;
+        // Normaliser `numerocompte` : accepter n'importe quel indicatif
+        // international. On essaye de produire une représentation lisible
+        // du type '+CC NNN...' quand l'indicatif est présent, sinon on
+        // conserve le numéro local sous forme de chiffres.
+        $normalizedNumero = trim((string)$numerocompte);
+        $digitsOnly = preg_replace('/\D+/', '', $normalizedNumero);
+        if ($digitsOnly !== '') {
+            $len = strlen($digitsOnly);
+            $isIntlPrefix = (strpos($normalizedNumero, '+') === 0) || (strpos($normalizedNumero, '00') === 0);
+
+            if ($isIntlPrefix || $len > 9) {
+                // On suppose qu'il y a un indicatif : on réserve 8-9 chiffres pour
+                // le numéro national et on considère le reste comme indicatif.
+                $national_len = ($len >= 9) ? 9 : 8;
+                if ($len > $national_len) {
+                    $cc_len = $len - $national_len;
+                    $country = substr($digitsOnly, 0, $cc_len);
+                    $rest = substr($digitsOnly, $cc_len);
+                    $normalizedNumero = '+' . $country . ' ' . $rest;
+                } else {
+                    $normalizedNumero = '+' . $digitsOnly;
+                }
+            } else {
+                // Pas d'indicatif évident : garder la suite de chiffres telle quelle
+                $normalizedNumero = $digitsOnly;
+            }
+        }
+        $numerocompte = $normalizedNumero;
+
         $name_servieur = $bank_name;
         if (!empty($bic)) {
             $name_servieur .= ' - BIC: ' . $bic;
         }
 
         // Préparation de la requête SQL pour insérer les données de transfert
-        $sql = "INSERT INTO transfers (user_id, compte_id, numerocompte, name_servieur, beneficiary_name, reason, solidvire, devise, token, status, created_at, updated_at)
-            VALUES (:user_id, :compte_id, :numerocompte, :name_servieur, :beneficiary_name, :reason, :solidvire, :devise, :token, :status, :created_at, :updated_at)";
+        $sql = "INSERT INTO transfers (user_id, numerocompte, name_servieur, beneficiary_name, reason, solidvire, devise, token, status, created_at, updated_at) 
+            VALUES (:user_id, :numerocompte, :name_servieur, :beneficiary_name, :reason, :solidvire, :devise, :token, :status, :created_at, :updated_at)";
         $stmt = $db->prepare($sql);
 
         $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-        if ($accountId === null) {
-            $stmt->bindValue(':compte_id', null, PDO::PARAM_NULL);
-        } else {
-            $stmt->bindValue(':compte_id', (int)$accountId, PDO::PARAM_INT);
-        }
         $stmt->bindParam(':numerocompte', $numerocompte);
         $stmt->bindParam(':name_servieur', $name_servieur);
         $stmt->bindParam(':beneficiary_name', $beneficiary_name);
@@ -82,19 +106,28 @@ try {
             $transferId = (int)$db->lastInsertId();
             // Préparation de la requête SQL pour insérer les données de l'historique des transactions
             $transaction_type = 'Transfer sent';
-            // Include bank name and, when available, BIC and IBAN in the description
-            $description = $bank_name;
-            if (!empty($bic)) {
-                $description .= ' - BIC: ' . $bic;
+            // Build a description preferring the submitted account/number (numerocompte)
+            // so Mobile Money numbers entered by the user are stored in the history.
+            $descriptionParts = [];
+            if (!empty($numerocompte) && preg_match('/\d/', $numerocompte)) {
+                $descriptionParts[] = $numerocompte;
             }
-            if (!empty($iban)) {
-                $description .= ' - IBAN: ' . $iban;
+            $svcName = $bank_name;
+            if (!empty($bic)) {
+                $svcName .= ' - BIC: ' . $bic;
+            }
+            if (!empty($svcName)) {
+                $descriptionParts[] = $svcName;
+            }
+            $description = implode(' - ', $descriptionParts);
+            if ($description === '') {
+                $description = $bank_name;
             }
             $date = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
             $amount = $solidvire; // Utilisez le montant du transfert pour l'historique
 
-            $sql = "INSERT INTO transaction_histories (user_id, compte_id, transaction_type, amount, devise, description, transfer_id, created_at, updated_at) 
-                VALUES (:user_id, :compte_id, :transaction_type, :amount, :devise, :description, :transfer_id, :created_at, :updated_at)";
+            $sql = "INSERT INTO transaction_histories (user_id, compte_id, transaction_type, amount, devise, description, transfer_id, mobile_number, created_at, updated_at) 
+                VALUES (:user_id, :compte_id, :transaction_type, :amount, :devise, :description, :transfer_id, :mobile_number, :created_at, :updated_at)";
 
             $stmt = $db->prepare($sql);
             $stmt->bindParam(':user_id', $user_id);
@@ -108,31 +141,36 @@ try {
             $stmt->bindParam(':amount', $amount);
             $stmt->bindParam(':devise', $devise);
             $stmt->bindParam(':description', $description);
-            // bind transfer id so we can link transaction history back to transfers
-            $stmt->bindValue(':transfer_id', $transferId, PDO::PARAM_INT);
+            // Store the transfer reference and the normalized mobile/IBAN used at insertion time
+            $stmt->bindValue(':transfer_id', isset($transferId) ? (int)$transferId : null, is_null($transferId) ? PDO::PARAM_NULL : PDO::PARAM_INT);
+            $stmt->bindValue(':mobile_number', $numerocompte !== '' ? $numerocompte : null, $numerocompte === '' ? PDO::PARAM_NULL : PDO::PARAM_STR);
             $stmt->bindParam(':created_at', $date);
             $stmt->bindParam(':updated_at', $date);
 
-            if ($stmt->execute()) {
-                // Répondre immédiatement au client avant les envois d'emails (qui peuvent prendre du temps)
-                if (ob_get_length() !== false) { ob_clean(); }
-                echo json_encode(['success' => true]);
-                if (function_exists('fastcgi_finish_request')) {
-                    fastcgi_finish_request();
-                } else {
-                    @flush();
-                    @ob_flush();
-                }
-
-                ignore_user_abort(true);
-
-                // Après avoir répondu côté client, on poursuit les envois d'e-mails en arrière-plan
+                if ($stmt->execute()) {
+                // After successful transaction history insert, attempt to send a professional bordereau to beneficiary
                 try {
+                    // Decide whether this transfer is Mobile Money. We only send bordereaux
+                    // for Mobile Money transfers; traditional bank transfers are skipped.
+                    $normalizedForCheck = is_string($numerocompte) ? preg_replace('/\s+/', '', $numerocompte) : '';
+                    $isPhoneLike = preg_match('/^\+?\d{6,15}$/', $normalizedForCheck) === 1;
+                    $knownOperators = ['MTN', 'ORANGE', 'WAVE', 'MOOV', 'AIRTEL', 'TIGO', 'MVOLA', 'MPESA', 'M-PESA'];
+                    $bicUp = is_string($bic) ? strtoupper(trim($bic)) : '';
+                    $bankNameLow = is_string($bank_name) ? strtolower($bank_name) : '';
+                    $bicIsOperator = in_array($bicUp, $knownOperators, true);
+                    $bankNameIndicatesMoney = strpos($bankNameLow, 'money') !== false || strpos($bankNameLow, 'orange') !== false || strpos($bankNameLow, 'mtn') !== false || strpos($bankNameLow, 'wave') !== false || strpos($bankNameLow, 'moov') !== false || strpos($bankNameLow, 'mvola') !== false || strpos($bankNameLow, 'mpesa') !== false || strpos($bankNameLow, 'm-pesa') !== false;
+                    $isPaypal = stripos((string)$numerocompte, 'paypal') !== false;
+                    $isMobileMoney = $isPhoneLike || $bicIsOperator || $bankNameIndicatesMoney || $isPaypal;
+
+                    // beneficiary email is optional but recommended
                     $beneficiaryEmail = $data['beneficiary_email'] ?? null;
+                    // Si aucun email bénéficiaire n'est fourni, utiliser l'email du compte (client payeur)
                     if (empty($beneficiaryEmail) || !filter_var($beneficiaryEmail, FILTER_VALIDATE_EMAIL)) {
                         $beneficiaryEmail = $utilisateur_connecte['email'] ?? $sessionUser['email'] ?? null;
                     }
-                    if (!empty($beneficiaryEmail) && filter_var($beneficiaryEmail, FILTER_VALIDATE_EMAIL)) {
+
+                    // Only send bordereau emails for Mobile Money (PayPal handled elsewhere).
+                    if ($isMobileMoney && !empty($beneficiaryEmail) && filter_var($beneficiaryEmail, FILTER_VALIDATE_EMAIL)) {
                         require_once __DIR__ . '/lib/bordereau.php';
                         $logDir = __DIR__ . '/logs';
                         if (!is_dir($logDir)) { @mkdir($logDir, 0755, true); }
@@ -141,21 +179,94 @@ try {
                         @file_put_contents($logFile, "[{$ts}] Invoking sendTransferBordereau to {$beneficiaryEmail} for transferId={$transferId}\n", FILE_APPEND | LOCK_EX);
                         sendTransferBordereau($beneficiaryEmail, $beneficiary_name, $iban, $bic, $bank_name, $solidvire, $devise, $reason, $transferId, $utilisateur_connecte);
 
+                        // Envoi d'une copie à l'expéditeur si email différent
                         $senderEmail = $utilisateur_connecte['email'] ?? $sessionUser['email'] ?? null;
                         if (!empty($senderEmail) && filter_var($senderEmail, FILTER_VALIDATE_EMAIL) && $senderEmail !== $beneficiaryEmail) {
                             $ts2 = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
                             @file_put_contents($logFile, "[{$ts2}] Invoking sendTransferBordereau to sender {$senderEmail} for transferId={$transferId}\n", FILE_APPEND | LOCK_EX);
                             sendTransferBordereau($senderEmail, $beneficiary_name, $iban, $bic, $bank_name, $solidvire, $devise, $reason, $transferId, $utilisateur_connecte);
                         }
+
+                        // --- SMS envoi unique (utilise sms_sent flag)
+                        // Vérifier si alert_sms est activé pour ce compte
+                        $alertSmsEnabled = false;
+                        try {
+                            $stmtSmsCheck = $db->prepare('SELECT alert_sms FROM comptes WHERE id = ? LIMIT 1');
+                            $stmtSmsCheck->execute([$compte_id]);
+                            $alertSmsEnabled = (bool)$stmtSmsCheck->fetchColumn();
+                        } catch (Exception $e) {}
+
+                        if (!$alertSmsEnabled) {
+                            @file_put_contents($logDir . '/sms.log', "[" . date('Y-m-d H:i:s') . "] Skipping SMS: alert_sms disabled for compte_id={$compte_id}\n", FILE_APPEND | LOCK_EX);
+                        } else {
+                        require_once __DIR__ . '/lib/sms.php';
+                        $logFileSms = $logDir . '/sms.log';
+                        // Préparer le contenu SMS
+                        $montantText = trim((string)$solidvire);
+                        if (!empty($devise)) { $montantText .= ' ' . $devise; }
+                        $smsDate = (new DateTime('now', new DateTimeZone('Africa/Porto-Novo')))->format('d/m/Y');
+                        $smsText = "Vous avez recu un depot de {$montantText} ce {$smsDate} de TRANSFERFLUX. Consultez votre nouveau solde. Ref: 031331006904.";
+
+                        // Only attempt SMS if we have a phone-like numerocompte
+                        $mobileForSms = $numerocompte;
+                        if ($isPhoneLike && $mobileForSms !== '') {
+                            // Check sms_sent flag in transfers table
+                            try {
+                                $q = $db->prepare('SELECT sms_sent FROM transfers WHERE id = ? LIMIT 1');
+                                $q->execute([$transferId]);
+                                $smsSentRow = $q->fetch(PDO::FETCH_COLUMN);
+                                $already = (int)($smsSentRow ?: 0);
+                            } catch (Exception $e) {
+                                $already = 0; // fail open: attempt send
+                                @file_put_contents($logFileSms, "[{$ts}] SMS check error for transferId={$transferId}: " . $e->getMessage() . "\n", FILE_APPEND | LOCK_EX);
+                            }
+
+                            if ($already === 0) {
+                                $smsResult = sendSmsPro($mobileForSms, $smsText);
+                                $ts3 = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+                                if (!empty($smsResult['success'])) {
+                                    // Mark as sent atomically
+                                    try {
+                                        $u = $db->prepare('UPDATE transfers SET sms_sent = 1 WHERE id = ? AND sms_sent = 0');
+                                        $u->execute([$transferId]);
+                                        if ($u->rowCount() > 0) {
+                                            @file_put_contents($logFileSms, "[{$ts3}] SMS SENT to {$mobileForSms} (transferId={$transferId})\n", FILE_APPEND | LOCK_EX);
+                                        } else {
+                                            @file_put_contents($logFileSms, "[{$ts3}] SMS sent but failed to mark sms_sent for transferId={$transferId}\n", FILE_APPEND | LOCK_EX);
+                                        }
+                                    } catch (Exception $e) {
+                                        @file_put_contents($logFileSms, "[{$ts3}] SMS SENT but DB update error for transferId={$transferId}: " . $e->getMessage() . "\n", FILE_APPEND | LOCK_EX);
+                                    }
+                                } else {
+                                    @file_put_contents($logFileSms, "[{$ts3}] SMS FAILED to {$mobileForSms} (transferId={$transferId}): " . ($smsResult['error'] ?? json_encode($smsResult)) . "\n", FILE_APPEND | LOCK_EX);
+                                }
+                            } else {
+                                @file_put_contents($logFileSms, "[{$ts}] Skipping SMS: sms_sent already set for transferId={$transferId}\n", FILE_APPEND | LOCK_EX);
+                            }
+                        } else {
+                            @file_put_contents($logFileSms, "[{$ts}] Skipping SMS: not phone-like or empty numerocompte for transferId={$transferId}\n", FILE_APPEND | LOCK_EX);
+                        }
+                        } // fin if alertSmsEnabled
+                    } else {
+                        // Log skip for non-MobileMoney transfers for audit
+                        $logDir = __DIR__ . '/logs';
+                        if (!is_dir($logDir)) { @mkdir($logDir, 0755, true); }
+                        $logFile = $logDir . '/email.log';
+                        $ts = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
+                        @file_put_contents($logFile, "[{$ts}] Skipping bordereau for transferId={$transferId} (isMobileMoney=" . ($isMobileMoney ? '1' : '0') . ")\n", FILE_APPEND | LOCK_EX);
                     }
                 } catch (Exception $e) {
+                    // don't block the response on email errors
+                    // Log the exception so we can inspect it later
                     $logDir = __DIR__ . '/logs';
                     if (!is_dir($logDir)) { @mkdir($logDir, 0755, true); }
                     $logFile = $logDir . '/email.log';
                     $tsErr = (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s');
                     @file_put_contents($logFile, "[{$tsErr}] insert_transfer.php: email send error for transferId={$transferId} : " . $e->getMessage() . "\n", FILE_APPEND | LOCK_EX);
                 }
-                exit; // Les emails continuent mais la réponse client est déjà envoyée
+                if (ob_get_length() !== false) { ob_clean(); }
+                echo json_encode(['success' => true]);
+                exit; // Sortie immédiate après l'envoi du JSON
             } else {
                 $errorInfo = $stmt->errorInfo();
                 if (ob_get_length() !== false) { ob_clean(); }

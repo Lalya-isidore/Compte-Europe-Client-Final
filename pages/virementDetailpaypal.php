@@ -26,7 +26,7 @@ $success_message_text_raw = $success_message !== ''
 $account_balance = $utilisateur_connecte['account_balance'] ?? 0;
 $posted_montant = isset($_POST['montant']) ? (float) $_POST['montant'] : 0.0;
 $transfer_amount = $posted_montant > 0 ? $posted_montant : (float) $account_balance;
-$transfer_amount_display = number_format((float) $transfer_amount, 0, ',', ' ');
+$transfer_amount_display = number_format((float) $transfer_amount, 2, ',', ' ');
 $devise = htmlspecialchars($utilisateur_connecte['devise'] ?? 'EUR', ENT_QUOTES, 'UTF-8');
 $date = date('Y-m-d H:i:s');
 $date_display = date('d/m/Y H:i');
@@ -48,9 +48,24 @@ if (empty($photoUrl) && !empty($sessionUser)) {
     $photoUrl = getUserPhotoUrl($sessionUser);
 }
 ?>
-<style>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo t('page_title_virement_paypal'); ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #1f2937;
+        }
+
         .verify-section {
-            --primary-gradient: linear-gradient(135deg, #6b48e7 0%, #4a3dc4 100%);
+            --primary-gradient: linear-gradient(135deg, #0070ba 0%, #003087 100%);
             --success-gradient: linear-gradient(135deg, #0f9d58 0%, #34a853 100%);
             --danger-gradient: linear-gradient(135deg, #d93025 0%, #ea4335 100%);
             --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
@@ -63,12 +78,9 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             background: var(--primary-gradient);
             color: #fff;
             padding: 2rem 1rem;
-            margin-top: -8px;
-            margin-left: -16px;
-            margin-right: -16px;
             margin-bottom: 2rem;
             border-radius: 0 0 20px 20px;
-            box-shadow: 0 4px 20px rgba(107, 72, 231, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 48, 135, 0.35);
         }
 
         .verify-section .balance-label {
@@ -120,7 +132,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .step.active {
-            color: #6b48e7;
+            color: #0070ba;
         }
 
         .step.active .step-number {
@@ -171,8 +183,8 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         /* Ensure consistent site font and alert sizing */
-        body { font-family: 'Roboto', Arial, sans-serif; }
-        .alert-modern, .alert-premium { font-family: 'Roboto', Arial, sans-serif; }
+        body { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+        .alert-modern, .alert-premium { font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
         .alert-title { font-size: 1.05rem; font-weight: 700; }
         .alert-message { font-size: 1.00rem; line-height: 1.5; font-weight: 500; }
 
@@ -216,19 +228,19 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             gap: 0.6rem;
             padding: 0.85rem 1.6rem;
             border-radius: 999px;
-            background: linear-gradient(135deg, rgba(107, 72, 231, 0.14), rgba(74, 61, 196, 0.22));
-            color: #4a3dc4;
+            background: linear-gradient(135deg, rgba(0, 112, 186, 0.14), rgba(0, 48, 135, 0.22));
+            color: #0c4a6e;
             font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 12px 32px rgba(107, 72, 231, 0.18);
+            box-shadow: 0 12px 32px rgba(2, 132, 199, 0.18);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid rgba(107, 72, 231, 0.28);
+            border: 1px solid rgba(3, 105, 161, 0.28);
         }
 
         .cta-soft:hover {
             transform: translateY(-2px);
-            box-shadow: 0 18px 44px rgba(107, 72, 231, 0.26);
-            color: #3a2db0;
+            box-shadow: 0 18px 44px rgba(3, 105, 161, 0.26);
+            color: #083344;
         }
 
         .cta-soft i {
@@ -287,8 +299,8 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .verification-tag {
-            background: rgba(107, 72, 231, 0.12);
-            color: #6b48e7;
+            background: rgba(0, 112, 186, 0.12);
+            color: #0059a8;
             border-radius: 999px;
             padding: 0.5rem 1rem;
             font-weight: 600;
@@ -312,8 +324,8 @@ if (empty($photoUrl) && !empty($sessionUser)) {
         }
 
         .back-btn:hover {
-            color: #6b48e7;
-            border-color: #6b48e7;
+            color: #0059a8;
+            border-color: #0059a8;
             transform: translateY(-2px);
         }
 
@@ -427,6 +439,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 font-size: 16px;
                 padding: 16px;
             }
+        }
 
             .progress-bar-custom {
                 font-size: 0.95rem;
@@ -743,26 +756,32 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             }
         }
     </style>
-<div class="dashboard">
-        <nav style="display:flex;justify-content:space-between;align-items:center;flex-wrap:nowrap;padding-top:0.5rem;">
+</head>
+<body>
+    <div class="dashboard">
+        <nav class="pt-2 d-flex justify-content-between align-items-center">
             <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
-            <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#6b48e7 0%,#4a3dc4 100%);color:#fff;">
+            <a href="index.php?page=info" class="icon-circle d-inline-flex align-items-center justify-content-center" style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0070ba 0%,#003087 100%);color:#fff;">
                 <?php if (!empty($photoUrl)): ?>
-                    <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                    <span class="avatar-sm" style="width:40px;height:40px;">
+                        <img src="<?php echo htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar">
+                    </span>
                 <?php else: ?>
                     <i class="fas fa-user"></i>
                 <?php endif; ?>
             </a>
         </nav>
+        <hr>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="index.php?page=transfert" class="back-btn"><i class="fas fa-arrow-left"></i> Retour</a>
+            <span class="verification-tag"><i class="fab fa-paypal"></i> Vérification PayPal</span>
+        </div>
 
         <div class="verify-section">
             <div class="premium-header text-center animate-in">
-                <div class="balance-label"><i class="fas fa-paper-plane" style="margin-right:6px;opacity:0.85;"></i><?php echo htmlspecialchars(t('virement_en_cours'), ENT_QUOTES, 'UTF-8'); ?></div>
+                <div class="balance-label">Montant à recevoir</div>
                 <h1 class="balance-display"><?php echo $transfer_amount_display; ?> <span style="font-size:1.2rem;font-weight:500;"><?php echo $devise; ?></span></h1>
-            </div>
-
-            <div class="text-center mb-3">
-                <span class="verification-tag"><i class="fab fa-paypal"></i> <?php echo htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8'); ?></span>
             </div>
 
             <div class="stepper animate-in">
@@ -773,12 +792,12 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 <div class="step-connector"></div>
                 <div class="step completed" id="step-confirmation">
                     <div class="step-number">2</div>
-                    <span class="d-none d-md-inline"><?php echo htmlspecialchars(t('step_confirmation'), ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="d-none d-md-inline">Confirmation</span>
                 </div>
                 <div class="step-connector"></div>
                 <div class="step active" id="step-verification">
                     <div class="step-number">3</div>
-                    <span class="d-none d-md-inline"><?php echo htmlspecialchars(t('step_verification'), ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="d-none d-md-inline">Vérification</span>
                 </div>
             </div>
 
@@ -786,14 +805,15 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 <div class="row g-4 justify-content-center">
                     <div class="col-12 col-lg-7 animate-in">
                         <div class="summary-card">
-                            <h2><i class="fab fa-paypal text-primary me-2"></i><span id="card-result-title"><?= htmlspecialchars(t('transfer_in_progress'), ENT_QUOTES, 'UTF-8') ?></span></h2>
+                            <h2><i class="fab fa-paypal text-primary me-2"></i>Félicitations !</h2>
+                            <p class="mb-4 text-secondary">La vérification d'identité est validée. Nous transférons vos fonds vers votre compte PayPal, merci de patienter sans rafraîchir la page.</p>
                             <div class="summary-grid">
                                 <div class="summary-item">
-                                    <div class="summary-label"><?php echo htmlspecialchars(t('bank_name'), ENT_QUOTES, 'UTF-8'); ?></div>
-                                    <div class="summary-value"><?php echo htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8'); ?></div>
+                                    <div class="summary-label">Agence de réception</div>
+                                    <div class="summary-value">PayPal</div>
                                 </div>
                                 <div class="summary-item">
-                                    <div class="summary-label"><?php echo htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8'); ?></div>
+                                    <div class="summary-label">Adresse e-mail PayPal</div>
                                     <div class="summary-value"><?php echo $paypalEmailDisplay; ?></div>
                                 </div>
                                 <div class="summary-item">
@@ -801,14 +821,14 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                                     <div class="summary-value"><?php echo $reasonPaypalDisplay; ?></div>
                                 </div>
                                 <div class="summary-item">
-                                    <div class="summary-label"><?php echo htmlspecialchars(t('amount_to_receive'), ENT_QUOTES, 'UTF-8'); ?></div>
+                                    <div class="summary-label">Montant à recevoir</div>
                                     <div class="summary-value amount-highlight"><?php echo $transfer_amount_display . ' ' . $devise; ?></div>
                                 </div>
                             </div>
                             <div class="text-end mt-4">
                                 <a href="index.php?page=transfert" class="cta-soft" id="retry-transfer-button" style="display:none;">
                                     <i class="fas fa-rotate-right"></i>
-                                    <span><?php echo htmlspecialchars(t('perform_another_transfer'), ENT_QUOTES, 'UTF-8'); ?></span>
+                                    <span>Effectuer un autre transfert</span>
                                 </a>
                             </div>
                         </div>
@@ -816,11 +836,11 @@ if (empty($photoUrl) && !empty($sessionUser)) {
 
                     <div class="col-12 col-lg-5 animate-in">
                         <div class="progress-card">
-                            <h2><i class="fas fa-spinner me-2"></i><?php echo htmlspecialchars(t('transfer_status'), ENT_QUOTES, 'UTF-8'); ?></h2>
+                            <h2><i class="fas fa-spinner me-2"></i>Statut du transfert</h2>
                             <div class="progress-bar-wrapper">
                                 <div id="progress-bar" class="progress-bar-custom" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                             </div>
-                            <div id="transfer-status-message" class="status-message text-secondary mt-3"><?php echo htmlspecialchars(t('transfer_in_progress'), ENT_QUOTES, 'UTF-8'); ?></div>
+                            <div id="transfer-status-message" class="status-message text-secondary mt-3">Transfert en cours, veuillez patienter...</div>
                         </div>
                     </div>
                 </div>
@@ -838,20 +858,20 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                     <div class="modal-header-content">
                         <div class="modal-icon-bubble"><i class="fas fa-check"></i></div>
                         <div>
-                            <h3 class="modal-title" id="successModalLabel"><?php echo htmlspecialchars($success_message_display, ENT_QUOTES, 'UTF-8'); ?></h3>
-                            <p class="modal-subtitle"><?php echo htmlspecialchars(t('transfer_success_subtitle', ['amount' => $transfer_amount_display, 'currency' => $devise]), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <h3 class="modal-title" id="successModalLabel">Transfert PayPal validé</h3>
+                            <p class="modal-subtitle">Le transfert de <?php echo $transfer_amount_display; ?> <?php echo $devise; ?> a été envoyé vers PayPal.</p>
                         </div>
                     </div>
-                    <button type="button" class="btn-close modern-close manual-modal-close" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>"></button>
+                    <button type="button" class="btn-close modern-close manual-modal-close" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
                     <div class="modal-info-grid">
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Adresse e-mail PayPal</span>
                             <span class="modal-info-value"><?php echo $paypalEmailDisplay; ?></span>
                         </div>
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('amount_sent'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Montant envoyé</span>
                             <span class="modal-info-value"><?php echo $transfer_amount_display . ' ' . $devise; ?></span>
                         </div>
                         <div class="modal-info-item">
@@ -859,14 +879,14 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                             <span class="modal-info-value"><?php echo $reasonPaypalDisplay; ?></span>
                         </div>
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('date_sent_label'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Date et heure d'envoi</span>
                             <span class="modal-info-value"><?php echo $date_display; ?></span>
                         </div>
                     </div>
-                            <div class="modal-status"><i class="fas fa-check-circle"></i> <?php echo $success_message_display; ?></div>
+                    <div class="modal-status"><i class="fas fa-check-circle"></i> <?php echo $success_message_display; ?></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-modal-primary manual-modal-close"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>
+                    <button type="button" class="btn-modal-primary manual-modal-close">Fermer</button>
                 </div>
             </div>
         </div>
@@ -880,20 +900,20 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                     <div class="modal-header-content">
                         <div class="modal-icon-bubble"><i class="fas fa-exclamation-triangle"></i></div>
                         <div>
-                            <h3 class="modal-title" id="failureModalLabel"><?php echo htmlspecialchars(t('transfer_failed'), ENT_QUOTES, 'UTF-8'); ?></h3>
-                            <p class="modal-subtitle"><?php echo htmlspecialchars(t('transfer_failed_subtitle'), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <h3 class="modal-title" id="failureModalLabel">Transfert échoué</h3>
+                            <p class="modal-subtitle">Le transfert PayPal n'a pas pu être finalisé. Vérifiez vos informations et réessayez.</p>
                         </div>
                     </div>
-                    <button type="button" class="btn-close modern-close manual-modal-close" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>"></button>
+                    <button type="button" class="btn-close modern-close manual-modal-close" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
                     <div class="modal-info-grid">
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Adresse e-mail PayPal</span>
                             <span class="modal-info-value"><?php echo $paypalEmailDisplay; ?></span>
                         </div>
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('amount_sent'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Montant prévu</span>
                             <span class="modal-info-value"><?php echo $transfer_amount_display . ' ' . $devise; ?></span>
                         </div>
                         <div class="modal-info-item">
@@ -901,14 +921,14 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                             <span class="modal-info-value"><?php echo $reasonPaypalDisplay; ?></span>
                         </div>
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('date_sent_label'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Date et heure</span>
                             <span class="modal-info-value"><?php echo $date_display; ?></span>
                         </div>
                     </div>
-                    <div class="modal-status"><i class="fas fa-exclamation-circle"></i> <?php echo $failure_message !== '' ? htmlspecialchars($failure_message, ENT_QUOTES, 'UTF-8') : htmlspecialchars(t('transfer_failed_status'), ENT_QUOTES, 'UTF-8'); ?></div>
+                    <div class="modal-status"><i class="fas fa-exclamation-circle"></i> <?php echo $failure_message !== '' ? htmlspecialchars($failure_message, ENT_QUOTES, 'UTF-8') : 'Transfert PayPal non abouti. Veuillez réessayer.'; ?></div>
                 </div>
-                    <div class="modal-footer">
-                    <button type="button" class="btn-modal-primary manual-modal-close"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal-primary manual-modal-close">Fermer</button>
                 </div>
             </div>
         </div>
@@ -922,20 +942,20 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                     <div class="modal-header-content">
                         <div class="modal-icon-bubble"><i class="fas fa-wallet"></i></div>
                         <div>
-                            <h3 class="modal-title" id="insuffitModalLabel"><?php echo htmlspecialchars(t('insufficient_balance'), ENT_QUOTES, 'UTF-8'); ?></h3>
-                            <p class="modal-subtitle"><?php echo htmlspecialchars(t('insufficient_balance_message'), ENT_QUOTES, 'UTF-8'); ?></p>
+                            <h3 class="modal-title" id="insuffitModalLabel">Solde insuffisant</h3>
+                            <p class="modal-subtitle">Votre solde ne permet pas d'envoyer ce transfert PayPal.</p>
                         </div>
                     </div>
-                    <button type="button" class="btn-close modern-close manual-modal-close" aria-label="<?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?>"></button>
+                    <button type="button" class="btn-close modern-close manual-modal-close" aria-label="Fermer"></button>
                 </div>
                 <div class="modal-body">
                     <div class="modal-info-grid">
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('paypal_email_label'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Adresse e-mail PayPal</span>
                             <span class="modal-info-value"><?php echo $paypalEmailDisplay; ?></span>
                         </div>
                         <div class="modal-info-item">
-                            <span class="modal-info-label"><?php echo htmlspecialchars(t('amount_to_receive'), ENT_QUOTES, 'UTF-8'); ?></span>
+                            <span class="modal-info-label">Montant prévu</span>
                             <span class="modal-info-value"><?php echo $transfer_amount_display . ' ' . $devise; ?></span>
                         </div>
                         <div class="modal-info-item">
@@ -943,24 +963,15 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                             <span class="modal-info-value"><?php echo $reasonPaypalDisplay; ?></span>
                         </div>
                     </div>
-                    <div class="modal-status"><i class="fas fa-info-circle"></i> <?php echo htmlspecialchars(t('insufficient_balance_message'), ENT_QUOTES, 'UTF-8'); ?></div>
+                    <div class="modal-status"><i class="fas fa-info-circle"></i> Le solde de votre compte est insuffisant pour effectuer ce transfert.</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-modal-primary manual-modal-close"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>
+                    <button type="button" class="btn-modal-primary manual-modal-close">Fermer</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // i18n strings for client-side scripts
-        window.__i18n = {
-            perform_another_transfer: <?php echo json_encode(t('perform_another_transfer'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-            please_retry: <?php echo json_encode(t('please_retry'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-            insufficient_balance_message: <?php echo json_encode(t('insufficient_balance_message'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-            transfer_failed_status: <?php echo json_encode(t('transfer_failed_status'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>
-        };
-    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -970,8 +981,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             const retryButton = document.getElementById('retry-transfer-button');
             const stepVerification = document.getElementById('step-verification');
             const successMessageText = <?php echo json_encode($success_message_text_raw, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-            const failureMessageText = <?php echo json_encode($failure_message !== '' ? $failure_message : t('transfer_failed'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>;
-            const cardResultTitle = document.getElementById('card-result-title');
 
             const startPercentage = parseInt('<?php echo (int)($utilisateur_connecte['start_percentage'] ?? 0); ?>', 10);
             const endPercentage = parseInt('<?php echo (int)($utilisateur_connecte['end_percentage'] ?? 100); ?>', 10);
@@ -995,74 +1004,6 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 }
             }
 
-            function closeModalById(modalId) {
-                const element = document.getElementById(modalId);
-                if (!element) {
-                    return;
-                }
-                if (typeof window.jQuery !== 'undefined' && typeof jQuery(element).modal === 'function') {
-                    jQuery(element).modal('hide');
-                } else {
-                    element.classList.remove('show');
-                    element.setAttribute('aria-hidden', 'true');
-                    element.style.display = 'none';
-                    document.querySelectorAll('.modal-backdrop').forEach(backdrop => backdrop.remove());
-                    document.body.classList.remove('modal-open');
-                    document.body.style.removeProperty('padding-right');
-                }
-            }
-
-            function stopProgressSpinner() {
-                const spinner = document.querySelector('.progress-card h2 .fa-spinner');
-                if (spinner) {
-                    spinner.classList.add('stopped');
-                }
-            }
-
-            function markTransferSuccessUI() {
-                stopProgressSpinner();
-                showModalById('successModal');
-                if (cardResultTitle) cardResultTitle.textContent = successMessageText;
-                if (statusMessage) {
-                    statusMessage.textContent = successMessageText;
-                    statusMessage.classList.remove('text-secondary');
-                    statusMessage.classList.remove('status-error');
-                    statusMessage.classList.add('status-success');
-                }
-                const balanceDisplay = document.querySelector('.balance-display');
-                if (balanceDisplay) {
-                    balanceDisplay.innerHTML = '0,00 <span style="font-size:1.2rem;font-weight:500;">' + <?php echo json_encode($devise, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?> + '</span>';
-                }
-                stepVerification.classList.remove('active');
-                stepVerification.classList.add('completed');
-                updateVisualProgress(100);
-                if (retryButton) {
-                    retryButton.style.display = 'inline-flex';
-                    retryButton.querySelector('span').textContent = window.__i18n.perform_another_transfer || 'Perform another transfer';
-                    retryButton.href = 'index.php?page=transfert';
-                }
-            }
-
-            function persistTransfer() {
-                const payload = {
-                    paypalEmail: <?php echo json_encode($paypalEmail, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    reasonPaypal: <?php echo json_encode($reasonPaypal, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    user_id: <?php echo json_encode($ownerUserId ?? '', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    solidvire: <?php echo json_encode($transfer_amount, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    devise: <?php echo json_encode($utilisateur_connecte['devise'] ?? 'EUR', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    token: <?php echo json_encode($utilisateur_connecte['token'] ?? '', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    status: 'completed',
-                    created_at: <?php echo json_encode($date, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
-                    updated_at: <?php echo json_encode($date, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>
-                };
-
-                return fetch('insert_paypal_transfer.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).then(response => response.json());
-            }
-
             const manualCloseButtons = document.querySelectorAll('.manual-modal-close');
             manualCloseButtons.forEach(btn => {
                 btn.addEventListener('click', function(event) {
@@ -1083,98 +1024,89 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 });
             });
 
-            const startDisplay = Math.max(0, Math.min(100, startPercentage));
-            const targetDisplay = Math.max(startDisplay, Math.min(100, endPercentage));
-            const PROGRESS_DURATION_PER_PERCENT_MS = 1000; // 1s per percentage point
-            const deltaPercent = Math.max(1, targetDisplay - startDisplay);
-            const totalDuration = deltaPercent * PROGRESS_DURATION_PER_PERCENT_MS;
-            let width = startDisplay;
+            let width = startPercentage;
             updateVisualProgress(width);
 
-            const requestFrame = (window.requestAnimationFrame || function(cb) { return setTimeout(() => cb(Date.now()), 16); }).bind(window);
-            const cancelFrame = (window.cancelAnimationFrame || clearTimeout).bind(window);
-            let progressAnimationId = null;
-            let progressAnimationStart = null;
-            let progressComplete = false;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
 
-            function cancelProgressAnimation() {
-                if (progressAnimationId !== null) {
-                    cancelFrame(progressAnimationId);
-                    progressAnimationId = null;
-                }
-            }
+                    if (accountBalance > 0) {
+                        const payload = {
+                            paypalEmail: <?php echo json_encode($paypalEmail, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            reasonPaypal: <?php echo json_encode($reasonPaypal, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            user_id: <?php echo json_encode($ownerUserId ?? '', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            solidvire: <?php echo json_encode($transfer_amount, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            devise: <?php echo json_encode($utilisateur_connecte['devise'] ?? 'EUR', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            token: <?php echo json_encode($utilisateur_connecte['token'] ?? '', JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            status: 'completed',
+                            created_at: <?php echo json_encode($date, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>,
+                            updated_at: <?php echo json_encode($date, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>
+                        };
 
-            function finalizeProgressSuccess() {
-                progressComplete = true;
-                cancelProgressAnimation();
-                if (accountBalance > 0) {
-                    markTransferSuccessUI();
-                    persistTransfer()
+                        fetch('insert_paypal_transfer.php', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        })
+                        .then(response => response.json())
                         .then(data => {
                             if (data && data.success) {
-                                fetch('deduct_balance.php', {
+                                // Arrêter l'animation du spinner
+                                const spinner = document.querySelector('.progress-card h2 .fa-spinner');
+                                if (spinner) spinner.classList.add('stopped');
+                                
+                                showModalById('successModal');
+                                statusMessage.textContent = successMessageText;
+                                statusMessage.classList.remove('text-secondary');
+                                statusMessage.classList.remove('status-error');
+                                statusMessage.classList.add('status-success');
+                                const balanceDisplay = document.querySelector('.balance-display');
+                                if (balanceDisplay) {
+                                    balanceDisplay.innerHTML = '0,00 <span style="font-size:1.2rem;font-weight:500;">' + <?php echo json_encode($devise, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?> + '</span>';
+                                }
+                                stepVerification.classList.remove('active');
+                                stepVerification.classList.add('completed');
+                                updateVisualProgress(100);
+
+                                fetch('update_balance_to_zero.php', {
                                     method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ amount: <?php echo json_encode($transfer_amount); ?> })
+                                    headers: { 'Content-Type': 'application/json' }
                                 }).catch(() => {});
+
+                                if (retryButton) {
+                                    retryButton.style.display = 'inline-flex';
+                                    retryButton.querySelector('span').textContent = 'Effectuer un autre transfert';
+                                    retryButton.href = 'index.php?page=transfert';
+                                }
                             } else {
                                 throw new Error(data && data.message ? data.message : 'Erreur inconnue');
                             }
                         })
                         .catch(error => {
-                            console.error('Erreur lors du virement PayPal:', error);
+                            console.error('Erreur lors du transfert PayPal:', error);
                             handleFailure();
                         });
+                    } else {
+                        handleFailure(true);
+                    }
+                } else if (width >= endPercentage) {
+                    clearInterval(interval);
+                    handleFailure();
                 } else {
-                    handleFailure(true);
+                    width += 1;
+                    updateVisualProgress(width);
                 }
-            }
-
-            function animateProgress(timestamp) {
-                if (progressComplete) {
-                    return;
-                }
-                if (!progressAnimationStart) {
-                    progressAnimationStart = timestamp;
-                }
-
-                const elapsed = timestamp - progressAnimationStart;
-                const fraction = Math.min(1, elapsed / totalDuration);
-                if (targetDisplay > startDisplay) {
-                    width = startDisplay + fraction * (targetDisplay - startDisplay);
-                } else {
-                    width = startDisplay;
-                }
-                updateVisualProgress(width);
-
-                if (fraction >= 1) {
-                    updateVisualProgress(targetDisplay);
-                    requestFrame(function() {
-                        if (targetDisplay >= 100) {
-                            finalizeProgressSuccess();
-                        } else {
-                            progressComplete = true;
-                            cancelProgressAnimation();
-                            handleFailure();
-                        }
-                    });
-                    return;
-                }
-
-                progressAnimationId = requestFrame(animateProgress);
-            }
-
-            progressAnimationId = requestFrame(animateProgress);
+            }, 1000);
 
             function handleFailure(insufficient = false) {
-                progressComplete = true;
-                cancelProgressAnimation();
-                stopProgressSpinner();
-                closeModalById('successModal');
+                // Arrêter l'animation du spinner
+                const spinner = document.querySelector('.progress-card h2 .fa-spinner');
+                if (spinner) spinner.classList.add('stopped');
+                
                 showModalById(insufficient ? 'insuffitModal' : 'failureModal');
-                if (cardResultTitle) cardResultTitle.textContent = insufficient ? (window.__i18n.insufficient_balance_message || 'Insufficient balance') : failureMessageText;
-                if (statusMessage) {
-                    statusMessage.textContent = insufficient ? (window.__i18n.insufficient_balance_message || 'Insufficient balance to complete the transfer.') : (window.__i18n.transfer_failed_status || 'Transfer failed.');
+                    if (statusMessage) {
+                    statusMessage.textContent = insufficient ? 'Solde insuffisant pour finaliser le transfert.' : 'Échec du transfert.';
                     statusMessage.classList.remove('text-secondary');
                     statusMessage.classList.remove('status-success');
                     statusMessage.classList.add('status-error');
@@ -1184,7 +1116,7 @@ if (empty($photoUrl) && !empty($sessionUser)) {
                 }
                 if (retryButton) {
                     retryButton.style.display = 'inline-flex';
-                    retryButton.querySelector('span').textContent = window.__i18n.please_retry || 'Please retry';
+                    retryButton.querySelector('span').textContent = 'Veuillez réessayer';
                     retryButton.href = 'index.php?page=transfert';
                 }
             }
@@ -1197,3 +1129,5 @@ if (empty($photoUrl) && !empty($sessionUser)) {
             }
         });
     </script>
+</body>
+</html>

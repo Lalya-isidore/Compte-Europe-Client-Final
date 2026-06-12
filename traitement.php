@@ -96,7 +96,7 @@ if (!empty($erreurs)) {
                     $stmt = $db->prepare("INSERT IGNORE INTO dismissed_alerts (compte_id, alert_type, alert_id) VALUES (:cid, 'balance', '')");
                     $stmt->execute([':cid' => $compteId]);
                 }
-                
+
                 $txAlerts = $_SESSION['dismissed_transaction_alerts'] ?? [];
                 if (!is_array($txAlerts)) {
                     $txAlerts = [];
@@ -109,6 +109,11 @@ if (!empty($erreurs)) {
                         $stmt->execute([':cid' => $compteId, ':aid' => (string)$aid]);
                     }
                 }
+
+                // Enregistrer l'heure de connexion
+                $db->prepare("UPDATE comptes SET last_activity = :ts WHERE id = :id")
+                   ->execute([':ts' => time(), ':id' => $compteId]);
+                $_SESSION['last_db_activity'] = time();
             }
         } catch (Exception $e) {
             error_log("❌ Erreur synchronisation alertes: " . $e->getMessage());

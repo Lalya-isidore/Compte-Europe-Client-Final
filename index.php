@@ -30,6 +30,23 @@ $erreur = '';
 
 require_once(__DIR__ . '/fonction.php');
 require_once __DIR__ . '/lib/i18n.php';
+
+// Rafraîchir last_activity en base (max 1x/min) pour afficher "En ligne" dans l'admin
+if (isset($_SESSION['utilisateur_connecter'])) {
+    $__compteId = $_SESSION['utilisateur_connecter']['compte_id'] ?? null;
+    if ($__compteId && (time() - ($_SESSION['last_db_activity'] ?? 0)) >= 60) {
+        try {
+            $__dbIdx = connexion_db();
+            if ($__dbIdx) {
+                $__dbIdx->prepare("UPDATE comptes SET last_activity = :ts WHERE id = :id")
+                        ->execute([':ts' => time(), ':id' => $__compteId]);
+                $_SESSION['last_db_activity'] = time();
+            }
+        } catch (Exception $e) { /* silently fail */ }
+        unset($__dbIdx);
+    }
+    unset($__compteId);
+}
 $__currentLang = current_lang();
 
 // human readable language names (small map for support display)

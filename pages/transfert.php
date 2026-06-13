@@ -497,10 +497,16 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 }
 
 .paypal-icon {
-    background: linear-gradient(135deg, #0070ba 0%, #003087 100%);
-    color: white;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 12px rgba(0, 112, 186, 0.3);
+    background: white;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 4px 12px rgba(0, 112, 186, 0.15);
+    padding: 6px;
+    overflow: hidden;
+}
+.paypal-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 
@@ -849,7 +855,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
         <div class="col-md-6 mb-3">
             <div class="transfer-card" id="paypalCard" onclick="selectTransferType('paypal')">
                 <div class="transfer-icon paypal-icon">
-                    <i class="fab fa-paypal"></i>
+                    <img src="image/PayPal.jpeg" alt="PayPal">
                 </div>
                 <h5 class="fw-bold mb-2"><?= htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8') ?></h5>
                 <p class="text-muted small mb-0"><?= htmlspecialchars(t('paypal'), ENT_QUOTES, 'UTF-8') ?> — <?= htmlspecialchars(t('pay'), ENT_QUOTES, 'UTF-8') ?></p>

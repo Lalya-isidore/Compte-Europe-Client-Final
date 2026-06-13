@@ -498,9 +498,11 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 
 .paypal-icon {
     background: white;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 4px 12px rgba(0, 112, 186, 0.15);
-    padding: 6px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 12px rgba(107, 72, 231, 0.2);
+    padding: 2px;
+    width: 68px;
+    height: 68px;
     overflow: hidden;
 }
 .paypal-icon img {

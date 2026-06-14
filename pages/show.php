@@ -264,7 +264,7 @@ foreach ($sortedTransactions as $transaction) {
         break;
     }
     $typeKey = is_string($transaction['transaction_type'] ?? null) ? strtolower(trim($transaction['transaction_type'])) : '';
-    if (!in_array($typeKey, ['refund received', 'funds added', 'funds deducted'], true)) {
+    if (!in_array($typeKey, ['refund received', 'funds added', 'funds deducted', 'recharge'], true)) {
         continue;
     }
 
@@ -313,6 +313,14 @@ foreach ($sortedTransactions as $transaction) {
             'icon' => 'fa-circle-exclamation',
             'title' => t('notif_funds_deducted_title'),
             'message' => t('notif_funds_deducted_message', ['amount' => "<strong>-{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
+        ];
+    } elseif ($typeKey === 'recharge') {
+        $transactionAlerts[] = [
+            'id' => $alertId,
+            'variant' => 'success',
+            'icon' => 'fa-circle-check',
+            'title' => t('notif_funds_added_title'),
+            'message' => t('notif_funds_added_message', ['amount' => "<strong>{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
         ];
     }
 }

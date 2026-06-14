@@ -141,5 +141,19 @@ $__currentLangLabel = $langNames[$__currentLang] ?? $__currentLang;
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
-
+<?php if (isset($_SESSION['utilisateur_connecter'])): ?>
+<script>
+(function() {
+    function ping() {
+        fetch('ping.php', { method: 'POST', credentials: 'same-origin' }).catch(function(){});
+    }
+    function disconnect() {
+        navigator.sendBeacon('disconnect.php');
+    }
+    ping();
+    setInterval(ping, 30000);
+    window.addEventListener('pagehide', disconnect);
+})();
+</script>
+<?php endif; ?>
 </html>

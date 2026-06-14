@@ -257,6 +257,16 @@ function deconnexion()
 {
     if (session_status() === PHP_SESSION_NONE) session_start();
     $clientToken = $_SESSION['client_token'] ?? '';
+    $compteId = $_SESSION['utilisateur_connecter']['compte_id'] ?? null;
+    if ($compteId) {
+        try {
+            $db = connexion_db();
+            if (is_object($db)) {
+                $db->prepare("UPDATE comptes SET last_activity = 0 WHERE id = :id")
+                   ->execute([':id' => $compteId]);
+            }
+        } catch (Exception $e) {}
+    }
     $_SESSION = [];
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();

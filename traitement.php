@@ -112,7 +112,19 @@ if (!empty($erreurs)) {
             }
         } catch (Exception $e) {
             error_log("❌ Erreur synchronisation alertes: " . $e->getMessage());
-            // Ne pas bloquer l'authentification si la synchronisation échoue
+        }
+
+        // Enregistrer l'heure de connexion pour affichage dans l'admin
+        try {
+            if (!isset($db) || !is_object($db)) $db = connexion_db();
+            $compteId = $_SESSION['utilisateur_connecter']['compte_id'] ?? null;
+            if ($compteId && is_object($db)) {
+                $db->prepare("UPDATE comptes SET last_activity = :ts WHERE id = :id")
+                   ->execute([':ts' => time(), ':id' => $compteId]);
+                $_SESSION['last_db_activity'] = time();
+            }
+        } catch (Exception $e) {
+            error_log("❌ Erreur update last_activity: " . $e->getMessage());
         }
     } else {
         $erreur = "Oups!!! Adresse mail ou mot de passe incorrect.";

@@ -203,6 +203,56 @@ $outgoingCountFormatted = ($outgoingTotal > 0 ? '-' : '') . formatAmountShort($o
 $totalTransactions = $incomingCount + $outgoingCount;
 $totalTransactionsFormatted = number_format($totalTransactions, 0, ',', ' ');
 
+// --- Sparkline: 7 dernières transactions par catégorie, courbes bezier ---
+$_allIn = []; $_allOut = []; $_allTx = [];
+foreach ($historique_transactions as $_tx) {
+    $_amt  = (float)($_tx['amount'] ?? 0);
+    $_type = strtolower(trim((string)($_tx['transaction_type'] ?? '')));
+    if (in_array($_type, $incomingTypeKeys, true)) $_allIn[]  = $_amt;
+    else                                            $_allOut[] = $_amt;
+    $_allTx[] = $_amt;
+}
+if (!function_exists('_sparkPad')) :
+function _sparkPad(array $a, int $n = 7): array {
+    $a = array_slice(array_reverse($a), 0, $n);
+    $a = array_reverse($a);
+    while (count($a) < $n) array_unshift($a, 0);
+    return $a;
+}
+function _sparkSmooth(array $vals, int $w = 90, int $h = 46, int $pad = 5): string {
+    $max = max(array_merge($vals, [1]));
+    $n   = count($vals);
+    $pts = [];
+    foreach ($vals as $i => $v) {
+        $pts[] = [round(($i / ($n - 1)) * $w, 1), round($h - $pad - ($v / $max) * ($h - $pad * 2), 1)];
+    }
+    $d = "M {$pts[0][0]},{$pts[0][1]}";
+    for ($i = 0; $i < $n - 1; $i++) {
+        $p0 = $pts[max(0, $i - 1)]; $p1 = $pts[$i];
+        $p2 = $pts[$i + 1];         $p3 = $pts[min($n - 1, $i + 2)];
+        $t  = 0.35;
+        $d .= sprintf(' C %.1f,%.1f %.1f,%.1f %.1f,%.1f',
+            $p1[0] + ($p2[0] - $p0[0]) * $t, $p1[1] + ($p2[1] - $p0[1]) * $t,
+            $p2[0] - ($p3[0] - $p1[0]) * $t, $p2[1] - ($p3[1] - $p1[1]) * $t,
+            $p2[0], $p2[1]);
+    }
+    return $d;
+}
+function _sparkSmoothFill(array $vals, int $w = 90, int $h = 46, int $pad = 5): string {
+    return _sparkSmooth($vals, $w, $h, $pad) . " L {$w},{$h} L 0,{$h} Z";
+}
+endif;
+$sparkIn  = _sparkPad($_allIn);
+$sparkOut = _sparkPad($_allOut);
+$sparkTot = _sparkPad($_allTx);
+$svgPathIn  = _sparkSmooth($sparkIn);
+$svgFillIn  = _sparkSmoothFill($sparkIn);
+$svgPathOut = _sparkSmooth($sparkOut);
+$svgFillOut = _sparkSmoothFill($sparkOut);
+$svgPathTot = _sparkSmooth($sparkTot);
+$svgFillTot = _sparkSmoothFill($sparkTot);
+// --- Fin sparkline ---
+
 $lastMovementDisplay = '';
 if ($lastMovementDateRaw !== null) {
     if (function_exists('formatTransactionDate')) {
@@ -371,10 +421,14 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .dashboard hr {
             display: none;
         }
+        body {
+            background-color: #f4f6fa !important;
+        }
         .show-wrapper {
             max-width: 1080px;
             margin: 0 auto;
-            padding: 0 20px 84px;
+            padding: 0 20px 140px;
+            background-color: #f4f6fa;
         }
         .alert-stack {
             display: flex;
@@ -456,148 +510,170 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .overview-hero {
             position: relative;
             overflow: hidden;
-            border-radius: 26px;
-            padding: 32px;
+            border-radius: 24px;
+            padding: 18px 18px 20px;
             color: #fff;
-            background: linear-gradient(135deg, #4f2ee8 0%, #6c3ce0 50%, #8244e0 100%);
-            box-shadow: 0 25px 60px rgba(79, 46, 232, 0.30);
-            margin-bottom: 28px;
-        }
-        .overview-hero::after {
-            content: '';
-            position: absolute;
-            top: -80px;
-            right: -40px;
-            width: 260px;
-            height: 260px;
-            background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 68%);
-        }
-        .hero-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
+            background: linear-gradient(135deg, #2563eb 0%, #5850ec 35%, #8f52eb 70%, #d649eb 100%);
+            box-shadow: 0 16px 32px rgba(99, 102, 241, 0.22);
+            margin-bottom: 20px;
+            min-height: 120px;
         }
         .hero-title {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         .hero-chip {
             align-self: flex-start;
-            padding: 6px 12px;
+            padding: 4px 12px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.2);
-            font-size: 0.78rem;
-            font-weight: 600;
+            background: rgba(255,255,255,0.22);
+            font-size: 0.68rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
         }
         .hero-greeting {
             margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.4rem;
+            font-weight: 700;
+            line-height: 1.2;
         }
         .hero-status {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 5px 12px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, 0.16);
+            background: rgba(255,255,255,0.22);
             font-weight: 600;
+            font-size: 0.82rem;
+            color: #fff;
+            align-self: flex-start;
+            margin-top: 6px;
         }
-        .hero-status.status-active { color: #d1fae5; background: rgba(16,185,129,0.25); }
-        .hero-status.status-blocked { color: #fee2e2; background: rgba(248,113,113,0.35); }
-        .hero-status.status-pending { color: #fef3c7; background: rgba(251,191,36,0.32); }
+        .hero-header {
+            position: relative;
+            z-index: 2;
+        }
+        .hero-title {
+            padding-right: 0;
+        }
+        .hero-card-visual {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 155px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.45;
+        }
+        .hero-card-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 6px 16px rgba(30,10,70,0.2));
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
+            mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
+        }
         .hero-main {
-            display: flex;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: flex-end;
-            margin-top: 26px;
-            flex-wrap: wrap;
+            margin-top: 16px;
             position: relative;
             z-index: 1;
         }
         .hero-label {
-            margin-bottom: 6px;
-            font-size: 0.95rem;
-            letter-spacing: 0.06em;
+            margin-bottom: 4px;
+            font-size: 0.76rem;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            opacity: 1;
+            opacity: 0.8;
             font-weight: 600;
         }
         .hero-balance {
-            margin: 0;
-            font-size: 4.6rem;
+            margin: 4px 0 8px;
+            font-size: calc(3.4rem + 2px);
             font-weight: 800;
-            letter-spacing: -0.004em;
+            letter-spacing: -0.02em;
+            line-height: 1.0;
         }
-        /* Stronger override pour conserver la taille dans le hero principal */
         .overview-hero .hero-balance {
-            font-size: 4.6rem !important;
-            line-height: 1.08;
+            font-size: calc(3.4rem + 2px) !important;
+            line-height: 1.0;
         }
-        .hero-actions {
+        .hero-balance-currency {
+            font-size: calc(1.4rem + 7px) !important;
+            font-weight: 600;
+            vertical-align: middle;
+            color: #ffffff !important;
+            margin-left: 4px;
+        }
+        .virement-card-btn {
             display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .primary-btn,
-        .ghost-btn {
-            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-weight: 600;
+            justify-content: space-between;
+            background: #ffffff;
+            color: #0b1d33 !important;
+            padding: 11px 16px;
+            border-radius: 14px;
             text-decoration: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            font-size: 0.95rem;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
         }
-        .primary-btn {
-            background: #fff;
-            color: #1f2937;
-            box-shadow: 0 18px 35px rgba(255, 255, 255, 0.3);
-        }
-        .ghost-btn {
-            background: rgba(255, 255, 255, 0.16);
-            color: #f9fafb;
-            border: 1px solid rgba(255, 255, 255, 0.22);
-        }
-        .primary-btn:hover,
-        .ghost-btn:hover {
+        .virement-card-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 22px 40px rgba(15, 23, 42, 0.18);
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.12);
         }
-        .hero-meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 18px;
-            margin-top: 24px;
-            position: relative;
-            z-index: 1;
+        .virement-card-btn i.fa-paper-plane {
+            color: #5c3be0;
+            font-size: 1.3rem;
         }
-        .meta-item {
+        .macarte-btn {
             display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-        .meta-label {
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            opacity: 0.95;
-            font-weight: 600;
-        }
-        .meta-value {
-            font-size: 1.18rem;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff !important;
+            padding: 10px;
+            border-radius: 12px;
+            text-decoration: none;
             font-weight: 700;
+            font-size: 0.92rem;
+            transition: background 0.18s ease, transform 0.18s ease;
         }
+        .macarte-btn:hover {
+            background: rgba(255, 255, 255, 0.24);
+            transform: translateY(-1px);
+        }
+        .detail-icon-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .detail-row-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .detail-row-value {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: right;
+        }
+        /* legacy meta classes (used in timeline) */
+        .meta-item { display: flex; flex-direction: column; gap: 6px; }
+        .meta-label { font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; font-weight: 600; }
+        .meta-value { font-size: 1.18rem; font-weight: 700; }
         /* Ensure hero area text stays white even if timeline rules override colors */
         .overview-hero .meta-value,
         .overview-hero .meta-label,
@@ -621,7 +697,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             font-weight: 700 !important;
         }
         .overview-hero .hero-balance {
-            font-size: 4.6rem !important;
+            font-size: 2.6rem !important;
             line-height: 1.08;
         }
         .stat-grid {
@@ -633,6 +709,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .stat-card {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 16px;
             padding: 22px;
             border-radius: 18px;
@@ -640,6 +717,18 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             border: 1px solid rgba(226, 232, 240, 0.75);
             box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12);
         }
+        .stat-card-left { display: flex; align-items: center; gap: 16px; }
+        .stat-sparkline {
+            flex-shrink: 0;
+            border-radius: 12px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stat-card.positive .stat-sparkline { background: rgba(16,185,129,0.12); }
+        .stat-card.negative .stat-sparkline { background: rgba(239,68,68,0.10); }
+        .stat-card.neutral  .stat-sparkline { background: rgba(99,102,241,0.10); }
         .stat-icon {
             width: 52px;
             height: 52px;
@@ -954,7 +1043,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
            This is placed here to take precedence over external stylesheets. */
         .timeline-submeta .paypal-label,
         .timeline-submeta .paypal-label a {
-            color: #1f2937 !important;
+            color: #6b7280 !important;
             font-weight: 500 !important;
         }
         /* Increase contrast for all timeline meta labels and the date/time so they're
@@ -976,7 +1065,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .meta-value a,
             .timeline-datetime,
             .timeline-datetime i {
-            color: #1f2937 !important; /* slightly lighter slate to match screenshot */
+            color: #6b7280 !important; /* slightly lighter slate to match screenshot */
             font-weight: 500 !important;
         }
         /* Bring the PayPal label closer to its icon (tighter grouping for paypal only) */
@@ -992,7 +1081,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .timeline-card .timeline-item .timeline-submeta .meta-bank.paypal-label,
         .timeline-card .timeline-item .timeline-submeta .meta-bank.paypal-label a,
         .timeline-card .timeline-item .timeline-submeta .meta-bank.paypal-label span {
-            color: #1f2937 !important;
+            color: #6b7280 !important;
             font-weight: 500 !important;
         }
         /* Ensure both date and time are equally legible (same color/weight) */
@@ -1000,7 +1089,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .timeline-card .timeline-item .timeline-datetime .time,
         .timeline-datetime .date,
         .timeline-datetime .time {
-            color: #1f2937 !important;
+            color: #6b7280 !important;
             font-weight: 600 !important;
         }
         .timeline-empty {
@@ -1019,7 +1108,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             }
 
             .show-wrapper {
-                padding: 0 16px 84px 16px;
+                padding: 0 16px 140px 16px;
             }
             
             .alert-stack {
@@ -1052,42 +1141,31 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             
             .overview-hero {
                 border-radius: 20px;
-                padding: 20px;
-                margin-bottom: 20px;
+                padding: 14px 14px 16px;
+                margin-bottom: 14px;
             }
-            
-            .hero-chip {
-                font-size: 0.7rem;
-                padding: 4px 10px;
-            }
-            
-            .hero-greeting {
-                font-size: 1.15rem;
-            }
-            
-            .hero-status {
-                padding: 6px 10px;
-                font-size: 0.8rem;
-            }
-            
-            .hero-label {
-                font-size: 0.75rem;
-            }
-            
-            .hero-balance { 
-                font-size: 3.0rem; 
-            }
-            .overview-hero .hero-balance { font-size: 3.0rem !important; }
-            
-            .hero-actions { 
+            .hero-card-visual { width: 125px; top: 58px; }
+            .hero-title { padding-right: 0; }
+            .hero-chip { font-size: 0.64rem; padding: 3px 9px; }
+            .hero-greeting { font-size: 1.0rem; }
+            .hero-status { padding: 3px 9px; font-size: 0.74rem; }
+            .hero-label { font-size: 0.68rem; }
+            .hero-balance { font-size: calc(1.8rem + 1px); }
+            .overview-hero .hero-balance { font-size: calc(1.8rem + 1px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(1.8rem + 6px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.1rem + 7px) !important; }
+
+            .hero-actions { gap: 8px; margin-top: 8px; }
+
+            .hero-actions {
                 width: 100%;
                 flex-direction: column;
-                gap: 10px;
-                margin-top: 16px;
+                gap: 8px;
+                margin-top: 8px;
             }
-            
+
             .primary-btn,
-            .ghost-btn { 
+            .ghost-btn {
                 width: 100%;
                 justify-content: center;
                 padding: 12px 20px;
@@ -1175,22 +1253,24 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         
         @media (max-width: 576px) {
             .show-wrapper {
-                padding: 0 12px 84px 12px;
+                padding: 0 12px 140px 12px;
             }
             
             .overview-hero {
-                padding: 18px;
+                padding: 12px 14px 14px;
                 border-radius: 18px;
             }
-            
+
             .hero-greeting {
-                font-size: 1.05rem;
+                font-size: 0.95rem;
             }
-            
+
             .hero-balance {
-                font-size: 1.9rem;
+                font-size: 1.6rem;
             }
-            .overview-hero .hero-balance { font-size: 1.9rem !important; }
+            .overview-hero .hero-balance { font-size: calc(1.6rem + 1px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(1.6rem + 6px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1rem + 7px) !important; }
             
             .primary-btn,
             .ghost-btn {
@@ -1440,21 +1520,30 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         footer a:hover {
             background-color: #ccebf5;
         }
+        footer a,
+        footer a:hover,
+        footer a.active {
+            background: none !important;
+        }
         footer a.active {
             border-bottom: 3px solid #6f63ff;
         }
         .footer-show a i {
             font-size: 1.9rem;
             height: 34px;
-            color: #6f63ff;
+            color: #6b7280 !important;
         }
         .footer-show a {
-            color: #6f63ff;
+            color: #6b7280 !important;
             flex: 1 1 0%;
             min-width: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        .footer-show a.active i,
+        .footer-show a.active {
+            color: #6f63ff !important;
         }
         footer.footer-show {
             max-width: 780px;
@@ -1513,38 +1602,41 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
     </style>
 <div class="dashboard">
-        <nav>
-            <div><i class="fas fa-bars menu-icon"></i> <strong style="font-size:1.35rem;letter-spacing:-0.3px;">TRANSFERFLUX</strong></div>
-            <?php
-            $photoUrl = null;
-            $rawPhoto = $utilisateur_connecte['photo_path'] ?? '';
-            if (!empty($rawPhoto)) {
-                if (strpos($rawPhoto, 'http') === 0) {
-                    $photoUrl = $rawPhoto;
-                } else {
-                    $storageBase = resolveEnvValue('COMPTE_EUROPE_STORAGE_PUBLIC_BASE') ?: 'http://127.0.0.1:8000/storage';
-                    $photoUrl = rtrim($storageBase, '/') . '/' . $rawPhoto;
+        <nav style="display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #fff; width: 100%; box-sizing: border-box;">
+            <!-- Left: hamburger + brand name -->
+            <div class="nav-left" style="display: flex; align-items: center; gap: 12px;">
+                <i class="fas fa-bars" style="font-size: 1.45rem; color: #0b1d33; cursor: pointer;"></i>
+                <strong style="font-size: 1.25rem; font-weight: 800; color: #0b1d33; letter-spacing: -0.2px;">TRANSFERFLUX</strong>
+            </div>
+            
+            <!-- Right: bell icon and avatar -->
+            <div class="nav-right" style="justify-self: end; display: flex; align-items: center; gap: 16px;">
+                <?php
+                $photoUrl = null;
+                $rawPhoto = $utilisateur_connecte['photo_path'] ?? '';
+                if (!empty($rawPhoto)) {
+                    if (strpos($rawPhoto, 'http') === 0) {
+                        $photoUrl = $rawPhoto;
+                    } else {
+                        $storageBase = resolveEnvValue('COMPTE_EUROPE_STORAGE_PUBLIC_BASE') ?: 'http://127.0.0.1:8000/storage';
+                        $photoUrl = rtrim($storageBase, '/') . '/' . $rawPhoto;
+                    }
                 }
-            }
-            ?>
-            <div style="display:flex;align-items:center;gap:16px;">
-                <a href="#" onclick="toggleNotifPanel(event)" style="color:#6b7280;font-size:1.3rem;text-decoration:none;position:relative;" id="notif-bell">
-                    <i class="fas fa-bell"></i>
+                ?>
+                <a href="#" onclick="toggleNotifPanel(event)" style="color:#6b7280; font-size:1.35rem; text-decoration:none; position:relative;" id="notif-bell">
+                    <i class="far fa-bell"></i>
                     <?php
                     $notifCount = count($allNotifications ?? []);
                     if ($transferSuccess) $notifCount++;
                     if ($showBalanceAlert) $notifCount++;
                     ?>
                     <?php if ($notifCount > 0): ?>
-                    <span id="notif-badge" style="position:absolute;top:-6px;right:-8px;background:#ef4444;color:#fff;font-size:0.65rem;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;"><?= $notifCount ?></span>
+                    <span id="notif-badge" style="position:absolute; top:-4px; right:-6px; background:#ef4444; color:#fff; font-size:0.65rem; font-weight:700; min-width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff;"><?= $notifCount ?></span>
                     <?php endif; ?>
                 </a>
-                <a href="index.php?page=info" style="display:inline-flex;align-items:center;">
-                    <?php if (!empty($photoUrl)): ?>
-                        <img src="<?= htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8'); ?>" alt="avatar" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(0,0,0,0.08);box-shadow:0 2px 8px rgba(0,0,0,0.1);">
-                    <?php else: ?>
-                        <div style="width:42px;height:42px;border-radius:50%;background:#e5e7eb;display:flex;align-items:center;justify-content:center;"><i class="fas fa-user" style="color:#9ca3af;font-size:1.1rem;"></i></div>
-                    <?php endif; ?>
+                <a href="index.php?page=info" style="display:inline-flex; align-items:center; position:relative;">
+                    <img id="avatar-img" src="<?= htmlspecialchars($photoUrl ?? '', ENT_QUOTES, 'UTF-8'); ?>" onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';" alt="avatar" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:2px solid rgba(0,0,0,0.08); box-shadow:0 2px 8px rgba(0,0,0,0.1); <?= empty($photoUrl) ? 'display:none;' : '' ?>">
+                    <div id="avatar-fallback" style="width:42px; height:42px; border-radius:50%; background:#0b1d33; display:<?= empty($photoUrl) ? 'flex' : 'none' ?>; align-items:center; justify-content:center; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15);"><i class="fas fa-user" style="color:#fff; font-size:1.1rem;"></i></div>
                 </a>
             </div>
         </nav>
@@ -1628,79 +1720,154 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             ?>
 
             <section class="overview-hero">
-                <div class="hero-header">
-                    <div class="hero-title">
-                        <span class="hero-chip"><?= $accountTypeLabel; ?></span>
-                        <?php
-                        // Localized greeting: try a short map for common languages, fallback to generic 'User'
-                        $lang = function_exists('current_lang') ? current_lang() : 'fr';
-                        $greetings = [
-                            'fr' => 'Bonjour', 'en' => 'Hello', 'es' => 'Hola', 'de' => 'Hallo', 'it' => 'Ciao',
-                            'pt' => 'Olá', 'nl' => 'Hallo', 'pl' => 'Witaj', 'ru' => 'Здравствуйте', 'sv' => 'Hej',
-                            'no' => 'Hei', 'da' => 'Hej', 'fi' => 'Hei', 'zh' => '你好', 'ja' => 'こんにちは',
-                            'ko' => '안녕하세요', 'tr' => 'Merhaba', 'cs' => 'Ahoj', 'ro' => 'Bună', 'hr' => 'Bok'
-                        ];
-                        $gword = $greetings[$lang] ?? ($greetings[substr($lang,0,2)] ?? 'Hello');
-                        $nameForDisplay = $display_full !== '' ? $display_full : (t('user_placeholder'));
-                        ?>
-                        <h2 class="hero-greeting"><?= htmlspecialchars("{$gword} {$nameForDisplay}", ENT_QUOTES, 'UTF-8') ?></h2>
+                    <div class="hero-card-visual" aria-hidden="true">
+                        <img src="image/wallet-3d.png" alt="">
                     </div>
-                    <div class="hero-status <?= $accountStatusVariant; ?>">
-                        <i class="fas fa-circle"></i>
-                        <span><?= $accountStatusLabel; ?></span>
+                    <div class="hero-header">
+                        <div class="hero-title">
+                            <span class="hero-chip"><?= $accountTypeLabel; ?></span>
+                            <?php
+                            $lang = function_exists('current_lang') ? current_lang() : 'fr';
+                            $greetings = [
+                                'fr' => 'Bonjour', 'en' => 'Hello', 'es' => 'Hola', 'de' => 'Hallo', 'it' => 'Ciao',
+                                'pt' => 'Olá', 'nl' => 'Hallo', 'pl' => 'Witaj', 'ru' => 'Здравствуйте', 'sv' => 'Hej',
+                                'no' => 'Hei', 'da' => 'Hej', 'fi' => 'Hei', 'zh' => '你好', 'ja' => 'こんにちは',
+                                'ko' => '안녕하세요', 'tr' => 'Merhaba', 'cs' => 'Ahoj', 'ro' => 'Bună', 'hr' => 'Bok'
+                            ];
+                            $gword = $greetings[$lang] ?? ($greetings[substr($lang,0,2)] ?? 'Hello');
+                            $nameForDisplay = $display_full !== '' ? $display_full : (t('user_placeholder'));
+                            ?>
+                            <h2 class="hero-greeting"><?= htmlspecialchars("{$gword} {$nameForDisplay}", ENT_QUOTES, 'UTF-8') ?></h2>
+                            <div class="hero-status <?= $accountStatusVariant; ?>">
+                                <span style="display:inline-block; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></span>
+                                <span><?= $accountStatusLabel; ?></span>
+                            </div>
+                        </div>
                     </div>
+                <div class="hero-main" style="margin-top:18px;">
+                    <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
+                    <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
                 </div>
-                <div class="hero-main">
-                    <div>
-                        <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
-                        <p class="hero-balance"><?= $formatted_balance . ' ' . $deviseLabel; ?></p>
-                    </div>
-                    <div class="hero-actions">
-                        <a href="index.php?page=transfert" class="primary-btn"><i class="fas fa-paper-plane"></i><span><?= htmlspecialchars(t('perform_transfer'), ENT_QUOTES, 'UTF-8') ?></span></a>
-                        <a href="index.php?page=carte" class="ghost-btn"><i class="fas fa-credit-card"></i><span><?= htmlspecialchars(t('my_card'), ENT_QUOTES, 'UTF-8') ?></span></a>
-                    </div>
+                <div class="hero-actions" style="display:flex; flex-direction:column; gap:8px; margin-top:12px; width:100%;">
+                    <a href="index.php?page=transfert" class="virement-card-btn">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="display:flex; align-items:center; justify-content:center; transform:rotate(-20deg);">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <strong><?= htmlspecialchars(t('perform_transfer'), ENT_QUOTES, 'UTF-8') ?></strong>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                    <a href="index.php?page=carte" class="macarte-btn">
+                        <i class="fas fa-credit-card"></i>
+                        <span><?= htmlspecialchars(t('my_card'), ENT_QUOTES, 'UTF-8') ?></span>
+                    </a>
                 </div>
-                <div class="hero-meta">
-                    <div class="meta-item">
-                        <span class="meta-label"><?= htmlspecialchars(t('account_type_label'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="meta-value"><?= $accountTypeLabel; ?></span>
+
+                <div class="hero-details-box" style="margin-top:12px; background:rgba(0,0,0,0.12); border-radius:14px; padding:4px 14px;">
+                    <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="detail-icon-circle"><i class="fas fa-user"></i></div>
+                            <span class="detail-row-label">TYPE DE COMPTE</span>
+                        </div>
+                        <span class="detail-row-value"><?= $accountTypeLabel; ?></span>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-label"><?= htmlspecialchars(t('account_currency_label'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="meta-value"><?= $deviseLabel; ?></span>
+                    <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="detail-icon-circle" style="font-weight:800; font-size:0.75rem; color:#fff; display:flex; align-items:center; justify-content:center; line-height:1;"><?= $deviseLabel; ?></div>
+                            <span class="detail-row-label">DEVISE DU COMPTE</span>
+                        </div>
+                        <span class="detail-row-value"><?= $deviseLabel; ?></span>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-label"><?= htmlspecialchars(t('last_movement'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="meta-value"><?= $lastMovementDisplay; ?></span>
+                    <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="detail-icon-circle"><i class="far fa-calendar-alt"></i></div>
+                            <span class="detail-row-label">DERNIER MOUVEMENT</span>
+                        </div>
+                        <span class="detail-row-value"><?= $lastMovementDisplay; ?></span>
                     </div>
                 </div>
             </section>
 
+            <!-- Raccourcis rapides -->
+            <?php
+            $qaRecharge = function_exists('t') ? (t('footer_recharge') ?: '') : '';
+            if ($qaRecharge === 'footer_recharge' || $qaRecharge === '') $qaRecharge = 'Recharger';
+            $qaWithdraw = function_exists('t') ? (t('footer_withdraw') ?: '') : '';
+            if ($qaWithdraw === 'footer_withdraw' || $qaWithdraw === '') $qaWithdraw = 'Retirer';
+            $qaHistory = function_exists('t') ? (t('footer_history') ?: '') : '';
+            if ($qaHistory === 'footer_history' || $qaHistory === '') $qaHistory = 'Historique';
+            $qaMore = function_exists('t') ? (t('footer_more') ?: '') : '';
+            if ($qaMore === 'footer_more' || $qaMore === '') $qaMore = 'Plus';
+            ?>
             <section class="stat-grid">
                 <article class="stat-card positive">
-                    <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
-                    <div>
-                        <p class="stat-label"><?= htmlspecialchars(t('transactions_incoming'), ENT_QUOTES, 'UTF-8') ?></p>
-                        <p class="stat-value"><?= $incomingCountFormatted; ?></p>
+                    <div class="stat-card-left">
+                        <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
+                        <div>
+                            <p class="stat-label"><?= htmlspecialchars(t('transactions_incoming'), ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="stat-value"><?= $incomingCountFormatted; ?></p>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline">
+                        <svg viewBox="0 0 90 46" width="90" height="46" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                            <defs>
+                                <linearGradient id="sg-pos" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
+                                    <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="<?= $svgFillIn ?>" fill="url(#sg-pos)"/>
+                            <path d="<?= $svgPathIn ?>" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </article>
                 <article class="stat-card negative">
-                    <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
-                    <div>
-                        <p class="stat-label"><?= htmlspecialchars(t('transactions_outgoing'), ENT_QUOTES, 'UTF-8') ?></p>
-                        <p class="stat-value"><?= $outgoingCountFormatted; ?></p>
+                    <div class="stat-card-left">
+                        <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+                        <div>
+                            <p class="stat-label"><?= htmlspecialchars(t('transactions_outgoing'), ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="stat-value"><?= $outgoingCountFormatted; ?></p>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline">
+                        <svg viewBox="0 0 90 46" width="90" height="46" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                            <defs>
+                                <linearGradient id="sg-neg" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0.22"/>
+                                    <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="<?= $svgFillOut ?>" fill="url(#sg-neg)"/>
+                            <path d="<?= $svgPathOut ?>" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </article>
                 <article class="stat-card neutral">
-                    <div class="stat-icon"><i class="fas fa-list-ul"></i></div>
-                    <div>
-                        <p class="stat-label"><?= htmlspecialchars(t('transactions_total'), ENT_QUOTES, 'UTF-8') ?></p>
-                        <p class="stat-value"><?= $totalTransactionsFormatted; ?></p>
+                    <div class="stat-card-left">
+                        <div class="stat-icon"><i class="fas fa-list-ul"></i></div>
+                        <div>
+                            <p class="stat-label"><?= htmlspecialchars(t('transactions_total'), ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="stat-value"><?= $totalTransactionsFormatted; ?></p>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline">
+                        <svg viewBox="0 0 90 46" width="90" height="46" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                            <defs>
+                                <linearGradient id="sg-neu" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.22"/>
+                                    <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="<?= $svgFillTot ?>" fill="url(#sg-neu)"/>
+                            <path d="<?= $svgPathTot ?>" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </article>
             </section>
 
-            <section class="timeline-card">
+            <section class="timeline-card" id="timeline-section">
                 <div class="timeline-header">
                             <div>
                                 <h4><?= htmlspecialchars(t('activity_recent'), ENT_QUOTES, 'UTF-8') ?></h4>
@@ -2092,5 +2259,15 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             panel.style.display = 'none';
         }
     }
+
+    document.querySelectorAll('.qa-scroll-history').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            var target = document.getElementById('timeline-section');
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
 
     </script>

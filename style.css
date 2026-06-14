@@ -115,7 +115,7 @@ html, body {
 .meta-email a,
 .meta-bank a,
 .meta-value a {
-    color: #1f2937; /* darker slate */
+    color: #6b7280; /* darker slate */
     font-weight: 400;
 }
 
@@ -913,11 +913,11 @@ footer {
 
 footer a i {
     display: block;
-    color: #007bff; /* match the blue color from the card page */
-    margin-bottom: 6px; /* space between icon and label */
-    font-size: 1.5rem; /* match Bootstrap fs-4 size */
+    color: #6b7280;
+    margin-bottom: 6px;
+    font-size: 1.5rem;
     line-height: 1;
-    height: 26px; /* proportional height for fs-4 size */
+    height: 26px;
 }
 
 /* Footer typography: use site font and increase label/icon legibility */
@@ -951,9 +951,9 @@ footer a {
 
 /* Page-specific override to match the 'carte' footer exactly on the show page */
 .footer-show a i {
-    font-size: 1.9rem; /* slightly larger on show page */
+    font-size: 1.9rem;
     height: 34px;
-    color: #6f63ff;
+    color: #6b7280;
 }
 /* footer a i:hover {
     display: flex;
@@ -988,16 +988,18 @@ footer a {
     white-space: nowrap;
     padding: 11px 6px; /* optimal spacing for fs-4 sized icons */
     transition: all 120ms ease;
-    color: #1f2937;
+    color: #6b7280;
     position: relative;
 }
 
-footer a.active {
+footer a.active,
+footer a.active i {
+    color: #6f63ff;
     border-bottom: 3px solid #6f63ff;
 }
 
 .footer-show a {
-    color: #6f63ff;
+    color: #6b7280;
     flex: 1 1 0%;
     min-width: 0;
     white-space: nowrap;
@@ -1703,9 +1705,9 @@ footer a i {
         margin-bottom: 4px;
     }
 
-    footer a:hover,
-    footer a.active {
-        color: #3b82f6;
+    footer a.active,
+    footer a.active i {
+        color: #6f63ff;
     }
 
     /* Layout mobile spécifique */

@@ -290,27 +290,25 @@ foreach ($sortedTransactions as $transaction) {
     }
     $sourceSafe = htmlspecialchars($sourceLabel, ENT_QUOTES, 'UTF-8');
 
+    $txSortTs = strtotime($transaction['created_at'] ?? '') ?: 0;
     if ($typeKey === 'refund received') {
         $transactionAlerts[] = [
-            'id' => $alertId,
-            'variant' => 'refund',
-            'icon' => 'fa-rotate-left',
+            'id' => $alertId, 'sort_ts' => $txSortTs,
+            'variant' => 'refund', 'icon' => 'fa-rotate-left',
             'title' => t('notif_refund_title'),
             'message' => t('notif_refund_message', ['amount' => "<strong>{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
         ];
     } elseif ($typeKey === 'funds added') {
-            $transactionAlerts[] = [
-                'id' => $alertId,
-                'variant' => 'success',
-                'icon' => 'fa-circle-check',
-                'title' => t('notif_funds_added_title'),
-                'message' => t('notif_funds_added_message', ['amount' => "<strong>{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
-            ];
+        $transactionAlerts[] = [
+            'id' => $alertId, 'sort_ts' => $txSortTs,
+            'variant' => 'success', 'icon' => 'fa-circle-check',
+            'title' => t('notif_funds_added_title'),
+            'message' => t('notif_funds_added_message', ['amount' => "<strong>{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
+        ];
     } elseif ($typeKey === 'funds deducted') {
         $transactionAlerts[] = [
-            'id' => $alertId,
-            'variant' => 'deduct',
-            'icon' => 'fa-circle-exclamation',
+            'id' => $alertId, 'sort_ts' => $txSortTs,
+            'variant' => 'deduct', 'icon' => 'fa-circle-exclamation',
             'title' => t('notif_funds_deducted_title'),
             'message' => t('notif_funds_deducted_message', ['amount' => "<strong>-{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
         ];
@@ -321,9 +319,15 @@ foreach ($sortedTransactions as $transaction) {
             'icon' => 'fa-circle-check',
             'title' => t('notif_funds_added_title'),
             'message' => t('notif_funds_added_message', ['amount' => "<strong>{$amount} {$deviseSafe}</strong>", 'source' => $sourceSafe]),
+            'sort_ts' => strtotime($transaction['created_at'] ?? '') ?: 0,
         ];
     }
 }
+// Ajouter sort_ts aux autres types
+foreach ($transactionAlerts as &$ta) {
+    if (!isset($ta['sort_ts'])) $ta['sort_ts'] = 0;
+}
+unset($ta);
 
 // Notifications admin envoyées directement dans le compte client
 $adminNotifications = [];
@@ -339,6 +343,16 @@ try {
 } catch (Exception $e) {
     // ignore, notifications non critiques
 }
+
+// Fusionner et trier toutes les notifications par date (plus récente en premier)
+$allNotifications = [];
+foreach ($adminNotifications as $n) {
+    $allNotifications[] = ['type' => 'admin', 'sort_ts' => strtotime($n['created_at'] ?? '') ?: 0, 'data' => $n];
+}
+foreach ($transactionAlerts as $a) {
+    $allNotifications[] = ['type' => 'transaction', 'sort_ts' => (int)($a['sort_ts'] ?? 0), 'data' => $a];
+}
+usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts']; });
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
@@ -1517,10 +1531,9 @@ try {
                 <a href="#" onclick="toggleNotifPanel(event)" style="color:#6b7280;font-size:1.3rem;text-decoration:none;position:relative;" id="notif-bell">
                     <i class="fas fa-bell"></i>
                     <?php
-                    $notifCount = count($transactionAlerts ?? []);
+                    $notifCount = count($allNotifications ?? []);
                     if ($transferSuccess) $notifCount++;
                     if ($showBalanceAlert) $notifCount++;
-                    $notifCount += count($adminNotifications ?? []);
                     ?>
                     <?php if ($notifCount > 0): ?>
                     <span id="notif-badge" style="position:absolute;top:-6px;right:-8px;background:#ef4444;color:#fff;font-size:0.65rem;font-weight:700;min-width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;"><?= $notifCount ?></span>
@@ -1544,7 +1557,7 @@ try {
                     <strong style="font-size:1.05rem;">Notifications</strong>
                     <button onclick="toggleNotifPanel(event)" style="background:none;border:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;">&times;</button>
                 </div>
-                <?php if (!$transferSuccess && !$showBalanceAlert && empty($transactionAlerts) && empty($adminNotifications)): ?>
+                <?php if (!$transferSuccess && !$showBalanceAlert && empty($allNotifications)): ?>
                     <p style="text-align:center;color:#9ca3af;padding:24px 0;">Aucune notification</p>
                 <?php else: ?>
                 <div class="alert-stack">
@@ -1574,7 +1587,9 @@ try {
                         </div>
                     <?php endif; ?>
 
-                    <?php foreach ($adminNotifications as $notif): ?>
+                    <?php foreach ($allNotifications as $notifItem):
+                        if ($notifItem['type'] === 'admin'):
+                            $notif = $notifItem['data']; ?>
                         <div class="alert-modern variant-info admin-notif-alert" role="alert" data-notif-id="<?= (int)$notif['id']; ?>">
                             <div class="alert-icon variant-info"><i class="fas fa-bell"></i></div>
                             <div class="alert-body">
@@ -1585,9 +1600,7 @@ try {
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                    <?php endforeach; ?>
-
-                    <?php foreach ($transactionAlerts as $alert): ?>
+                        <?php else: $alert = $notifItem['data']; ?>
                         <div class="alert-modern variant-<?= htmlspecialchars($alert['variant'], ENT_QUOTES, 'UTF-8'); ?> transaction-alert" role="alert" data-alert-id="<?= htmlspecialchars($alert['id'], ENT_QUOTES, 'UTF-8'); ?>">
                             <div class="alert-icon variant-<?= htmlspecialchars($alert['variant'], ENT_QUOTES, 'UTF-8'); ?>"><i class="fas <?= htmlspecialchars($alert['icon'], ENT_QUOTES, 'UTF-8'); ?>"></i></div>
                             <div class="alert-body">
@@ -1598,6 +1611,7 @@ try {
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
                 <?php endif; ?>

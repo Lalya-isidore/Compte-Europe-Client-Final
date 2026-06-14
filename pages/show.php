@@ -159,10 +159,12 @@ $transactionLabels = function_exists('getTransactionLabels') ? getTransactionLab
     'Funds added' => 'Virement reçu',
 ];
 
-$incomingTypeKeys = ['transfer received', 'funds added', 'solde initial', 'refund received'];
+$incomingTypeKeys = ['transfer received', 'funds added', 'solde initial', 'refund received', 'recharge', 'loyalty bonus'];
 $transactionMetaMap = [
     'transfer received' => ['icon' => 'fa-money-bill-transfer', 'variant' => 'positive'],
     'funds added' => ['icon' => 'fa-money-bill-transfer', 'variant' => 'positive'],
+    'recharge' => ['icon' => 'fa-arrow-down', 'variant' => 'positive'],
+    'loyalty bonus' => ['icon' => 'fa-gift', 'variant' => 'positive'],
     'solde initial' => ['icon' => 'fa-money-bill-transfer', 'variant' => 'positive'],
     'transfer sent' => ['icon' => 'fa-paper-plane', 'variant' => 'negative'],
     'funds deducted' => ['icon' => 'fa-minus-circle', 'variant' => 'negative'],

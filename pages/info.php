@@ -69,7 +69,7 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
 
 <body>
     <div class="dashboard">
-        <nav class="pt-2">
+        <nav>
             <div><i class="fas fa-bars menu-icon"></i> <strong class="fs-4">TRANSFERFLUX</strong></div>
             <?php
             // Prefer DB details but fallback to session values when photo is missing

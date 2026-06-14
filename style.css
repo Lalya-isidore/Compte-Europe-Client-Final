@@ -783,7 +783,7 @@ i {
     margin: auto;
     box-shadow: 0 0 12px 0 rgba(0, 0, 0, .2);
     overflow: auto;
-    padding: 10px 30px 150px 30px; /* default desktop padding */
+    padding: 0 30px 150px 30px; /* default desktop padding */
     transition: all 200ms linear;
 }
 

@@ -2092,4 +2092,13 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             panel.style.display = 'none';
         }
     }
+
+    // Heartbeat: keep last_activity fresh while the client has the page open
+    (function() {
+        function ping() {
+            fetch('ping.php', { method: 'POST', credentials: 'same-origin' }).catch(function(){});
+        }
+        ping();
+        setInterval(ping, 60000);
+    })();
     </script>

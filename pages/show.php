@@ -572,6 +572,10 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .hero-header {
             position: relative;
             z-index: 2;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
         }
         .hero-title {
             padding-right: 0;
@@ -1756,10 +1760,10 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                             $nameForDisplay = $display_full !== '' ? $display_full : (t('user_placeholder'));
                             ?>
                             <h2 class="hero-greeting"><?= htmlspecialchars("{$gword} {$nameForDisplay}", ENT_QUOTES, 'UTF-8') ?></h2>
-                            <div class="hero-status <?= $accountStatusVariant; ?>">
-                                <span class="status-dot"></span>
-                                <span><?= $accountStatusLabel; ?></span>
-                            </div>
+                        </div>
+                        <div class="hero-status <?= $accountStatusVariant; ?>">
+                            <span class="status-dot"></span>
+                            <span><?= $accountStatusLabel; ?></span>
                         </div>
                     </div>
                 <div class="hero-main" style="margin-top:18px;">

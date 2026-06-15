@@ -554,6 +554,14 @@ try {
         .hero-status.status-active { color: #d1fae5; background: rgba(16,185,129,0.25); }
         .hero-status.status-blocked { color: #fee2e2; background: rgba(248,113,113,0.35); }
         .hero-status.status-pending { color: #fef3c7; background: rgba(251,191,36,0.32); }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.4; transform: scale(0.7); }
+        }
+        .hero-status.status-active i {
+            animation: pulse-dot 1.6s ease-in-out infinite;
+            color: #34d399;
+        }
         .hero-main {
             display: flex;
             justify-content: space-between;

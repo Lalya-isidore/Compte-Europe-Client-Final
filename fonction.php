@@ -121,13 +121,7 @@ function getTransactionHistory($user_id, $compte_id = null): array
             return [];
         }
         
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        usort($rows, function($a, $b) {
-            $ta = isset($a['created_at']) ? strtotime($a['created_at']) : 0;
-            $tb = isset($b['created_at']) ? strtotime($b['created_at']) : 0;
-            return $tb <=> $ta;
-        });
-        return $rows;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         error_log("❌ Erreur getTransactionHistory: " . $e->getMessage());
         return [];

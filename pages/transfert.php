@@ -19,9 +19,6 @@ if ($accountId === null) {
     exit();
 }
 
-// Récupérez l'historique via l'utilisateur propriétaire
-$ownerUserId = $utilisateur['user_id'] ?? null;
-$historique_transactions = $ownerUserId !== null ? getTransactionHistory($ownerUserId, $accountId) : [];
 $utilisateur_connecte = getUserDetails($accountId);
 if (!is_array($utilisateur_connecte)) {
     $utilisateur_connecte = [];

@@ -513,12 +513,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             overflow: clip;
             isolation: isolate;
             border-radius: 24px;
-            padding: 18px 18px 20px;
+            padding: 28px;
             color: #fff;
             background: linear-gradient(135deg, #2563eb 0%, #5850ec 35%, #8f52eb 70%, #d649eb 100%);
             box-shadow: 0 16px 32px rgba(99, 102, 241, 0.22);
             margin-bottom: 20px;
-            min-height: 120px;
         }
         .hero-title {
             display: flex;
@@ -598,7 +597,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
         }
         .hero-main {
-            margin-top: 16px;
+            margin-top: 22px;
             position: relative;
             z-index: 1;
         }
@@ -1766,11 +1765,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                             <span><?= $accountStatusLabel; ?></span>
                         </div>
                     </div>
-                <div class="hero-main" style="margin-top:18px;">
+                <div class="hero-main">
                     <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
                     <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
                 </div>
-                <div class="hero-actions" style="display:flex; flex-direction:column; gap:8px; margin-top:12px; width:100%;">
+                <div class="hero-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:16px; width:100%;">
                     <a href="index.php?page=transfert" class="virement-card-btn">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div style="display:flex; align-items:center; justify-content:center; transform:rotate(-20deg);">

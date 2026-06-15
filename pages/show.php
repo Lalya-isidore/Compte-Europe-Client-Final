@@ -569,7 +569,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .hero-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             gap: 14px;
             flex-wrap: wrap;
             position: relative;
@@ -577,7 +577,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         .hero-card-visual {
             position: absolute;
-            top: 50px;
+            top: 36px;
             right: 0;
             width: 155px;
             pointer-events: none;
@@ -615,22 +615,28 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             font-size: 4.6rem;
             font-weight: 800;
             letter-spacing: -0.004em;
+            white-space: nowrap;
+        }
+        .hero-balance-amount {
+            font-size: calc(4.6rem + 5px);
         }
         .overview-hero .hero-balance {
             font-size: 4.6rem !important;
             line-height: 1.08;
         }
         .hero-balance-currency {
-            font-size: calc(3.3rem + 3px) !important;
-            font-weight: 800;
+            font-size: 3.3rem !important;
+            font-weight: 700;
             vertical-align: middle;
+            transform: translateY(-3px);
             color: #ffffff !important;
             margin-left: 4px;
         }
         .virement-card-btn {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
+            gap: 10px;
             background: #ffffff;
             color: #0b1d33 !important;
             padding: 11px 16px;
@@ -1170,8 +1176,8 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             .hero-label { font-size: 0.62rem; }
             .hero-balance { font-size: 3.0rem; }
             .overview-hero .hero-balance { font-size: 3.0rem !important; }
-            .hero-balance .hero-balance-amount { font-size: 3.0rem !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(2.2rem + 2px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(3.0rem + 5px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(2.2rem - 1px) !important; }
 
             .hero-actions { gap: 8px; margin-top: 8px; }
 
@@ -1287,8 +1293,8 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                 font-size: 1.9rem;
             }
             .overview-hero .hero-balance { font-size: 1.9rem !important; }
-            .hero-balance .hero-balance-amount { font-size: 1.9rem !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(1.4rem + 2px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(1.9rem + 5px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.4rem - 1px) !important; }
             
             .primary-btn,
             .ghost-btn {

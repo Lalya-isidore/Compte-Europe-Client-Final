@@ -646,6 +646,31 @@ try {
             font-size: 1.18rem;
             font-weight: 700;
         }
+        .detail-icon-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+        .detail-row-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(255, 255, 255, 0.75);
+        }
+        .detail-row-value {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: right;
+        }
         /* Ensure hero area text stays white even if timeline rules override colors */
         .overview-hero .meta-value,
         .overview-hero .meta-label,
@@ -1736,18 +1761,27 @@ try {
                         <a href="index.php?page=carte" class="ghost-btn"><i class="fas fa-credit-card"></i><span><?= htmlspecialchars(t('my_card'), ENT_QUOTES, 'UTF-8') ?></span></a>
                     </div>
                 </div>
-                <div class="hero-meta">
-                    <div class="meta-item">
-                        <span class="meta-label"><?= htmlspecialchars(t('account_type_label'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="meta-value"><?= $accountTypeLabel; ?></span>
+                <div class="hero-details-box" style="margin-top:12px; background:rgba(0,0,0,0.12); border-radius:14px; padding:4px 14px;">
+                    <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="detail-icon-circle"><i class="fas fa-user"></i></div>
+                            <span class="detail-row-label"><?= htmlspecialchars(t('account_type_label'), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <span class="detail-row-value"><?= $accountTypeLabel; ?></span>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-label"><?= htmlspecialchars(t('account_currency_label'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="meta-value"><?= $deviseLabel; ?></span>
+                    <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="detail-icon-circle" style="font-weight:800; font-size:0.75rem; color:#fff; display:flex; align-items:center; justify-content:center; line-height:1;"><?= $deviseLabel; ?></div>
+                            <span class="detail-row-label"><?= htmlspecialchars(t('account_currency_label'), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <span class="detail-row-value"><?= $deviseLabel; ?></span>
                     </div>
-                    <div class="meta-item">
-                        <span class="meta-label"><?= htmlspecialchars(t('last_movement'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="meta-value"><?= $lastMovementDisplay; ?></span>
+                    <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div class="detail-icon-circle"><i class="far fa-calendar-alt"></i></div>
+                            <span class="detail-row-label"><?= htmlspecialchars(t('last_movement'), ENT_QUOTES, 'UTF-8') ?></span>
+                        </div>
+                        <span class="detail-row-value"><?= $lastMovementDisplay; ?></span>
                     </div>
                 </div>
             </section>

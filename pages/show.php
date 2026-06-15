@@ -510,6 +510,8 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .overview-hero {
             position: relative;
             overflow: hidden;
+            overflow: clip;
+            isolation: isolate;
             border-radius: 24px;
             padding: 18px 18px 20px;
             color: #fff;

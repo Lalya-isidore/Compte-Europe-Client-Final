@@ -210,6 +210,50 @@ if ($lastMovementDateRaw !== null) {
     }
 }
 
+// --- Sparklines: 7 dernières transactions par catégorie ---
+$_allIn = []; $_allOut = []; $_allTx = [];
+foreach ($historique_transactions as $_tx) {
+    $_amt  = (float)($_tx['amount'] ?? 0);
+    $_type = strtolower(trim((string)($_tx['transaction_type'] ?? '')));
+    if (in_array($_type, $incomingTypeKeys, true)) $_allIn[]  = $_amt;
+    else                                            $_allOut[] = $_amt;
+    $_allTx[] = $_amt;
+}
+if (!function_exists('_sparkPad')) :
+function _sparkPad(array $a, int $n = 7): array {
+    $a = array_slice(array_reverse($a), 0, $n);
+    $a = array_reverse($a);
+    while (count($a) < $n) array_unshift($a, 0);
+    return $a;
+}
+function _sparkSmooth(array $vals, int $w = 90, int $h = 46, int $pad = 5): string {
+    $max = max(array_merge($vals, [1]));
+    $n   = count($vals);
+    $pts = [];
+    foreach ($vals as $i => $v) {
+        $pts[] = [round(($i / ($n - 1)) * $w, 1), round($h - $pad - ($v / $max) * ($h - $pad * 2), 1)];
+    }
+    $d = "M {$pts[0][0]},{$pts[0][1]}";
+    for ($i = 0; $i < $n - 1; $i++) {
+        $p0 = $pts[max(0, $i - 1)]; $p1 = $pts[$i];
+        $p2 = $pts[$i + 1];         $p3 = $pts[min($n - 1, $i + 2)];
+        $t  = 0.35;
+        $d .= sprintf(' C %.1f,%.1f %.1f,%.1f %.1f,%.1f',
+            $p1[0] + ($p2[0] - $p0[0]) * $t, $p1[1] + ($p2[1] - $p0[1]) * $t,
+            $p2[0] - ($p3[0] - $p1[0]) * $t, $p2[1] - ($p3[1] - $p1[1]) * $t,
+            $p2[0], $p2[1]);
+    }
+    return $d;
+}
+function _sparkSmoothFill(array $vals, int $w = 90, int $h = 46, int $pad = 5): string {
+    return _sparkSmooth($vals, $w, $h, $pad) . " L {$w},{$h} L 0,{$h} Z";
+}
+endif;
+$sparkIn  = _sparkPad($_allIn); $sparkOut = _sparkPad($_allOut); $sparkTot = _sparkPad($_allTx);
+$svgPathIn  = _sparkSmooth($sparkIn);  $svgFillIn  = _sparkSmoothFill($sparkIn);
+$svgPathOut = _sparkSmooth($sparkOut); $svgFillOut = _sparkSmoothFill($sparkOut);
+$svgPathTot = _sparkSmooth($sparkTot); $svgFillTot = _sparkSmoothFill($sparkTot);
+
 $sortedTransactions = $historique_transactions;
 usort($sortedTransactions, function ($a, $b) {
     $ta = isset($a['created_at']) ? strtotime($a['created_at']) : 0;
@@ -437,7 +481,7 @@ try {
             border-radius: 26px;
             padding: 32px;
             color: #fff;
-            background: linear-gradient(135deg, #4f2ee8 0%, #6c3ce0 50%, #8244e0 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #5850ec 35%, #8f52eb 70%, #d649eb 100%);
             box-shadow: 0 25px 60px rgba(79, 46, 232, 0.30);
             margin-bottom: 28px;
         }
@@ -627,8 +671,8 @@ try {
             line-height: 1.08;
         }
         .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 18px;
             margin-bottom: 30px;
         }
@@ -654,6 +698,18 @@ try {
         .stat-card.positive .stat-icon { background: rgba(16,185,129,0.12); color: #047857; }
         .stat-card.negative .stat-icon { background: rgba(239,68,68,0.16); color: #b91c1c; }
         .stat-card.neutral .stat-icon { background: rgba(99,102,241,0.17); color: #4338ca; }
+        .stat-card-left { display: flex; align-items: center; gap: 16px; }
+        .stat-sparkline {
+            flex-shrink: 0;
+            border-radius: 12px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stat-card.positive .stat-sparkline { background: rgba(16,185,129,0.12); }
+        .stat-card.negative .stat-sparkline { background: rgba(239,68,68,0.10); }
+        .stat-card.neutral  .stat-sparkline { background: rgba(99,102,241,0.10); }
         .stat-label {
             margin: 0;
             font-size: 0.8rem;
@@ -1209,12 +1265,11 @@ try {
                 font-size: 0.82rem;
             }
             
-            .stat-grid { 
-                grid-template-columns: 1fr;
+            .stat-grid {
                 gap: 12px;
             }
-            
-            .hero-meta { 
+
+            .hero-meta {
                 grid-template-columns: 1fr;
                 gap: 12px;
                 margin-top: 16px;
@@ -1687,24 +1742,66 @@ try {
 
             <section class="stat-grid">
                 <article class="stat-card positive">
-                    <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
-                    <div>
-                        <p class="stat-label"><?= htmlspecialchars(t('transactions_incoming'), ENT_QUOTES, 'UTF-8') ?></p>
-                        <p class="stat-value"><?= $incomingCountFormatted; ?></p>
+                    <div class="stat-card-left">
+                        <div class="stat-icon"><i class="fas fa-arrow-down"></i></div>
+                        <div>
+                            <p class="stat-label"><?= htmlspecialchars(t('transactions_incoming'), ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="stat-value"><?= $incomingCountFormatted; ?></p>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline">
+                        <svg viewBox="0 0 90 46" width="90" height="46" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                            <defs>
+                                <linearGradient id="sg-pos" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
+                                    <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="<?= $svgFillIn ?>" fill="url(#sg-pos)" stroke="none"/>
+                            <path d="<?= $svgPathIn ?>" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </article>
                 <article class="stat-card negative">
-                    <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
-                    <div>
-                        <p class="stat-label"><?= htmlspecialchars(t('transactions_outgoing'), ENT_QUOTES, 'UTF-8') ?></p>
-                        <p class="stat-value"><?= $outgoingCountFormatted; ?></p>
+                    <div class="stat-card-left">
+                        <div class="stat-icon"><i class="fas fa-arrow-up"></i></div>
+                        <div>
+                            <p class="stat-label"><?= htmlspecialchars(t('transactions_outgoing'), ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="stat-value"><?= $outgoingCountFormatted; ?></p>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline">
+                        <svg viewBox="0 0 90 46" width="90" height="46" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                            <defs>
+                                <linearGradient id="sg-neg" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0.22"/>
+                                    <stop offset="100%" stop-color="#ef4444" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="<?= $svgFillOut ?>" fill="url(#sg-neg)" stroke="none"/>
+                            <path d="<?= $svgPathOut ?>" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </article>
                 <article class="stat-card neutral">
-                    <div class="stat-icon"><i class="fas fa-list-ul"></i></div>
-                    <div>
-                        <p class="stat-label"><?= htmlspecialchars(t('transactions_total'), ENT_QUOTES, 'UTF-8') ?></p>
-                        <p class="stat-value"><?= $totalTransactionsFormatted; ?></p>
+                    <div class="stat-card-left">
+                        <div class="stat-icon"><i class="fas fa-list-ul"></i></div>
+                        <div>
+                            <p class="stat-label"><?= htmlspecialchars(t('transactions_total'), ENT_QUOTES, 'UTF-8') ?></p>
+                            <p class="stat-value"><?= $totalTransactionsFormatted; ?></p>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline">
+                        <svg viewBox="0 0 90 46" width="90" height="46" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+                            <defs>
+                                <linearGradient id="sg-neu" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.20"/>
+                                    <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="<?= $svgFillTot ?>" fill="url(#sg-neu)" stroke="none"/>
+                            <path d="<?= $svgPathTot ?>" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
                 </article>
             </section>

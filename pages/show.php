@@ -432,12 +432,31 @@ try {
         .overview-hero {
             position: relative;
             overflow: hidden;
+            overflow: clip;
+            isolation: isolate;
             border-radius: 26px;
             padding: 32px;
             color: #fff;
             background: linear-gradient(135deg, #4f2ee8 0%, #6c3ce0 50%, #8244e0 100%);
             box-shadow: 0 25px 60px rgba(79, 46, 232, 0.30);
             margin-bottom: 28px;
+        }
+        .hero-card-visual {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 155px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.65;
+        }
+        .hero-card-visual img {
+            width: 100%;
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 6px 16px rgba(30,10,70,0.2));
+            -webkit-mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
+            mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
         }
         .overview-hero::after {
             content: '';
@@ -474,7 +493,7 @@ try {
         }
         .hero-greeting {
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.15rem;
             font-weight: 600;
         }
         .hero-status {
@@ -501,10 +520,10 @@ try {
         }
         .hero-label {
             margin-bottom: 6px;
-            font-size: 0.95rem;
-            letter-spacing: 0.06em;
+            font-size: 0.63rem;
+            letter-spacing: 0.22em;
             text-transform: uppercase;
-            opacity: 1;
+            opacity: 0.8;
             font-weight: 600;
         }
         .hero-balance {
@@ -517,6 +536,13 @@ try {
         .overview-hero .hero-balance {
             font-size: 4.6rem !important;
             line-height: 1.08;
+        }
+        .hero-balance-currency {
+            font-size: calc(3.3rem + 3px) !important;
+            font-weight: 800;
+            vertical-align: middle;
+            color: #ffffff !important;
+            margin-left: 4px;
         }
         .hero-actions {
             display: flex;
@@ -1038,22 +1064,24 @@ try {
             }
             
             .hero-greeting {
-                font-size: 1.15rem;
+                font-size: 0.88rem;
             }
-            
+
             .hero-status {
                 padding: 6px 10px;
                 font-size: 0.8rem;
             }
-            
+
             .hero-label {
-                font-size: 0.75rem;
+                font-size: 0.62rem;
             }
-            
-            .hero-balance { 
-                font-size: 3.0rem; 
+
+            .hero-balance {
+                font-size: 3.0rem;
             }
             .overview-hero .hero-balance { font-size: 3.0rem !important; }
+            .hero-balance .hero-balance-amount { font-size: 3.0rem !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(2.2rem + 2px) !important; }
             
             .hero-actions { 
                 width: 100%;
@@ -1160,13 +1188,15 @@ try {
             }
             
             .hero-greeting {
-                font-size: 1.05rem;
+                font-size: 0.82rem;
             }
-            
+
             .hero-balance {
                 font-size: 1.9rem;
             }
             .overview-hero .hero-balance { font-size: 1.9rem !important; }
+            .hero-balance .hero-balance-amount { font-size: 1.9rem !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.4rem + 2px) !important; }
             
             .primary-btn,
             .ghost-btn {
@@ -1604,6 +1634,9 @@ try {
             ?>
 
             <section class="overview-hero">
+                <div class="hero-card-visual" aria-hidden="true">
+                    <img src="image/wallet-3d.png" alt="">
+                </div>
                 <div class="hero-header">
                     <div class="hero-title">
                         <span class="hero-chip"><?= $accountTypeLabel; ?></span>
@@ -1629,7 +1662,7 @@ try {
                 <div class="hero-main">
                     <div>
                         <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
-                        <p class="hero-balance"><?= $formatted_balance . ' ' . $deviseLabel; ?></p>
+                        <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
                     </div>
                     <div class="hero-actions">
                         <a href="index.php?page=transfert" class="primary-btn"><i class="fas fa-paper-plane"></i><span><?= htmlspecialchars(t('perform_transfer'), ENT_QUOTES, 'UTF-8') ?></span></a>

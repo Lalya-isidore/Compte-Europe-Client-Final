@@ -554,6 +554,21 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             align-self: flex-start;
             margin-top: 6px;
         }
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.4; transform: scale(0.7); }
+        }
+        .hero-status.status-active .status-dot {
+            background: #34d399;
+            animation: pulse-dot 1.6s ease-in-out infinite;
+        }
         .hero-header {
             position: relative;
             z-index: 2;
@@ -1742,7 +1757,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                             ?>
                             <h2 class="hero-greeting"><?= htmlspecialchars("{$gword} {$nameForDisplay}", ENT_QUOTES, 'UTF-8') ?></h2>
                             <div class="hero-status <?= $accountStatusVariant; ?>">
-                                <span style="display:inline-block; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></span>
+                                <span class="status-dot"></span>
                                 <span><?= $accountStatusLabel; ?></span>
                             </div>
                         </div>

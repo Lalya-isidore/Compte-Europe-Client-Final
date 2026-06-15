@@ -512,47 +512,45 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             overflow: hidden;
             overflow: clip;
             isolation: isolate;
-            border-radius: 24px;
-            padding: 28px;
+            border-radius: 26px;
+            padding: 32px;
             color: #fff;
             background: linear-gradient(135deg, #2563eb 0%, #5850ec 35%, #8f52eb 70%, #d649eb 100%);
-            box-shadow: 0 16px 32px rgba(99, 102, 241, 0.22);
-            margin-bottom: 20px;
+            box-shadow: 0 25px 60px rgba(79, 46, 232, 0.30);
+            margin-bottom: 28px;
         }
         .hero-title {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
         .hero-chip {
             align-self: flex-start;
-            padding: 4px 12px;
+            padding: 6px 12px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.22);
-            font-size: 0.68rem;
-            font-weight: 700;
+            background: rgba(255, 255, 255, 0.2);
+            font-size: 0.78rem;
+            font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
         }
         .hero-greeting {
             margin: 0;
             font-size: 1.15rem;
-            font-weight: 700;
-            line-height: 1.2;
+            font-weight: 600;
         }
         .hero-status {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 5px 12px;
+            padding: 8px 14px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.22);
+            background: rgba(255, 255, 255, 0.16);
             font-weight: 600;
-            font-size: 0.82rem;
-            color: #fff;
-            align-self: flex-start;
-            margin-top: 6px;
         }
+        .hero-status.status-active  { color: #d1fae5; background: rgba(16,185,129,0.25); }
+        .hero-status.status-blocked { color: #fee2e2; background: rgba(248,113,113,0.35); }
+        .hero-status.status-pending { color: #fef3c7; background: rgba(251,191,36,0.32); }
         .status-dot {
             display: inline-block;
             width: 8px;
@@ -569,15 +567,13 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             animation: pulse-dot 1.6s ease-in-out infinite;
         }
         .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
             position: relative;
             z-index: 2;
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .hero-title {
-            padding-right: 0;
         }
         .hero-card-visual {
             position: absolute;
@@ -597,12 +593,17 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
         }
         .hero-main {
-            margin-top: 22px;
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-end;
+            margin-top: 26px;
+            flex-wrap: wrap;
             position: relative;
             z-index: 1;
         }
         .hero-label {
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             font-size: 0.63rem;
             letter-spacing: 0.22em;
             text-transform: uppercase;
@@ -610,19 +611,18 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             font-weight: 600;
         }
         .hero-balance {
-            margin: 4px 0 8px;
-            font-size: calc(3.4rem + 4px);
+            margin: 0;
+            font-size: 4.6rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
-            line-height: 1.0;
+            letter-spacing: -0.004em;
         }
         .overview-hero .hero-balance {
-            font-size: calc(3.4rem + 4px) !important;
-            line-height: 1.0;
+            font-size: 4.6rem !important;
+            line-height: 1.08;
         }
         .hero-balance-currency {
-            font-size: calc(2.5rem + 3px) !important;
-            font-weight: 600;
+            font-size: calc(3.3rem + 3px) !important;
+            font-weight: 800;
             vertical-align: middle;
             color: #ffffff !important;
             margin-left: 4px;
@@ -717,7 +717,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             font-weight: 700 !important;
         }
         .overview-hero .hero-balance {
-            font-size: 2.6rem !important;
+            font-size: 4.6rem !important;
             line-height: 1.08;
         }
         .stat-grid {
@@ -1161,19 +1161,17 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             
             .overview-hero {
                 border-radius: 20px;
-                padding: 14px 14px 16px;
-                margin-bottom: 14px;
+                padding: 20px;
+                margin-bottom: 20px;
             }
-            .hero-card-visual { width: 125px; top: 58px; }
-            .hero-title { padding-right: 0; }
-            .hero-chip { font-size: 0.64rem; padding: 3px 9px; }
+            .hero-chip { font-size: 0.7rem; padding: 4px 10px; }
             .hero-greeting { font-size: 0.88rem; }
-            .hero-status { padding: 3px 9px; font-size: 0.74rem; }
+            .hero-status { padding: 6px 10px; font-size: 0.8rem; }
             .hero-label { font-size: 0.62rem; }
-            .hero-balance { font-size: calc(1.8rem + 1px); }
-            .overview-hero .hero-balance { font-size: calc(1.8rem + 1px) !important; }
-            .hero-balance .hero-balance-amount { font-size: calc(1.8rem + 8px) !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(1.4rem + 5px) !important; }
+            .hero-balance { font-size: 3.0rem; }
+            .overview-hero .hero-balance { font-size: 3.0rem !important; }
+            .hero-balance .hero-balance-amount { font-size: 3.0rem !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(2.2rem + 2px) !important; }
 
             .hero-actions { gap: 8px; margin-top: 8px; }
 
@@ -1277,7 +1275,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             }
             
             .overview-hero {
-                padding: 12px 14px 14px;
+                padding: 18px;
                 border-radius: 18px;
             }
 
@@ -1286,11 +1284,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             }
 
             .hero-balance {
-                font-size: 1.6rem;
+                font-size: 1.9rem;
             }
-            .overview-hero .hero-balance { font-size: calc(1.6rem + 1px) !important; }
-            .hero-balance .hero-balance-amount { font-size: calc(1.6rem + 8px) !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(1.3rem + 4px) !important; }
+            .overview-hero .hero-balance { font-size: 1.9rem !important; }
+            .hero-balance .hero-balance-amount { font-size: 1.9rem !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.4rem + 2px) !important; }
             
             .primary-btn,
             .ghost-btn {

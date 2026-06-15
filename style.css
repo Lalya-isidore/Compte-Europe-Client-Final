@@ -847,9 +847,10 @@ footer a {
 
 /* Page-specific override to match the 'carte' footer exactly on the show page */
 .footer-show a i {
-    font-size: 1.9rem; /* slightly larger on show page */
-    height: 34px;
-    color: #6f63ff;
+    font-size: 1.41rem !important;
+    height: auto;
+    color: #6b7280 !important;
+    margin-bottom: 4px;
 }
 /* footer a i:hover {
     display: flex;
@@ -869,9 +870,10 @@ footer a {
     justify-content: center;
 }
 
-footer a:hover {
-    background-color: #ccebf5;
-
+footer a,
+footer a:hover,
+footer a.active {
+    background: none !important;
 }
 
 
@@ -893,7 +895,16 @@ footer a.active {
 }
 
 .footer-show a {
-    color: #6f63ff;
+    color: #6b7280 !important;
+    flex: 1 1 0%;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.footer-show a.active i,
+.footer-show a.active {
+    color: #6f63ff !important;
 }
 
 /* Styles desktop pour footer-show */
@@ -931,12 +942,12 @@ footer.footer-show {
         border-radius: 25px;
     }
     
-    footer.footer-show a {
-        font-size: 0.75rem;
+    footer.footer-show a div {
+        font-size: 0.73rem !important;
     }
-    
+
     footer.footer-show a i {
-        font-size: 1.2rem;
+        font-size: 1.6rem;
     }
 }
 

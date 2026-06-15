@@ -1504,18 +1504,28 @@ try {
         footer a.active {
             border-bottom: 3px solid #6f63ff;
         }
+        footer a,
+        footer a:hover,
+        footer a.active {
+            background: none !important;
+        }
         .footer-show a i {
-            font-size: 1.9rem;
-            height: 34px;
-            color: #6f63ff;
+            font-size: 1.41rem !important;
+            height: auto;
+            color: #6b7280 !important;
+            margin-bottom: 4px;
         }
         .footer-show a {
-            color: #6f63ff;
+            color: #6b7280 !important;
             flex: 1 1 0%;
             min-width: 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+        .footer-show a.active i,
+        .footer-show a.active {
+            color: #6f63ff !important;
         }
         footer.footer-show {
             max-width: 780px;
@@ -1547,9 +1557,8 @@ try {
                 bottom: 10px;
                 border-radius: 25px;
             }
-            footer.footer-show a {
-                font-size: 0.88rem;
-                white-space: nowrap;
+            footer.footer-show a div {
+                font-size: 0.73rem !important;
             }
             footer.footer-show a i {
                 font-size: 1.6rem;
@@ -1557,19 +1566,20 @@ try {
         }
         @media screen and (max-width: 768px) {
             footer a {
-                font-size: 1.12rem;
+                font-size: 0.81rem;
             }
             footer a i {
                 font-size: 1.9rem;
+                margin-bottom: 4px;
             }
         }
         @media screen and (max-width: 480px) {
             footer a {
-                font-size: 1.16rem;
+                font-size: 0.85rem;
             }
             footer a i {
                 font-size: 2.0rem;
-                margin-bottom: 8px;
+                margin-bottom: 4px;
             }
         }
     </style>

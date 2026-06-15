@@ -861,7 +861,7 @@ footer {
 
     footer a i {
         font-size: 1.8rem;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
     }
 }
 
@@ -914,7 +914,7 @@ footer {
 footer a i {
     display: block;
     color: #6b7280;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     font-size: 1.5rem;
     line-height: 1;
     height: 26px;
@@ -952,8 +952,9 @@ footer a {
 /* Page-specific override to match the 'carte' footer exactly on the show page */
 .footer-show a i {
     font-size: 1.9rem;
-    height: 34px;
+    height: auto;
     color: #6b7280;
+    margin-bottom: 4px;
 }
 /* footer a i:hover {
     display: flex;
@@ -995,6 +996,8 @@ footer a {
 footer a.active,
 footer a.active i {
     color: #6f63ff;
+}
+footer a.active {
     border-bottom: 3px solid #6f63ff;
 }
 
@@ -2336,19 +2339,19 @@ i {
     }
 
     footer a {
-        font-size: 0.95rem !important; /* slightly smaller */
-        font-weight: 700 !important;  /* keep readable but less heavy */
+        font-size: 0.73rem !important;
+        font-weight: 700 !important;
         padding: 8px 6px !important;
     }
 
     footer a div {
-        font-size: 0.85rem !important; /* label text slightly smaller than anchor */
+        font-size: 0.73rem !important;
         font-weight: 700 !important;
         white-space: normal !important;
     }
 
     footer a i {
-        font-size: 1.6rem !important; /* reduce icon size to fit */
+        font-size: 1.41rem !important;
         line-height: 1 !important;
     }
 

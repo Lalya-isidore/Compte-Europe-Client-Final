@@ -535,7 +535,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         .hero-greeting {
             margin: 0;
-            font-size: 1.4rem;
+            font-size: 1.15rem;
             font-weight: 700;
             line-height: 1.2;
         }
@@ -566,7 +566,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             width: 155px;
             pointer-events: none;
             z-index: 1;
-            opacity: 0.45;
+            opacity: 0.65;
         }
         .hero-card-visual img {
             width: 100%;
@@ -583,25 +583,25 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         .hero-label {
             margin-bottom: 4px;
-            font-size: 0.76rem;
-            letter-spacing: 0.12em;
+            font-size: 0.63rem;
+            letter-spacing: 0.22em;
             text-transform: uppercase;
             opacity: 0.8;
             font-weight: 600;
         }
         .hero-balance {
             margin: 4px 0 8px;
-            font-size: calc(3.4rem + 2px);
+            font-size: calc(3.4rem + 4px);
             font-weight: 800;
             letter-spacing: -0.02em;
             line-height: 1.0;
         }
         .overview-hero .hero-balance {
-            font-size: calc(3.4rem + 2px) !important;
+            font-size: calc(3.4rem + 4px) !important;
             line-height: 1.0;
         }
         .hero-balance-currency {
-            font-size: calc(1.4rem + 7px) !important;
+            font-size: calc(2.5rem + 3px) !important;
             font-weight: 600;
             vertical-align: middle;
             color: #ffffff !important;
@@ -1147,13 +1147,13 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             .hero-card-visual { width: 125px; top: 58px; }
             .hero-title { padding-right: 0; }
             .hero-chip { font-size: 0.64rem; padding: 3px 9px; }
-            .hero-greeting { font-size: 1.0rem; }
+            .hero-greeting { font-size: 0.88rem; }
             .hero-status { padding: 3px 9px; font-size: 0.74rem; }
-            .hero-label { font-size: 0.68rem; }
+            .hero-label { font-size: 0.62rem; }
             .hero-balance { font-size: calc(1.8rem + 1px); }
             .overview-hero .hero-balance { font-size: calc(1.8rem + 1px) !important; }
-            .hero-balance .hero-balance-amount { font-size: calc(1.8rem + 6px) !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(1.1rem + 7px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(1.8rem + 8px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.4rem + 5px) !important; }
 
             .hero-actions { gap: 8px; margin-top: 8px; }
 
@@ -1262,15 +1262,15 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             }
 
             .hero-greeting {
-                font-size: 0.95rem;
+                font-size: 0.82rem;
             }
 
             .hero-balance {
                 font-size: 1.6rem;
             }
             .overview-hero .hero-balance { font-size: calc(1.6rem + 1px) !important; }
-            .hero-balance .hero-balance-amount { font-size: calc(1.6rem + 6px) !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(1rem + 7px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(1.6rem + 8px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.3rem + 4px) !important; }
             
             .primary-btn,
             .ghost-btn {
@@ -1529,9 +1529,10 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             border-bottom: 3px solid #6f63ff;
         }
         .footer-show a i {
-            font-size: 1.9rem;
-            height: 34px;
+            font-size: 1.41rem !important;
+            height: auto;
             color: #6b7280 !important;
+            margin-bottom: 4px;
         }
         .footer-show a {
             color: #6b7280 !important;
@@ -1575,9 +1576,8 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                 bottom: 10px;
                 border-radius: 25px;
             }
-            footer.footer-show a {
-                font-size: 0.88rem;
-                white-space: nowrap;
+            footer.footer-show a div {
+                font-size: 0.73rem !important;
             }
             footer.footer-show a i {
                 font-size: 1.6rem;
@@ -1585,19 +1585,20 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         @media screen and (max-width: 768px) {
             footer a {
-                font-size: 1.12rem;
+                font-size: 0.81rem;
             }
             footer a i {
                 font-size: 1.9rem;
+                margin-bottom: 4px;
             }
         }
         @media screen and (max-width: 480px) {
             footer a {
-                font-size: 1.16rem;
+                font-size: 0.85rem;
             }
             footer a i {
                 font-size: 2.0rem;
-                margin-bottom: 8px;
+                margin-bottom: 4px;
             }
         }
     </style>

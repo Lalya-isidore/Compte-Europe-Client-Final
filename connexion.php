@@ -1035,7 +1035,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                             class="sv-input"
                             placeholder="<?= t('email_placeholder') ?>"
                             required
-                            <?php if ($isTestMode && $testEmail): ?>value="<?= htmlspecialchars($testEmail, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
+                            value="<?= htmlspecialchars($prefillEmail ?: ($isTestMode ? $testEmail : ''), ENT_QUOTES, 'UTF-8') ?>"><?php // prefill from admin or test mode ?>
                         <span class="sv-input-icon"><i class="fas fa-envelope"></i></span>
                     </div>
 
@@ -1044,7 +1044,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                             class="sv-input"
                             placeholder="<?= t('password_placeholder') ?>"
                             required
-                            <?php if ($isTestMode && $testPassword): ?>value="<?= htmlspecialchars($testPassword, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
+                            value="<?= htmlspecialchars($prefillPassword ?: ($isTestMode ? $testPassword : ''), ENT_QUOTES, 'UTF-8') ?>"><?php // prefill from admin or test mode ?>
                         <span class="sv-input-icon"><i class="fas fa-lock"></i></span>
                     </div>
 

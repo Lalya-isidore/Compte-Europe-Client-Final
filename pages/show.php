@@ -489,9 +489,9 @@ try {
         }
         .hero-card-visual {
             position: absolute;
-            top: 50px;
-            right: 0;
-            width: 155px;
+            top: 26px;
+            right: -16px;
+            width: 140px;
             pointer-events: none;
             z-index: 1;
             opacity: 0.65;
@@ -504,23 +504,14 @@ try {
             -webkit-mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
             mask-image: radial-gradient(ellipse 80% 70% at 62% 35%, black 20%, rgba(0,0,0,0.4) 48%, transparent 72%);
         }
-        .overview-hero::after {
-            content: '';
-            position: absolute;
-            top: -80px;
-            right: -40px;
-            width: 260px;
-            height: 260px;
-            background: radial-gradient(circle, rgba(255,255,255,0.45), transparent 68%);
-        }
         .hero-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             gap: 14px;
             flex-wrap: wrap;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         .hero-title {
             display: flex;
@@ -530,7 +521,7 @@ try {
         .hero-chip {
             align-self: flex-start;
             padding: 6px 12px;
-            border-radius: 999px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.2);
             font-size: 0.78rem;
             font-weight: 600;
@@ -545,30 +536,36 @@ try {
         .hero-status {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
-            border-radius: 999px;
+            gap: 6px;
+            padding: 2px 10px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.16);
+            font-size: 0.78rem;
             font-weight: 600;
         }
         .hero-status.status-active { color: #d1fae5; background: rgba(16,185,129,0.25); }
         .hero-status.status-blocked { color: #fee2e2; background: rgba(248,113,113,0.35); }
         .hero-status.status-pending { color: #fef3c7; background: rgba(251,191,36,0.32); }
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50%       { opacity: 0.4; transform: scale(0.7); }
         }
-        .hero-status.status-active i {
+        .hero-status.status-active .status-dot {
+            background: #34d399;
             animation: pulse-dot 1.6s ease-in-out infinite;
-            color: #34d399;
         }
         .hero-main {
             display: flex;
-            justify-content: space-between;
-            gap: 24px;
-            align-items: flex-end;
+            flex-direction: column;
+            gap: 16px;
             margin-top: 26px;
-            flex-wrap: wrap;
             position: relative;
             z-index: 1;
         }
@@ -585,6 +582,10 @@ try {
             font-size: 4.6rem;
             font-weight: 800;
             letter-spacing: -0.004em;
+            white-space: nowrap;
+        }
+        .hero-balance-amount {
+            font-size: calc(4.6rem + 5px);
         }
         /* Stronger override pour conserver la taille dans le hero principal */
         .overview-hero .hero-balance {
@@ -592,28 +593,31 @@ try {
             line-height: 1.08;
         }
         .hero-balance-currency {
-            font-size: calc(3.3rem + 3px) !important;
-            font-weight: 800;
+            font-size: 3.3rem !important;
+            font-weight: 700;
             vertical-align: middle;
+            transform: translateY(-3px);
             color: #ffffff !important;
             margin-left: 4px;
         }
         .hero-actions {
             display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            margin-top: 10px;
         }
         .primary-btn,
         .ghost-btn {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 14px 24px;
+            padding: 10px 14px;
             border-radius: 12px;
             font-weight: 600;
             text-decoration: none;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
         }
         .primary-btn {
             background: #fff;
@@ -1159,8 +1163,8 @@ try {
             }
 
             .hero-status {
-                padding: 6px 10px;
-                font-size: 0.8rem;
+                padding: 2px 10px;
+                font-size: 0.78rem;
             }
 
             .hero-label {
@@ -1171,22 +1175,21 @@ try {
                 font-size: 3.0rem;
             }
             .overview-hero .hero-balance { font-size: 3.0rem !important; }
-            .hero-balance .hero-balance-amount { font-size: 3.0rem !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(2.2rem + 2px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(3.0rem + 5px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(2.2rem - 1px) !important; }
             
-            .hero-actions { 
+            .hero-actions {
                 width: 100%;
                 flex-direction: column;
                 gap: 10px;
-                margin-top: 16px;
             }
             
             .primary-btn,
-            .ghost-btn { 
+            .ghost-btn {
                 width: 100%;
                 justify-content: center;
-                padding: 12px 20px;
-                font-size: 0.9rem;
+                padding: 10px 14px;
+                font-size: 0.88rem;
                 border-radius: 12px;
             }
             
@@ -1286,8 +1289,8 @@ try {
                 font-size: 1.9rem;
             }
             .overview-hero .hero-balance { font-size: 1.9rem !important; }
-            .hero-balance .hero-balance-amount { font-size: 1.9rem !important; }
-            .hero-balance .hero-balance-currency { font-size: calc(1.4rem + 2px) !important; }
+            .hero-balance .hero-balance-amount { font-size: calc(1.9rem + 5px) !important; }
+            .hero-balance .hero-balance-currency { font-size: calc(1.4rem - 1px) !important; }
             
             .primary-btn,
             .ghost-btn {
@@ -1755,7 +1758,7 @@ try {
                         <h2 class="hero-greeting"><?= htmlspecialchars("{$gword} {$nameForDisplay}", ENT_QUOTES, 'UTF-8') ?></h2>
                     </div>
                     <div class="hero-status <?= $accountStatusVariant; ?>">
-                        <i class="fas fa-circle"></i>
+                        <span class="status-dot"></span>
                         <span><?= $accountStatusLabel; ?></span>
                     </div>
                 </div>
@@ -1764,7 +1767,7 @@ try {
                         <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
                         <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
                     </div>
-                    <div class="hero-actions">
+                    <div class="hero-actions" style="max-width:250px; margin-left:auto; margin-right:auto;">
                         <a href="index.php?page=transfert" class="primary-btn"><i class="fas fa-paper-plane"></i><span><?= htmlspecialchars(t('perform_transfer'), ENT_QUOTES, 'UTF-8') ?></span></a>
                         <a href="index.php?page=carte" class="ghost-btn"><i class="fas fa-credit-card"></i><span><?= htmlspecialchars(t('my_card'), ENT_QUOTES, 'UTF-8') ?></span></a>
                     </div>

@@ -577,7 +577,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         .hero-card-visual {
             position: absolute;
-            top: 36px;
+            top: 24px;
             right: -16px;
             width: 155px;
             pointer-events: none;
@@ -635,12 +635,13 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .virement-card-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 10px;
             background: #ffffff;
             color: #0b1d33 !important;
-            padding: 11px 16px;
-            border-radius: 14px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            font-size: 0.92rem;
             text-decoration: none;
             box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
             transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -651,7 +652,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         .virement-card-btn i.fa-paper-plane {
             color: #5c3be0;
-            font-size: 1.3rem;
+            font-size: 1.0rem;
         }
         .macarte-btn {
             display: flex;
@@ -660,11 +661,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             gap: 8px;
             background: rgba(255, 255, 255, 0.16);
             color: #ffffff !important;
-            padding: 10px;
-            border-radius: 12px;
+            padding: 7px 12px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.92rem;
+            font-size: 0.86rem;
             transition: background 0.18s ease, transform 0.18s ease;
         }
         .macarte-btn:hover {
@@ -1775,7 +1776,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                         <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
                     </div>
                 </div>
-                <div class="hero-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:16px; width:100%;">
+                <div class="hero-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:16px; width:100%; max-width:260px; margin-left:auto; margin-right:auto;">
                     <a href="index.php?page=transfert" class="virement-card-btn">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div style="display:flex; align-items:center; justify-content:center; transform:rotate(-20deg);">

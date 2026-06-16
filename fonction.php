@@ -256,8 +256,8 @@ function deconnexion()
         try {
             $db = connexion_db();
             if (is_object($db)) {
-                $db->prepare("UPDATE comptes SET last_activity = 0 WHERE id = :id")
-                   ->execute([':id' => $compteId]);
+                $db->prepare("UPDATE comptes SET last_activity = :ts WHERE id = :id")
+                   ->execute([':ts' => time(), ':id' => $compteId]);
             }
         } catch (Exception $e) {}
     }

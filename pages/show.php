@@ -527,7 +527,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .hero-chip {
             align-self: flex-start;
             padding: 6px 12px;
-            border-radius: 999px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.2);
             font-size: 0.78rem;
             font-weight: 600;
@@ -544,7 +544,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             align-items: center;
             gap: 6px;
             padding: 2px 10px;
-            border-radius: 999px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.16);
             font-size: 0.78rem;
             font-weight: 600;

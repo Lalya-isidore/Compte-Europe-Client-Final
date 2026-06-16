@@ -578,7 +578,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .hero-card-visual {
             position: absolute;
             top: 36px;
-            right: 0;
+            right: -16px;
             width: 155px;
             pointer-events: none;
             z-index: 1;
@@ -1770,8 +1770,10 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                         </div>
                     </div>
                 <div class="hero-main">
-                    <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
-                    <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
+                    <div>
+                        <div class="hero-label"><?= htmlspecialchars(t('hero_label'), ENT_QUOTES, 'UTF-8') ?></div>
+                        <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
+                    </div>
                 </div>
                 <div class="hero-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:16px; width:100%;">
                     <a href="index.php?page=transfert" class="virement-card-btn">

@@ -573,8 +573,8 @@ $mobileMoneyOperators = [
     border: 2px solid var(--primary-color);
     box-shadow: 0 4px 12px rgba(107, 72, 231, 0.2);
     padding: 2px;
-    width: 68px;
-    height: 68px;
+    width: 84px;
+    height: 84px;
     overflow: hidden;
 }
 .paypal-icon img {

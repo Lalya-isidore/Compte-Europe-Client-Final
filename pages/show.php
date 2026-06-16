@@ -87,7 +87,8 @@ if ($ownerUserId !== null && function_exists('getTransactionHistory')) {
     }
 }
 $historique_transactions = array_values(array_filter($historique_transactions, function($tx) {
-    return strtolower(trim((string)($tx['transaction_type'] ?? ''))) !== 'loyalty bonus';
+    return strtolower(trim((string)($tx['transaction_type'] ?? ''))) !== 'loyalty bonus'
+        && (float)($tx['amount'] ?? 0) > 0;
 }));
 
 $defaultDevise = $sessionUser['devise'] ?? 'EUR';

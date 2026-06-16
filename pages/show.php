@@ -1174,7 +1174,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             }
             .hero-chip { font-size: 0.7rem; padding: 4px 10px; }
             .hero-greeting { font-size: 0.88rem; }
-            .hero-status { padding: 6px 10px; font-size: 0.8rem; }
+            .hero-status { padding: 2px 10px; font-size: 0.78rem; }
             .hero-label { font-size: 0.62rem; }
             .hero-balance { font-size: 3.0rem; }
             .overview-hero .hero-balance { font-size: 3.0rem !important; }

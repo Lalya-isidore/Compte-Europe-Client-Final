@@ -579,7 +579,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             position: absolute;
             top: 24px;
             right: -16px;
-            width: 155px;
+            width: 140px;
             pointer-events: none;
             z-index: 1;
             opacity: 0.65;
@@ -639,9 +639,9 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             gap: 10px;
             background: #ffffff;
             color: #0b1d33 !important;
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 12px;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             text-decoration: none;
             box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
             transition: transform 0.18s ease, box-shadow 0.18s ease;
@@ -661,11 +661,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             gap: 8px;
             background: rgba(255, 255, 255, 0.16);
             color: #ffffff !important;
-            padding: 7px 12px;
+            padding: 9px 14px;
             border-radius: 10px;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.86rem;
+            font-size: 0.90rem;
             transition: background 0.18s ease, transform 0.18s ease;
         }
         .macarte-btn:hover {
@@ -1776,7 +1776,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                         <p class="hero-balance"><span class="hero-balance-amount"><?= $formatted_balance; ?></span><span class="hero-balance-currency"> <?= $deviseLabel; ?></span></p>
                     </div>
                 </div>
-                <div class="hero-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:16px; width:100%; max-width:260px; margin-left:auto; margin-right:auto;">
+                <div class="hero-actions" style="display:flex; flex-direction:column; gap:12px; margin-top:16px; width:100%; max-width:250px; margin-left:auto; margin-right:auto;">
                     <a href="index.php?page=transfert" class="virement-card-btn">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div style="display:flex; align-items:center; justify-content:center; transform:rotate(-20deg);">

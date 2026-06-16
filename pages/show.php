@@ -577,7 +577,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         }
         .hero-card-visual {
             position: absolute;
-            top: 24px;
+            top: 26px;
             right: -16px;
             width: 140px;
             pointer-events: none;

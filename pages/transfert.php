@@ -569,9 +569,18 @@ $mobileMoneyOperators = [
 }
 
 .paypal-icon {
-    background: linear-gradient(135deg, #0070ba 0%, #003087 100%);
-    color: white;
-    font-size: 2.5rem; /* Taille de l'icône PayPal */
+    background: white;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 12px rgba(107, 72, 231, 0.2);
+    padding: 2px;
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+}
+.paypal-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 /* Floating Labels */
@@ -850,7 +859,7 @@ $mobileMoneyOperators = [
         <div class="col-md-6 col-lg-4 mb-3">
             <div class="transfer-card" id="card-paypal" onclick="selectTransferType('paypal')">
                 <div class="transfer-icon paypal-icon">
-                    <i class="fab fa-paypal"></i>
+                    <img src="image/PayPal.jpeg" alt="PayPal">
                 </div>
                 <h5 class="fw-bold mb-2"><?= htmlspecialchars(t('paypal')) ?></h5>
                 <p class="text-muted small mb-0">PayPal — <?= htmlspecialchars(t('pay')) ?></p>

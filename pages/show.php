@@ -542,10 +542,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
         .hero-status {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 14px;
+            gap: 6px;
+            padding: 2px 10px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.16);
+            font-size: 0.78rem;
             font-weight: 600;
         }
         .hero-status.status-active  { color: #d1fae5; background: rgba(16,185,129,0.25); }

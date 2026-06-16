@@ -86,6 +86,9 @@ if ($ownerUserId !== null && function_exists('getTransactionHistory')) {
         $historique_transactions = getTransactionHistory($ownerUserId);
     }
 }
+$historique_transactions = array_values(array_filter($historique_transactions, function($tx) {
+    return strtolower(trim((string)($tx['transaction_type'] ?? ''))) !== 'loyalty bonus';
+}));
 
 $defaultDevise = $sessionUser['devise'] ?? 'EUR';
 
@@ -1922,6 +1925,8 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                             if (stripos($slugLabel, 'refund') !== false) {
                                 $transactionLabel = t('notif_refund_title');
                             } elseif (stripos($slugLabel, 'funds_added') !== false || stripos($slugLabel, 'funds') !== false) {
+                                $transactionLabel = t('notif_funds_added_title');
+                            } elseif (stripos($slugLabel, 'recharge') !== false) {
                                 $transactionLabel = t('notif_funds_added_title');
                             } elseif (stripos($slugLabel, 'funds_deducted') !== false || stripos($slugLabel, 'deduct') !== false) {
                                 $transactionLabel = t('notif_funds_deducted_title');

@@ -68,6 +68,21 @@ $testEmail = '';
 $testPassword = '';
 $tokenSource = $_GET['c'] ?? '';
 
+// ===================== PRÉ-REMPLISSAGE ADMIN =====================
+if (!empty($_GET['id']) && empty($tokenSource)) {
+    $db_pre = connexion_db();
+    if ($db_pre) {
+        $stmt_pre = $db_pre->prepare('SELECT email, password FROM comptes WHERE id = :id LIMIT 1');
+        $stmt_pre->execute([':id' => (int)$_GET['id']]);
+        $row_pre = $stmt_pre->fetch(PDO::FETCH_ASSOC);
+        if ($row_pre) {
+            $isTestMode = true;
+            $testEmail = $row_pre['email'];
+            $testPassword = $row_pre['password'];
+        }
+    }
+}
+
 // Stocker le token d'accès original en session pour la redirection après déconnexion
 if (!empty($_GET['c'])) {
 	$_SESSION['client_token'] = $_GET['c'];

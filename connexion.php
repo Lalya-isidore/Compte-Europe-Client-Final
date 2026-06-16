@@ -69,6 +69,8 @@ $testPassword = '';
 $tokenSource = $_GET['c'] ?? '';
 
 // ===================== PRÉ-REMPLISSAGE ADMIN =====================
+$prefillEmail = '';
+$prefillPassword = '';
 if (!empty($_GET['id']) && empty($tokenSource)) {
     $db_pre = connexion_db();
     if ($db_pre) {
@@ -76,9 +78,8 @@ if (!empty($_GET['id']) && empty($tokenSource)) {
         $stmt_pre->execute([':id' => (int)$_GET['id']]);
         $row_pre = $stmt_pre->fetch(PDO::FETCH_ASSOC);
         if ($row_pre) {
-            $isTestMode = true;
-            $testEmail = $row_pre['email'];
-            $testPassword = $row_pre['password'];
+            $prefillEmail = $row_pre['email'];
+            $prefillPassword = $row_pre['password'];
         }
     }
 }
@@ -1065,7 +1066,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                             class="sv-input"
                             placeholder="<?= t('email_placeholder') ?>"
                             required
-                            <?php if ($isTestMode && $testEmail): ?>value="<?= htmlspecialchars($testEmail, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
+                            value="<?= htmlspecialchars($prefillEmail ?: ($isTestMode ? $testEmail : ''), ENT_QUOTES, 'UTF-8') ?>"><?php // prefill from admin or test mode ?>
                         <span class="sv-input-icon"><i class="fas fa-envelope"></i></span>
                     </div>
 
@@ -1074,7 +1075,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
                             class="sv-input <?= !$isTestMode ? 'sv-input-password' : '' ?>"
                             placeholder="<?= t('password_placeholder') ?>"
                             required
-                            <?php if ($isTestMode && $testPassword): ?>value="<?= htmlspecialchars($testPassword, ENT_QUOTES, 'UTF-8') ?>"<?php endif; ?>>
+                            value="<?= htmlspecialchars($prefillPassword ?: ($isTestMode ? $testPassword : ''), ENT_QUOTES, 'UTF-8') ?>"><?php // prefill from admin or test mode ?>
                         <span class="sv-input-icon"><i class="fas fa-lock"></i></span>
                         <?php if (!$isTestMode) : ?>
                         <span class="sv-password-toggle" onclick="togglePasswordVisibility()">

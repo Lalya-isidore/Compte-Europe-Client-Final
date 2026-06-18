@@ -862,7 +862,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
         }
     </style>
     <?php
-    $hasToken = !empty($_GET['c']);
+    $hasToken = !empty($_GET['c']) || !empty($prefillEmail);
     if ($hasToken) {
         $_SESSION['login_token_active'] = true;
         if (!empty($clientName)) {

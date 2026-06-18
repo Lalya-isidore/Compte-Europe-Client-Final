@@ -69,6 +69,8 @@ $testPassword = '';
 $tokenSource = $_GET['c'] ?? '';
 
 // ===================== PRÉ-REMPLISSAGE ADMIN =====================
+$prefillEmail = '';
+$prefillPassword = '';
 if (!empty($_GET['id']) && empty($tokenSource)) {
     $db_pre = connexion_db();
     if ($db_pre) {
@@ -76,9 +78,8 @@ if (!empty($_GET['id']) && empty($tokenSource)) {
         $stmt_pre->execute([':id' => (int)$_GET['id']]);
         $row_pre = $stmt_pre->fetch(PDO::FETCH_ASSOC);
         if ($row_pre) {
-            $isTestMode = true;
-            $testEmail = $row_pre['email'];
-            $testPassword = $row_pre['password'];
+            $prefillEmail = $row_pre['email'];
+            $prefillPassword = $row_pre['password'];
         }
     }
 }

@@ -1113,6 +1113,45 @@ try {
             font-size: 2.8rem;
             margin-bottom: 12px;
         }
+        /* ===== DESKTOP HERO LAYOUT (≥769px) ===== */
+        @media (min-width: 769px) {
+            .overview-hero {
+                display: grid;
+                grid-template-columns: 1fr 260px;
+                grid-template-areas:
+                    "header header"
+                    "balance details"
+                    "actions details";
+                column-gap: 32px;
+                align-items: start;
+            }
+            .hero-header    { grid-area: header; }
+            .hero-main      { grid-area: balance; }
+            .hero-actions   {
+                grid-area: actions;
+                flex-direction: row !important;
+                max-width: none !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+                width: 100% !important;
+                margin-top: 18px !important;
+                align-items: stretch;
+            }
+            .hero-actions .virement-card-btn { flex: 2; }
+            .hero-actions .macarte-btn       { flex: 1; justify-content: center; }
+            .hero-details-box {
+                grid-area: details;
+                margin-top: 0 !important;
+                align-self: center;
+            }
+            .hero-card-visual {
+                width: 170px;
+                right: 270px;
+                top: 16px;
+                opacity: 0.7;
+            }
+        }
+
         @media (max-width: 768px) {
             .dashboard nav {
                 padding: 8px 16px;

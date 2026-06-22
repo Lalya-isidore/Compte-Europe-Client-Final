@@ -87,6 +87,16 @@ if (!empty($_GET['id']) && empty($tokenSource)) {
 // Stocker le token d'accès original en session pour la redirection après déconnexion
 if (!empty($_GET['c'])) {
 	$_SESSION['client_token'] = $_GET['c'];
+	// Persister le token dans un cookie httpOnly (invisible dans l'URL et inaccessible au JS)
+	setcookie('_at', $_GET['c'], [
+		'expires'  => time() + 86400 * 30,
+		'path'     => '/',
+		'httponly' => true,
+		'samesite' => 'Lax',
+	]);
+}
+if (empty($tokenSource) && !empty($_COOKIE['_at'])) {
+	$tokenSource = $_COOKIE['_at'];
 }
 
 // Nouveau token fourni : nettoyer la session de login précédente
@@ -862,7 +872,7 @@ if (isset($_GET['success']) && !empty($_GET['success'])) {
         }
     </style>
     <?php
-    $hasToken = !empty($_GET['c']) || !empty($prefillEmail);
+    $hasToken = !empty($_GET['c']) || !empty($_COOKIE['_at']) || !empty($prefillEmail);
     if ($hasToken) {
         $_SESSION['login_token_active'] = true;
         if (!empty($clientName)) {

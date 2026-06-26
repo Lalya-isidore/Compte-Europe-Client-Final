@@ -476,42 +476,19 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 }
 
 .transfer-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 20px;
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.1rem auto;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 0 auto 1rem auto;
 }
 
-.bank-icon {
-    background: linear-gradient(135deg, #f0edff 0%, #e8e2ff 100%);
-    box-shadow: 0 8px 24px rgba(107, 72, 231, 0.12);
-    padding: 10px;
-}
-.bank-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(107, 72, 231, 0.15));
-}
-
-.paypal-icon {
-    background: linear-gradient(135deg, #e8f0ff 0%, #deeaff 100%);
-    box-shadow: 0 8px 24px rgba(0, 100, 200, 0.12);
-    padding: 12px;
-}
+.bank-icon img,
 .paypal-icon img {
-    width: 100%;
-    height: 100%;
+    width: 72px;
+    height: 72px;
     object-fit: contain;
-}
-
-.transfer-card:hover .transfer-icon {
-    transform: scale(1.08);
-    box-shadow: 0 12px 30px rgba(107, 72, 231, 0.18);
 }
 
 

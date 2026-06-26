@@ -282,12 +282,24 @@ function sendTransferBordereau($toEmail, $beneficiaryName, $iban, $bic, $bankNam
     $html = ob_get_clean();
     @file_put_contents($logDir . '/bordereau_last.html', $html);
 
-    // Determine SMTP settings from environment variables (recommended)
-    $smtpHost = getenv('SMTP_HOST') ?: 'smtp.gmail.com';
+    // Load .env file if env vars not set by the web server
+    $envFile = __DIR__ . '/../.env';
+    if (is_readable($envFile)) {
+        foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $_line) {
+            if ($_line[0] === '#' || strpos($_line, '=') === false) continue;
+            [$_k, $_v] = explode('=', $_line, 2);
+            $_k = trim($_k);
+            $_v = trim($_v, " \t\n\r\0\x0B\"'");
+            if (getenv($_k) === false) putenv("$_k=$_v");
+        }
+    }
+
+    // Determine SMTP settings from environment variables
+    $smtpHost = getenv('SMTP_HOST') ?: 'smtp-relay.brevo.com';
     $smtpPort = getenv('SMTP_PORT') ?: 587;
-    $smtpUser = getenv('SMTP_USER') ?: getenv('EMAIL_FROM') ?: 'fluxbank3@gmail.com';
-    $smtpPass = getenv('SMTP_PASS') ?: 'pjxqlalkykmzuzwz';
-    $fromEmail = getenv('EMAIL_FROM') ?: $smtpUser;
+    $smtpUser = getenv('SMTP_USER') ?: 'lalyaisidore@gmail.com';
+    $smtpPass = getenv('SMTP_PASS') ?: '';
+    $fromEmail = getenv('EMAIL_FROM') ?: 'noreply@fluxtransfer.world';
     $fromName = getenv('EMAIL_FROM_NAME') ?: 'TRANSFERFLUX';
 
     // Try to generate a PDF bordereau using Dompdf if available

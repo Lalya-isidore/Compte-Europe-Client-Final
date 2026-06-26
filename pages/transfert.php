@@ -466,7 +466,6 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 }
 
 .transfer-card:hover {
-    transform: translateY(-5px);
     box-shadow: var(--hover-shadow);
 }
 

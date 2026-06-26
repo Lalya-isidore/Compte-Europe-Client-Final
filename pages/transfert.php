@@ -476,45 +476,42 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 }
 
 .transfer-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
-    margin: 0 auto 1rem auto;
+    margin: 0 auto 1.1rem auto;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .bank-icon {
-    background: white;
-    border: 2px solid var(--primary-color);
-    box-shadow: 0 4px 12px rgba(107, 72, 231, 0.2);
-    padding: 4px;
-    width: 68px;
-    height: 68px;
-    overflow: hidden;
+    background: linear-gradient(135deg, #f0edff 0%, #e8e2ff 100%);
+    box-shadow: 0 8px 24px rgba(107, 72, 231, 0.12);
+    padding: 10px;
 }
 .bank-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(107, 72, 231, 0.15));
 }
 
 .paypal-icon {
-    background: white;
-    border: 2px solid var(--primary-color);
-    box-shadow: 0 4px 12px rgba(107, 72, 231, 0.2);
-    padding: 2px;
-    width: 68px;
-    height: 68px;
-    overflow: hidden;
+    background: linear-gradient(135deg, #e8f0ff 0%, #deeaff 100%);
+    box-shadow: 0 8px 24px rgba(0, 100, 200, 0.12);
+    padding: 12px;
 }
 .paypal-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.transfer-card:hover .transfer-icon {
+    transform: scale(1.08);
+    box-shadow: 0 12px 30px rgba(107, 72, 231, 0.18);
 }
 
 

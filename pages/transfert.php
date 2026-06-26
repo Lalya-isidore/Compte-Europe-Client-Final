@@ -488,9 +488,18 @@ $ibanPlaceholder = $ibanCountryPlaceholders[$userCountryName] ?? '1234567890';
 }
 
 .bank-icon {
-    background: var(--primary-color);
-    color: white;
+    background: white;
+    border: 2px solid var(--primary-color);
     box-shadow: 0 4px 12px rgba(107, 72, 231, 0.2);
+    padding: 4px;
+    width: 68px;
+    height: 68px;
+    overflow: hidden;
+}
+.bank-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .paypal-icon {
@@ -845,7 +854,7 @@ form.was-submitted .tf-input-wrap:has(input:invalid) .tf-error-icon {
         <div class="col-md-6 mb-3">
             <div class="transfer-card" id="bankCard" onclick="selectTransferType('bank')">
                 <div class="transfer-icon bank-icon">
-                    <i class="fas fa-university"></i>
+                    <img src="image/flash-compte-v1.png" alt="Virement Bancaire">
                 </div>
                 <h5 class="fw-bold mb-2"><?= htmlspecialchars(t('bank_transfer'), ENT_QUOTES, 'UTF-8') ?></h5>
                 <p class="text-muted small mb-0"><?= htmlspecialchars(t('bank_transfer'), ENT_QUOTES, 'UTF-8') ?> — <?= htmlspecialchars(t('iban_label'), ENT_QUOTES, 'UTF-8') ?></p>

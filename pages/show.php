@@ -409,10 +409,10 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
 ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         :root {
             --ui-font: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            --alert-font: 'Space Grotesk', var(--ui-font);
+            --alert-font: var(--ui-font);
         }
         .dashboard nav {
             display: flex;

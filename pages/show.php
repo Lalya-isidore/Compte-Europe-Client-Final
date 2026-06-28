@@ -475,7 +475,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             font-size: 1.00rem; /* readable on mobile */
             line-height: 1.5;
             color: #374151;
-            font-weight: 500;
+            font-weight: 400;
             font-family: var(--alert-font);
             letter-spacing: 0.005em;
         }
@@ -1391,11 +1391,10 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
 
             .alert-modern .alert-message {
                 font-size: 0.95rem;
-                font-weight: 600;
+                font-weight: 400;
                 line-height: 1.3;
-                font-family: var(--ui-font);
+                font-family: var(--alert-font);
                 color: #374151;
-                /* Ensure message wraps and remains readable */
                 white-space: normal;
             }
 

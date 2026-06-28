@@ -1386,7 +1386,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                 font-size: 1rem;
                 font-weight: 800;
                 line-height: 1.12;
-                font-family: var(--ui-font);
+                font-family: var(--alert-font);
                 color: #0f172a;
             }
 

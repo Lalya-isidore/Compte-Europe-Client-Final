@@ -8,8 +8,6 @@ html, body { font-family: var(--ui-font); -webkit-font-smoothing: antialiased; -
 
 /* Ensure consistent UI font on key components (notifications & timeline) */
 .alert-modern,
-.alert-modern .alert-title,
-.alert-modern .alert-message,
 .alert-body,
 .alert-icon,
 .timeline-card,
@@ -19,6 +17,14 @@ html, body { font-family: var(--ui-font); -webkit-font-smoothing: antialiased; -
 .timeline-meta,
 .timeline-datetime {
     font-family: var(--ui-font) !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Notification text uses Space Grotesk (same as Africa bank portal) */
+.alert-modern .alert-title,
+.alert-modern .alert-message {
+    font-family: 'Space Grotesk', var(--ui-font) !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

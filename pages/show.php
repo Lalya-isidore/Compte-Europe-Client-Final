@@ -477,6 +477,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             color: #374151;
             font-weight: 400;
             font-family: var(--alert-font);
+            color: #111827;
             letter-spacing: 0.005em;
         }
         .alert-modern .btn-close {
@@ -1394,7 +1395,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                 font-weight: 400;
                 line-height: 1.3;
                 font-family: var(--alert-font);
-                color: #374151;
+                color: #111827;
                 white-space: normal;
             }
 

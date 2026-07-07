@@ -62,7 +62,7 @@ if ($dbStatus) {
         if ($statusCheck && !in_array($statusCheck['account_status'] ?? '', ['Activé', 'Actif', 'active', 'Active'])) {
             $clientToken = $_SESSION['client_token'] ?? '';
             $bankName = function_exists('t') ? (t('login_bank_name') ?: 'TRANSFERFLUX') : 'TRANSFERFLUX';
-            $errMsg = "L'accès à votre compte {$bankName} est temporairement suspendu. Veuillez contacter le support.";
+            $errMsg = function_exists('t') ? t('account_blocked_message', ['bank' => $bankName]) : "L'accès à votre compte {$bankName} est temporairement suspendu. Veuillez contacter le support.";
             $_SESSION['login_erreur'] = $errMsg;
             $_SESSION['login_alert_type'] = 'error';
             unset($_SESSION['utilisateur_connecter']);

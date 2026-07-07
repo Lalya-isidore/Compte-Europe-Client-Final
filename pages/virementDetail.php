@@ -817,7 +817,7 @@ if ($photoUrl === null && $accountId) {
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label"><?= t('reason_label') ?></div>
-                                <div class="summary-value"><?php echo $reason !== '' ? $reason : 'Non renseigné'; ?></div>
+                                <div class="summary-value"><?php echo $reason !== '' ? $reason : t('not_provided'); ?></div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-label"><?= t('amount_to_receive') ?></div>
@@ -886,7 +886,7 @@ if ($photoUrl === null && $accountId) {
                     </div>
                     <div class="modal-info-item">
                         <span class="modal-info-label"><?= htmlspecialchars(t('reason'), ENT_QUOTES, 'UTF-8') ?></span>
-                        <span class="modal-info-value"><?php echo $reason !== '' ? $reason : 'Non renseigné'; ?></span>
+                        <span class="modal-info-value"><?php echo $reason !== '' ? $reason : t('not_provided'); ?></span>
                     </div>
                     <div class="modal-info-item">
                         <span class="modal-info-label"><?= t('date_sent_label') ?></span>

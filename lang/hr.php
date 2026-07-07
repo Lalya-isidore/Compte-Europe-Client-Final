@@ -170,4 +170,11 @@ return [
   'required_fields_note' => 'Sva polja označena s * su obavezna.',
   'virement_en_cours' => 'Prijenos u tijeku',
   'max_label' => 'Maks',
+  'account_blocked_message' => 'Pristup vašem {bank} računu je privremeno obustavljen. Molimo kontaktirajte podršku.',
+  'account_exam_message' => 'Vaš {bank} račun je trenutno u pregledu. Molimo pričekajte ili kontaktirajte podršku.',
+  'optional_label' => 'neobavezno',
+  'footer_pay' => 'Platiti',
+  'footer_my_card' => 'Moja kartica',
+  'footer_payment' => 'Plaćanje',
+  'footer_account' => 'Moj račun',
 ];

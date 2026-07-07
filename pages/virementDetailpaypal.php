@@ -35,7 +35,7 @@ $date_display = date('d/m/Y H:i');
 $paypalEmail = $_POST['paypalEmail'] ?? '';
 $reasonPaypal = $_POST['reasonPaypal'] ?? '';
 $paypalEmailDisplay = $paypalEmail !== '' ? htmlspecialchars($paypalEmail, ENT_QUOTES, 'UTF-8') : '—';
-$reasonPaypalDisplay = $reasonPaypal !== '' ? htmlspecialchars($reasonPaypal, ENT_QUOTES, 'UTF-8') : 'Non renseigné';
+$reasonPaypalDisplay = $reasonPaypal !== '' ? htmlspecialchars($reasonPaypal, ENT_QUOTES, 'UTF-8') : htmlspecialchars(t('not_provided'), ENT_QUOTES, 'UTF-8');
 $codeVirement = $_POST['codeVirement'] ?? ''; // Conservé mais non affiché
 
 // Récupération de la photo utilisateur

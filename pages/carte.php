@@ -709,7 +709,7 @@ $devise = $utilisateur['devise'] ?? 'EUR';
             </div>
             <div class="modal-body text-center p-4">
                 <p><?php echo htmlspecialchars(t('insufficient_balance_message'), ENT_QUOTES, 'UTF-8'); ?></p>
-                <p class="mb-0"><strong>Montant disponible : <?= $formatted_balance ?> <?= $devise ?></strong></p>
+                <p class="mb-0"><strong><?= htmlspecialchars(t('account_balance'), ENT_QUOTES, 'UTF-8') ?> : <?= $formatted_balance ?> <?= $devise ?></strong></p>
             </div>
                 <div class="modal-footer border-0 p-3">
                 <button type="button" class="btn btn-light w-100" data-dismiss="modal" style="border-radius: 12px;"><?php echo htmlspecialchars(t('modal_close'), ENT_QUOTES, 'UTF-8'); ?></button>

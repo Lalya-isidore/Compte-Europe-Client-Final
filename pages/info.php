@@ -487,7 +487,7 @@ $statusColor = $statusColors[$statusKey] ?? '#6c757d';
                         <?= htmlspecialchars($statusLabel) ?>
                     </span>
                 <?php else: ?>
-                    <span class="text-muted">Non défini</span>
+                    <span class="text-muted"><?= htmlspecialchars(t('not_provided'), ENT_QUOTES, 'UTF-8') ?></span>
                 <?php endif; ?>
             </span>
         </div>

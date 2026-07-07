@@ -179,31 +179,18 @@ function apply_i18n_fallbacks(array $translations): array {
         $translations['modal_close'] = 'Close';
     }
 
-    // Footer labels (ensure consistent keys for nav)
+    // Footer labels — derive from localized keys first, fall back to English
     if (!array_key_exists('footer_pay', $translations)) {
-        $translations['footer_pay'] = 'Pay';
+        $translations['footer_pay'] = !empty($translations['pay']) ? $translations['pay'] : 'Pay';
     }
     if (!array_key_exists('footer_my_card', $translations)) {
-        $translations['footer_my_card'] = 'My card';
+        $translations['footer_my_card'] = !empty($translations['my_card']) ? $translations['my_card'] : 'My card';
     }
     if (!array_key_exists('footer_payment', $translations)) {
-        $translations['footer_payment'] = 'Payment';
+        $translations['footer_payment'] = !empty($translations['payment']) ? $translations['payment'] : 'Payment';
     }
     if (!array_key_exists('footer_account', $translations)) {
-        $translations['footer_account'] = 'My account';
-    }
-    // Provide footer fallbacks from existing localized keys when available
-    if (empty($translations['footer_pay']) && !empty($translations['pay'])) {
-        $translations['footer_pay'] = $translations['pay'];
-    }
-    if (empty($translations['footer_my_card']) && !empty($translations['my_card'])) {
-        $translations['footer_my_card'] = $translations['my_card'];
-    }
-    if (empty($translations['footer_payment']) && !empty($translations['payment'])) {
-        $translations['footer_payment'] = $translations['payment'];
-    }
-    if (empty($translations['footer_account']) && !empty($translations['my_account'])) {
-        $translations['footer_account'] = $translations['my_account'];
+        $translations['footer_account'] = !empty($translations['my_account']) ? $translations['my_account'] : 'My account';
     }
     // Ensure some newer transfer-related keys exist by falling back to English defaults
     $needed_keys = array(

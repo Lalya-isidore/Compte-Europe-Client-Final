@@ -542,7 +542,7 @@ if ($photoUrl === null && $compte_id) {
 
             const code = codeInput.value.trim();
             if (!/^\d{6}$/.test(code)) {
-                showError('Le code doit contenir 6 chiffres.');
+                showError(<?php echo json_encode(t('code_must_be_6_digits'), JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT); ?>);
                 codeInput.focus();
                 return;
             }

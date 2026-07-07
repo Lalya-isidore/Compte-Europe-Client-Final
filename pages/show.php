@@ -1714,11 +1714,11 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
             <div id="notif-overlay" onclick="toggleNotifPanel(event)" style="position:absolute;inset:0;background:rgba(0,0,0,0.3);"></div>
             <div style="position:absolute;top:60px;right:12px;left:12px;max-width:420px;margin-left:auto;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.15);max-height:70vh;overflow-y:auto;padding:16px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                    <strong style="font-size:1.05rem;">Notifications</strong>
+                    <strong style="font-size:1.05rem;"><?= htmlspecialchars(t('notifications'), ENT_QUOTES, 'UTF-8') ?></strong>
                     <button onclick="toggleNotifPanel(event)" style="background:none;border:none;font-size:1.3rem;color:#9ca3af;cursor:pointer;">&times;</button>
                 </div>
                 <?php if (!$transferSuccess && !$showBalanceAlert && empty($allNotifications)): ?>
-                    <p style="text-align:center;color:#9ca3af;padding:24px 0;">Aucune notification</p>
+                    <p style="text-align:center;color:#9ca3af;padding:24px 0;"><?= htmlspecialchars(t('no_notifications'), ENT_QUOTES, 'UTF-8') ?></p>
                 <?php else: ?>
                 <div class="alert-stack">
                     <?php if ($transferSuccess): ?>
@@ -1756,7 +1756,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                                 <p class="alert-title"><?= htmlspecialchars($notif['titre'], ENT_QUOTES, 'UTF-8'); ?></p>
                                 <p class="alert-message"><?= nl2br(htmlspecialchars($notif['message'], ENT_QUOTES, 'UTF-8')); ?></p>
                             </div>
-                            <button type="button" class="btn-close dismiss-admin-notif" data-notif-id="<?= (int)$notif['id']; ?>" aria-label="Fermer">
+                            <button type="button" class="btn-close dismiss-admin-notif" data-notif-id="<?= (int)$notif['id']; ?>" aria-label="<?= htmlspecialchars(t('close'), ENT_QUOTES, 'UTF-8') ?>">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -1839,21 +1839,21 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                     <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div class="detail-icon-circle"><i class="fas fa-user"></i></div>
-                            <span class="detail-row-label">TYPE DE COMPTE</span>
+                            <span class="detail-row-label"><?= htmlspecialchars(t('account_type_label'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
                         <span class="detail-row-value"><?= $accountTypeLabel; ?></span>
                     </div>
                     <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08);">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div class="detail-icon-circle" style="font-weight:800; font-size:0.75rem; color:#fff; display:flex; align-items:center; justify-content:center; line-height:1;"><?= $deviseLabel; ?></div>
-                            <span class="detail-row-label">DEVISE DU COMPTE</span>
+                            <span class="detail-row-label"><?= htmlspecialchars(t('account_currency_label'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
                         <span class="detail-row-value"><?= $deviseLabel; ?></span>
                     </div>
                     <div class="hero-detail-row" style="display:flex; align-items:center; justify-content:space-between; padding:12px 0;">
                         <div style="display:flex; align-items:center; gap:12px;">
                             <div class="detail-icon-circle"><i class="far fa-calendar-alt"></i></div>
-                            <span class="detail-row-label">DERNIER MOUVEMENT</span>
+                            <span class="detail-row-label"><?= htmlspecialchars(t('last_movement'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
                         <span class="detail-row-value"><?= $lastMovementDisplay; ?></span>
                     </div>
@@ -1941,7 +1941,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                 <div class="timeline-header">
                             <div>
                                 <h4><?= htmlspecialchars(t('activity_recent'), ENT_QUOTES, 'UTF-8') ?></h4>
-                                <p>Suivez vos virements entrants et sortants en temps reel.</p>
+                                <p><?= htmlspecialchars(t('activity_subtitle'), ENT_QUOTES, 'UTF-8') ?></p>
                             </div>
                             <span class="timeline-pill"><?= count($historique_transactions); ?> <?= htmlspecialchars(t('movements'), ENT_QUOTES, 'UTF-8') ?></span>
                         </div>
@@ -2213,7 +2213,7 @@ usort($allNotifications, function($a, $b) { return $b['sort_ts'] <=> $a['sort_ts
                 <?php else : ?>
                     <div class="timeline-empty">
                         <i class="fas fa-inbox"></i>
-                        <p>Aucune transaction enregistree pour l'instant.</p>
+                        <p><?= htmlspecialchars(t('no_transactions'), ENT_QUOTES, 'UTF-8') ?></p>
                     </div>
                 <?php endif; ?>
             </section>

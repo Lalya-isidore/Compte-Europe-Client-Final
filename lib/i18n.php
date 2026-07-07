@@ -103,6 +103,18 @@ function apply_i18n_fallbacks(array $translations): array {
             $translations['account_type_standard'] = $translations['account_type_standard'] ?? 'Standard';
         }
     }
+    if (!array_key_exists('account_type_professionnel', $translations)) {
+        $translations['account_type_professionnel'] = 'Professional';
+    }
+    if (!array_key_exists('notifications', $translations)) {
+        $translations['notifications'] = 'Notifications';
+    }
+    if (!array_key_exists('no_notifications', $translations)) {
+        $translations['no_notifications'] = 'No notifications';
+    }
+    if (!array_key_exists('activity_subtitle', $translations)) {
+        $translations['activity_subtitle'] = 'Track your incoming and outgoing transfers in real time.';
+    }
 
     // transaction/timeline labels: prefer notif_* titles when present
     if (!array_key_exists('transaction_refund_received', $translations)) {

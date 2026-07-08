@@ -181,4 +181,5 @@ return [
   'footer_my_card' => 'Cardul meu',
   'footer_payment' => 'Plată',
   'footer_account' => 'Contul meu',
+  'general_information' => 'Informații generale',
 ];

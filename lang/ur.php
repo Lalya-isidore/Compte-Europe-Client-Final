@@ -181,4 +181,5 @@ return [
   'footer_my_card' => 'میرا کارڈ',
   'footer_payment' => 'ادائیگی',
   'footer_account' => 'میرا اکاؤنٹ',
+  'general_information' => 'عمومی معلومات',
 ];

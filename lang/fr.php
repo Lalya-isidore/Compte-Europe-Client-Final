@@ -180,4 +180,6 @@ return [
   'account_currency_label' => 'Devise du compte',
   'max_label' => 'Max',
   'optional_label' => 'facultatif',
+  'general_information' => 'Informations générales',
+  'field_required' => 'Ce champ est obligatoire.',
 ];

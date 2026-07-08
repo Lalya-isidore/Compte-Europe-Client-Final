@@ -173,4 +173,13 @@ return [
   'required_fields_note' => 'Todos los campos marcados con * son obligatorios.',
   'virement_en_cours' => 'Transferencia en curso',
   'max_label' => 'Máx',
+  'general_information' => 'Información general',
+  'account_type_professionnel' => 'Profesional',
+  'notifications' => 'Notificaciones',
+  'no_notifications' => 'Sin notificaciones',
+  'activity_subtitle' => 'Sigue tus transferencias entrantes y salientes en tiempo real.',
+  'account_blocked_message' => 'El acceso a su cuenta {bank} ha sido suspendido temporalmente. Póngase en contacto con el soporte.',
+  'account_exam_message' => 'Su cuenta {bank} está en proceso de revisión. Por favor, espere o póngase en contacto con el soporte.',
+  'optional_label' => 'opcional',
+  'field_required' => 'Este campo es obligatorio.',
 ];

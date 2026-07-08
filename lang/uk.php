@@ -181,4 +181,5 @@ return [
   'footer_my_card' => 'Моя картка',
   'footer_payment' => 'Платіж',
   'footer_account' => 'Мій рахунок',
+  'general_information' => 'Загальна інформація',
 ];

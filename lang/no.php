@@ -181,4 +181,5 @@ return [
   'footer_my_card' => 'Mitt kort',
   'footer_payment' => 'Betaling',
   'footer_account' => 'Min konto',
+  'general_information' => 'Generell informasjon',
 ];

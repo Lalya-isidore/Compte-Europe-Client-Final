@@ -181,4 +181,5 @@ return [
   'footer_my_card' => '我的卡',
   'footer_payment' => '支付',
   'footer_account' => '我的账户',
+  'general_information' => '一般信息',
 ];

@@ -181,4 +181,5 @@ return [
   'footer_my_card' => 'Kartım',
   'footer_payment' => 'Ödeme',
   'footer_account' => 'Hesabım',
+  'general_information' => 'Genel bilgi',
 ];

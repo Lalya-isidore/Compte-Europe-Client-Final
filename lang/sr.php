@@ -181,4 +181,5 @@ return [
   'footer_my_card' => 'Моја картица',
   'footer_payment' => 'Плаћање',
   'footer_account' => 'Мој налог',
+  'general_information' => 'Опште информације',
 ];

@@ -255,7 +255,7 @@ if (!empty($tokenSource)) {
 	$db = connexion_db();
 	if ($db) {
 		try {
-			$stmt = $db->prepare('SELECT id, nom, prenom, email, token, photo_path, account_status, lang FROM comptes WHERE token = :token OR numerocompte = :numero LIMIT 1');
+			$stmt = $db->prepare('SELECT id, nom, prenom, email, token, photo_path, account_status, lang FROM comptes WHERE token = :token OR (token IS NULL AND numerocompte = :numero) LIMIT 1');
 			$stmt->execute([':token' => $tokenSource, ':numero' => $tokenSource]);
 			$localCompte = $stmt->fetch(PDO::FETCH_ASSOC);
 			if ($localCompte) {
